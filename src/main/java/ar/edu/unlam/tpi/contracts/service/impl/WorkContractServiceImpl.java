@@ -9,6 +9,7 @@ import ar.edu.unlam.tpi.contracts.model.WorkState;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,18 +54,7 @@ public class WorkContractServiceImpl implements WorkContractService {
                 .build();
     }
 
-    @Override
-    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId) {
-        List<WorkContractEntity> contracts = repository.findByApplicantId(applicantId);
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para el applicantId: " + applicantId);
-        }
-        return contracts.stream()
-                .limit(4)
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-    }
-
+    
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
         WorkContractEntity contract = repository.findById(id)
@@ -79,14 +69,33 @@ public class WorkContractServiceImpl implements WorkContractService {
         }
     }
 
+    
+    @Override
+public List<WorkContractResponse> getContractsByApplicantId(Long applicantId) {
+    LocalDate today = LocalDate.now();
+
+    List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
+
+    if (contracts.isEmpty()) {
+        throw new ContractNotFoundException("No se encontraron contratos para hoy y applicantId: " + applicantId);
+    }
+
+    return contracts.stream()
+            .limit(4)
+            .map(this::convertToResponse)
+            .collect(Collectors.toList());
+}
+
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId) {
+        LocalDate today = LocalDate.now();
         List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
-        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates);
+        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates, today);
         if (contracts.isEmpty()) {
             throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
         }
         return contracts.stream()
+                .limit(4)
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }

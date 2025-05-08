@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +26,11 @@ public class WorkContractEntity {
     private Double price;
 
     @Column
-    private String dateFrom;
-
+    private LocalDate dateFrom;
+    
     @Column
-    private String dateTo;
+    private LocalDate dateTo;
+    
 
     @Column
     private String detail;
@@ -46,7 +49,7 @@ public class WorkContractEntity {
     @Column(name = "workers")
     private List<Long> workers = new ArrayList<>();
 
-    public WorkContractEntity(Double price, String dateFrom, String dateTo, WorkState state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
+    public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkState state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
         this.price = price;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;

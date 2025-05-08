@@ -2,6 +2,8 @@ package ar.edu.unlam.tpi.contracts.dto;
 
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -10,8 +12,8 @@ public class WorkContractResponse {
 
     private Long id;
     private Double price;
-    private String dateFrom;
-    private String dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private String detail;
     private String state;   
     private Long supplierId;

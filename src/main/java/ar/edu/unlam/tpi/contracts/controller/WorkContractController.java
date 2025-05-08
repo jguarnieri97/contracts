@@ -29,7 +29,7 @@ public class WorkContractController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/work-contract/{id}")
+    @PutMapping("/work-contract/{id}")
     public ResponseEntity<String> updateContractState(
             @PathVariable Long id,
             @RequestBody @Valid WorkContractUpdateRequest request) {

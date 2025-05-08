@@ -27,8 +27,10 @@ public class WorkContractServiceImpl implements WorkContractService {
     public WorkContractResponse createContract(WorkContractRequest request) {
         WorkContractEntity contract = new WorkContractEntity(
                 request.getPrice(),
-                request.getDate(),
+                request.getDateFrom(),
+                request.getDateTo(),
                 WorkState.PENDING, 
+                request.getDetail(),
                 request.getSupplierId(),
                 request.getApplicantId(),
                 request.getWorkers()
@@ -41,8 +43,10 @@ public class WorkContractServiceImpl implements WorkContractService {
         return WorkContractResponse.builder()
                 .id(saved.getId())
                 .price(saved.getPrice())
-                .date(saved.getDate())
+                .dateFrom(saved.getDateFrom())
+                .dateTo(saved.getDateTo())
                 .state(saved.getState().name())
+                .detail(saved.getDetail())
                 .supplierId(saved.getSupplierId())
                 .applicantId(saved.getApplicantId())
                 .workers(saved.getWorkers())
@@ -91,8 +95,10 @@ public class WorkContractServiceImpl implements WorkContractService {
         return WorkContractResponse.builder()
                 .id(entity.getId())
                 .price(entity.getPrice())
-                .date(entity.getDate())
+                .dateFrom(entity.getDateFrom())
+                .dateTo(entity.getDateTo())
                 .state(entity.getState().name())
+                .detail(entity.getDetail())
                 .supplierId(entity.getSupplierId())
                 .applicantId(entity.getApplicantId())
                 .workers(entity.getWorkers())

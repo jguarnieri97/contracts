@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import java.time.Instant;
 import java.util.List;
 
 @Data 
@@ -15,7 +14,13 @@ public class WorkContractRequest {
     private Double price;
 
     @NotNull
-    private Instant date;
+    private String dateFrom;
+
+    @NotNull
+    private String dateTo;
+
+    @NotNull
+    private String detail;
 
     @NotNull
     private Long supplierId;

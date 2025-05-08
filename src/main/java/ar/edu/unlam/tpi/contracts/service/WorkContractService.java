@@ -9,9 +9,9 @@ import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
 public interface WorkContractService {
     WorkContractResponse createContract(WorkContractRequest request);
 
-    List<WorkContractResponse> getContractsByApplicantId(Long id);
+    List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit);
 
-    List<WorkContractResponse> getContractsBySupplierId(Long supplierId);
+    List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit);
 
     void updateContractState(Long id, WorkContractUpdateRequest request);
 

@@ -40,14 +40,16 @@ public class WorkContractController {
     
 
     @GetMapping("/accounts/applicant/{id}")
-    public ResponseEntity<List<WorkContractResponse>> getContractsByApplicantId(@PathVariable Long id) {
-        List<WorkContractResponse> response = service.getContractsByApplicantId(id);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<WorkContractResponse>> getContractsByApplicantId(
+            @PathVariable("id") Long applicantId,
+            @RequestParam(required = false) Integer limit) {
+        return ResponseEntity.ok(service.getContractsByApplicantId(applicantId, limit));
     }
 
     @GetMapping("/accounts/supplier/{id}")
-    public ResponseEntity<List<WorkContractResponse>> getContractsBySupplierId(@PathVariable Long id) {
-        List<WorkContractResponse> response = service.getContractsBySupplierId(id);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<WorkContractResponse>> getContractsBySupplierId(
+        @PathVariable Long id,
+        @RequestParam(required = false) Integer limit) {
+        return ResponseEntity.ok(service.getContractsBySupplierId(id, limit));
     }
 }

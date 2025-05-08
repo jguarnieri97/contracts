@@ -71,23 +71,20 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     
     @Override
-public List<WorkContractResponse> getContractsByApplicantId(Long applicantId) {
-    LocalDate today = LocalDate.now();
-
-    List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
-
-    if (contracts.isEmpty()) {
-        throw new ContractNotFoundException("No se encontraron contratos para hoy y applicantId: " + applicantId);
+    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit) {
+        LocalDate today = LocalDate.now();
+        List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
+        if (contracts.isEmpty()) {
+            throw new ContractNotFoundException("No se encontraron contratos para hoy y applicantId: " + applicantId);
+        }
+        return contracts.stream()
+                .limit(limit != null ? limit : Long.MAX_VALUE)
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
-    return contracts.stream()
-            .limit(4)
-            .map(this::convertToResponse)
-            .collect(Collectors.toList());
-}
-
     @Override
-    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId) {
+    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit) {
         LocalDate today = LocalDate.now();
         List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
         List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates, today);
@@ -95,7 +92,7 @@ public List<WorkContractResponse> getContractsByApplicantId(Long applicantId) {
             throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
         }
         return contracts.stream()
-                .limit(4)
+                .limit(limit != null ? limit : Long.MAX_VALUE)
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }

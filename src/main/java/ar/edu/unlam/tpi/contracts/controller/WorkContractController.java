@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.controller;
 
 import ar.edu.unlam.tpi.contracts.dto.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import jakarta.validation.Valid;
 
@@ -27,6 +28,16 @@ public class WorkContractController {
         WorkContractResponse response = service.createContract(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/work-contract/{id}")
+    public ResponseEntity<String> updateContractState(
+            @PathVariable Long id,
+            @RequestBody @Valid WorkContractUpdateRequest request) {
+    
+        service.updateContractState(id, request);
+        return ResponseEntity.ok("Contrato actualizado correctamente");
+    }
+    
 
     @GetMapping("/accounts/applicant/{id}")
     public ResponseEntity<List<WorkContractResponse>> getContractsByApplicantId(@PathVariable Long id) {

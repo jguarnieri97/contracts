@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.dto.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkState;
@@ -61,6 +62,20 @@ public class WorkContractServiceImpl implements WorkContractService {
     }
 
     @Override
+    public void updateContractState(Long id, WorkContractUpdateRequest request) {
+        WorkContractEntity contract = repository.findById(id)
+                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
+
+        try {
+            WorkState newState = WorkState.valueOf(request.getState().toUpperCase());
+            contract.setState(newState);
+            repository.save(contract);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado inválido: " + request.getState());
+        }
+    }
+
+    @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId) {
         List<WorkState> validStates = List.of(WorkState.PENDING, WorkState.INITIATED);
         List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates);
@@ -83,4 +98,5 @@ public class WorkContractServiceImpl implements WorkContractService {
                 .workers(entity.getWorkers())
                 .build();
     }
+
 }

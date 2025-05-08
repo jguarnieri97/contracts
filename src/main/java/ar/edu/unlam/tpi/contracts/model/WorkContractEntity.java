@@ -50,4 +50,11 @@ public class WorkContractEntity {
         this.workers = workers;
     }
 
+    public void setState(WorkState newState) {
+        if (newState == this.state) {
+            throw new IllegalArgumentException("El estado no puede ser el mismo");
+        }
+        this.state = newState;
+    }
+
 }

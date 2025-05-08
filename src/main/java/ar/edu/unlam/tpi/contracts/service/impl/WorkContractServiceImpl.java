@@ -55,6 +55,7 @@ public class WorkContractServiceImpl implements WorkContractService {
             throw new ContractNotFoundException("No se encontraron contratos para el applicantId: " + applicantId);
         }
         return contracts.stream()
+                .limit(4)
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }

@@ -81,10 +81,10 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId) {
-        List<WorkState> validStates = List.of(WorkState.PENDING, WorkState.INITIATED);
+        List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
         List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates);
         if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos activos para el supplierId: " + supplierId);
+            throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
         }
         return contracts.stream()
                 .map(this::convertToResponse)

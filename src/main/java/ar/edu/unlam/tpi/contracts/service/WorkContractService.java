@@ -13,6 +13,8 @@ public interface WorkContractService {
 
     List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit);
 
+    List<WorkContractResponse> getContractsByWorkerId(Long workerId);
+
     void updateContractState(Long id, WorkContractUpdateRequest request);
 
 }

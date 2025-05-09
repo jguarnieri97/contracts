@@ -52,4 +52,10 @@ public class WorkContractController {
         @RequestParam(required = false) Integer limit) {
         return ResponseEntity.ok(service.getContractsBySupplierId(id, limit));
     }
+
+    @GetMapping("/accounts/worker/{id}")
+    public ResponseEntity<List<WorkContractResponse>> getContractsByWorkerId(
+        @PathVariable Long id) {
+        return ResponseEntity.ok(service.getContractsByWorkerId(id));
+    }
 }

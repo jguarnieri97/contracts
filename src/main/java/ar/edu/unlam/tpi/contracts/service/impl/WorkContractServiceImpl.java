@@ -41,19 +41,22 @@ public class WorkContractServiceImpl implements WorkContractService {
         WorkContractEntity saved = repository.save(contract);
 
        
-        return WorkContractResponse.builder()
-                .id(saved.getId())
-                .price(saved.getPrice())
-                .dateFrom(saved.getDateFrom())
-                .dateTo(saved.getDateTo())
-                .state(saved.getState().name())
-                .detail(saved.getDetail())
-                .supplierId(saved.getSupplierId())
-                .applicantId(saved.getApplicantId())
-                .workers(saved.getWorkers())
-                .build();
+        return convertToResponse(saved);
     }
 
+    private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
+        return WorkContractResponse.builder()
+                .id(entity.getId())
+                .price(entity.getPrice())
+                .dateFrom(entity.getDateFrom())
+                .dateTo(entity.getDateTo())
+                .state(entity.getState().name())
+                .detail(entity.getDetail())
+                .supplierId(entity.getSupplierId())
+                .applicantId(entity.getApplicantId())
+                .workers(entity.getWorkers())
+                .build();
+    }
     
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
@@ -75,7 +78,7 @@ public class WorkContractServiceImpl implements WorkContractService {
         LocalDate today = LocalDate.now();
         List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
         if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para hoy y applicantId: " + applicantId);
+            throw new ContractNotFoundException("No se encontraron contratos para hoy para el applicantId: " + applicantId);
         }
         return contracts.stream()
                 .limit(limit != null ? limit : Long.MAX_VALUE)
@@ -97,18 +100,18 @@ public class WorkContractServiceImpl implements WorkContractService {
                 .collect(Collectors.toList());
     }
 
-    private WorkContractResponse convertToResponse(WorkContractEntity entity) {
-        return WorkContractResponse.builder()
-                .id(entity.getId())
-                .price(entity.getPrice())
-                .dateFrom(entity.getDateFrom())
-                .dateTo(entity.getDateTo())
-                .state(entity.getState().name())
-                .detail(entity.getDetail())
-                .supplierId(entity.getSupplierId())
-                .applicantId(entity.getApplicantId())
-                .workers(entity.getWorkers())
-                .build();
+  
+
+    @Override
+    public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
+        LocalDate today = LocalDate.now();
+        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, today);
+        if (contracts.isEmpty()) {
+            throw new ContractNotFoundException("No se encontraron contratos para hoy para el workerId: " + workerId);
+        }
+        return contracts.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
 }

@@ -19,5 +19,8 @@ List<WorkContractEntity> findByApplicantIdAndToday(@Param("applicantId") Long ap
     
     @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
     List<WorkContractEntity> findBySupplierIdAndStateIn(@Param("supplierId")Long supplierId, @Param("states")List<WorkState> states, @Param("today")LocalDate today);
+
+    @Query("SELECT w FROM WorkContractEntity w WHERE :workerId MEMBER OF w.workers AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
+    List<WorkContractEntity> findByWorkersContaining(@Param("workerId")Long workerId, @Param("today")LocalDate today);
     
 }

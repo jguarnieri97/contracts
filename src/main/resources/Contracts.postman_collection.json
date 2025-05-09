@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "2c01f1a0-7a53-4d3e-9d4e-4ba95b22fd79",
+		"name": "Contracts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30950786"
+	},
+	"item": [
+		{
+			"name": "Agregar contrato",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"price\": 6000,\r\n  \"dateFrom\": \"2025-05-08T09:00:00Z\",\r\n  \"dateTo\": \"2025-05-02T09:00:00Z\",\r\n  \"detail\": \"some work finished detail\",\r\n  \"supplierId\": 1,\r\n  \"applicantId\": 2,\r\n  \"workers\": [3, 4, 5]\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/work-contract",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"work-contract"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener contrato por applicantID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/accounts/applicant/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"accounts",
+						"applicant",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener contrato por applicantID Con limite",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/accounts/applicant/2?limit=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"accounts",
+						"applicant",
+						"2"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener contrato por supplierId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/accounts/supplier/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"accounts",
+						"supplier",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener contratos por workerId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/accounts/worker/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"accounts",
+						"worker",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar estado de contrato por id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"state\": \"INITIATED\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/contracts/v1/work-contract/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contracts",
+						"v1",
+						"work-contract",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

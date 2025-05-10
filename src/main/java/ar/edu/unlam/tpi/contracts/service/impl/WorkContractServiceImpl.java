@@ -9,9 +9,6 @@ import ar.edu.unlam.tpi.contracts.model.WorkState;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -72,46 +69,6 @@ public class WorkContractServiceImpl implements WorkContractService {
         }
     }
 
-    
-    @Override
-    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit) {
-        LocalDate today = LocalDate.now();
-        List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para hoy para el applicantId: " + applicantId);
-        }
-        return contracts.stream()
-                .limit(limit != null ? limit : Long.MAX_VALUE)
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit) {
-        LocalDate today = LocalDate.now();
-        List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
-        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates, today);
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
-        }
-        return contracts.stream()
-                .limit(limit != null ? limit : Long.MAX_VALUE)
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-    }
-
-  
-
-    @Override
-    public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
-        LocalDate today = LocalDate.now();
-        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, today);
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para hoy para el workerId: " + workerId);
-        }
-        return contracts.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-    }
 
 }

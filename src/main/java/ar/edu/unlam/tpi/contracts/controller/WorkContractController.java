@@ -36,7 +36,12 @@ public class WorkContractController {
         service.updateContractState(id, request);
         return ResponseEntity.ok("Contrato actualizado correctamente");
     }
-    
+
+    @GetMapping("/work-contract/{id}")
+    public ResponseEntity<WorkContractResponse> getContractById(@PathVariable Long id) {
+        WorkContractResponse response = service.getContractById(id);
+        return ResponseEntity.ok(response);
+    }
 
    
 }

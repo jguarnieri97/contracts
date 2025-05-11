@@ -41,6 +41,13 @@ public class WorkContractServiceImpl implements WorkContractService {
         return convertToResponse(saved);
     }
 
+    @Override
+    public WorkContractResponse getContractById(Long id) {
+        WorkContractEntity contract = repository.findById(id)
+                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
+        return convertToResponse(contract);
+    }
+    
     private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
         return WorkContractResponse.builder()
                 .id(entity.getId())

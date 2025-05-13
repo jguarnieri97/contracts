@@ -13,7 +13,6 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-
     List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit);
 
     /**

@@ -32,6 +32,5 @@ public interface WorkContractService {
      * @return
      *      El contrato encontrado
      */
-
     WorkContractResponse getContractById(Long id);
 }

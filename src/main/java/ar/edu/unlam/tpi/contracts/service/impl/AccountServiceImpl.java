@@ -54,7 +54,8 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
         LocalDate today = LocalDate.now();
-        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, today);
+        List<WorkState> validStates = List.of(WorkState.PENDING);
+        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, validStates, today);
         if (contracts.isEmpty()) {
             throw new ContractNotFoundException("No se encontraron contratos para hoy para el workerId: " + workerId);
         }

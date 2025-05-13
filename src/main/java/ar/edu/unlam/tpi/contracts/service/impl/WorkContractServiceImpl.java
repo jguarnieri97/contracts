@@ -40,27 +40,6 @@ public class WorkContractServiceImpl implements WorkContractService {
        
         return convertToResponse(saved);
     }
-
-    @Override
-    public WorkContractResponse getContractById(Long id) {
-        WorkContractEntity contract = repository.findById(id)
-                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
-        return convertToResponse(contract);
-    }
-    
-    private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
-        return WorkContractResponse.builder()
-                .id(entity.getId())
-                .price(entity.getPrice())
-                .dateFrom(entity.getDateFrom())
-                .dateTo(entity.getDateTo())
-                .state(entity.getState().name())
-                .detail(entity.getDetail())
-                .supplierId(entity.getSupplierId())
-                .applicantId(entity.getApplicantId())
-                .workers(entity.getWorkers())
-                .build();
-    }
     
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
@@ -75,6 +54,29 @@ public class WorkContractServiceImpl implements WorkContractService {
             throw new RuntimeException("Estado inválido: " + request.getState());
         }
     }
+
+    @Override
+    public WorkContractResponse getContractById(Long id) {
+        WorkContractEntity contract = repository.findById(id)
+                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
+        return convertToResponse(contract);
+    }
+    
+
+    private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
+        return WorkContractResponse.builder()
+                .id(entity.getId())
+                .price(entity.getPrice())
+                .dateFrom(entity.getDateFrom())
+                .dateTo(entity.getDateTo())
+                .state(entity.getState().name())
+                .detail(entity.getDetail())
+                .supplierId(entity.getSupplierId())
+                .applicantId(entity.getApplicantId())
+                .workers(entity.getWorkers())
+                .build();
+    }
+    
 
 
 

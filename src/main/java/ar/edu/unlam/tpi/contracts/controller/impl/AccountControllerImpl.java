@@ -19,18 +19,27 @@ public class AccountControllerImpl implements AccountController {
     @Override
     public GenericResponse<List<WorkContractResponse>> getContractsByApplicantId(Long applicantId, Integer limit) {
         var contracts = service.getContractsByApplicantId(applicantId, limit);
-        return new GenericResponse<>(Constants.STATUS_OK, Constants.SUCCESS_MESSAGE, contracts);
+        return new GenericResponse<>(
+            Constants.STATUS_OK, 
+            Constants.SUCCESS_MESSAGE, 
+            contracts);
     }
 
     @Override
     public GenericResponse<List<WorkContractResponse>> getContractsBySupplierId(Long id, Integer limit) {
         var contracts = service.getContractsBySupplierId(id, limit);
-        return new GenericResponse<>(Constants.STATUS_OK, Constants.SUCCESS_MESSAGE, contracts);
+        return new GenericResponse<>(
+            Constants.STATUS_OK, 
+            Constants.SUCCESS_MESSAGE, 
+            contracts);
     }
 
     @Override
     public GenericResponse<List<WorkContractResponse>> getContractsByWorkerId(Long id) {
         var contracts = service.getContractsByWorkerId(id);
-        return new GenericResponse<>(Constants.STATUS_OK, Constants.SUCCESS_MESSAGE, contracts);
+        return new GenericResponse<>(
+            Constants.STATUS_OK, 
+            Constants.SUCCESS_MESSAGE, 
+            contracts);
     }
 }

@@ -16,15 +16,21 @@ public interface WorkContractController {
     
     @PostMapping("/work-contract")
     @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
-    GenericResponse<WorkContractResponse> createContract(@Valid @RequestBody WorkContractRequest request);
+    GenericResponse<WorkContractResponse> createContract(
+        @Valid
+        @RequestBody WorkContractRequest request);
 
     @PutMapping("/work-contract/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
-    GenericResponse<Void> updateContractState(@PathVariable Long id, @Valid @RequestBody WorkContractUpdateRequest request);
+    GenericResponse<Void> updateContractState(
+        @PathVariable Long id, 
+        @Valid 
+        @RequestBody WorkContractUpdateRequest request);
 
     @GetMapping("/work-contract/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
-    GenericResponse<WorkContractResponse> getContractById(@PathVariable Long id);
+    GenericResponse<WorkContractResponse> getContractById(
+        @PathVariable Long id);
 
    
 }

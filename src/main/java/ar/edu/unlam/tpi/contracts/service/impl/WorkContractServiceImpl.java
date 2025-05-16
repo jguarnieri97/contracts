@@ -57,7 +57,6 @@ public class WorkContractServiceImpl implements WorkContractService {
     
             contract.setState(newState);
     
-            // Si el nuevo estado es FINALIZED y hay imágenes:
             if (newState == WorkState.FINALIZED && request.getFiles() != null && !request.getFiles().isEmpty()) {
                 List<ImageEntity> images = request.getFiles().stream()
                         .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))

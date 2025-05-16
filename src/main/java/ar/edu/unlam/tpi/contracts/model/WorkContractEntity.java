@@ -49,6 +49,11 @@ public class WorkContractEntity {
     @Column(name = "workers")
     private List<Long> workers = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "contract_id")
+    private List<ImageEntity> files = new ArrayList<>();
+
+
     public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkState state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
         this.price = price;
         this.dateFrom = dateFrom;
@@ -66,5 +71,10 @@ public class WorkContractEntity {
         }
         this.state = newState;
     }
+
+    public void setDetail(String newDetail) {
+        this.detail = newDetail;
+    }
+    
 
 }

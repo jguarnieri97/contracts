@@ -4,11 +4,13 @@ import ar.edu.unlam.tpi.contracts.dto.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
+import ar.edu.unlam.tpi.contracts.model.ImageEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkState;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -45,15 +47,32 @@ public class WorkContractServiceImpl implements WorkContractService {
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
         WorkContractEntity contract = repository.findById(id)
                 .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
-
+    
         try {
             WorkState newState = WorkState.valueOf(request.getState().toUpperCase());
+    
+            if (newState == contract.getState()) {
+                throw new IllegalArgumentException("El contrato ya tiene ese estado.");
+            }
+    
             contract.setState(newState);
+    
+            // Si el nuevo estado es FINALIZED y hay imágenes:
+            if (newState == WorkState.FINALIZED && request.getFiles() != null && !request.getFiles().isEmpty()) {
+                List<ImageEntity> images = request.getFiles().stream()
+                        .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
+                        .toList();
+    
+                contract.getFiles().addAll(images);
+                contract.setDetail(request.getDetail());
+            }
+    
             repository.save(contract);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Estado inválido: " + request.getState());
         }
     }
+    
 
     @Override
     public WorkContractResponse getContractById(Long id) {
@@ -64,6 +83,10 @@ public class WorkContractServiceImpl implements WorkContractService {
     
 
     private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
+        List<String> base64Images = entity.getFiles().stream()
+        .map(img -> java.util.Base64.getEncoder().encodeToString(img.getData()))
+        .toList();
+
         return WorkContractResponse.builder()
                 .id(entity.getId())
                 .price(entity.getPrice())
@@ -73,6 +96,7 @@ public class WorkContractServiceImpl implements WorkContractService {
                 .detail(entity.getDetail())
                 .supplierId(entity.getSupplierId())
                 .applicantId(entity.getApplicantId())
+                .files(base64Images)
                 .workers(entity.getWorkers())
                 .build();
     }

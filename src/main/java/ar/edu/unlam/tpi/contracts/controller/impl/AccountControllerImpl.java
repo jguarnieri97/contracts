@@ -17,7 +17,7 @@ public class AccountControllerImpl implements AccountController {
     private final AccountService service;
 
     @Override
-    public GenericResponse<List<WorkContractResponse>> getContractsByApplicantId(Long applicantId, Integer limit) {
+    public GenericResponse<List<WorkContractResponse>> getContractsByApplicantId(Long applicantId, Boolean limit) {
         var contracts = service.getContractsByApplicantId(applicantId, limit);
         return new GenericResponse<>(
             Constants.STATUS_OK, 
@@ -26,7 +26,7 @@ public class AccountControllerImpl implements AccountController {
     }
 
     @Override
-    public GenericResponse<List<WorkContractResponse>> getContractsBySupplierId(Long id, Integer limit) {
+    public GenericResponse<List<WorkContractResponse>> getContractsBySupplierId(Long id, Boolean limit) {
         var contracts = service.getContractsBySupplierId(id, limit);
         return new GenericResponse<>(
             Constants.STATUS_OK, 

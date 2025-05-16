@@ -16,13 +16,13 @@ public interface AccountController {
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
     GenericResponse<List<WorkContractResponse>> getContractsByApplicantId(
             @PathVariable("id") @NotNull Long applicantId,
-            @RequestParam(required = false) Integer limit);
+            @RequestParam(required = false) Boolean limit);
 
     @GetMapping("/accounts/supplier/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
     GenericResponse<List<WorkContractResponse>> getContractsBySupplierId(
             @PathVariable @NotNull Long id,
-            @RequestParam(required = false) Integer limit);
+            @RequestParam(required = false) Boolean limit);
 
     @GetMapping("/accounts/worker/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)

@@ -17,26 +17,27 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService{
 
     private final WorkContractRepository repository;
+    private static final int DEFAULT_LIMIT = 4;
 
     public AccountServiceImpl(WorkContractRepository repository) {
         this.repository = repository;
     }
     
     @Override
-    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit) {
+    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
         LocalDate today = LocalDate.now();
         List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
         if (contracts.isEmpty()) {
             throw new ContractNotFoundException("No se encontraron contratos para hoy para el applicantId: " + applicantId);
         }
         return contracts.stream()
-                .limit(limit != null ? limit : Long.MAX_VALUE)
+                .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit) {
+    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
         LocalDate today = LocalDate.now();
         List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
         List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates, today);
@@ -44,12 +45,10 @@ public class AccountServiceImpl implements AccountService{
             throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
         }
         return contracts.stream()
-                .limit(limit != null ? limit : Long.MAX_VALUE)
+                .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
-
-  
 
     @Override
     public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
@@ -64,7 +63,7 @@ public class AccountServiceImpl implements AccountService{
                 .collect(Collectors.toList());
     }
 
-    private WorkContractResponse convertToResponse(WorkContractEntity entity) { //convierte el entity a response
+    private WorkContractResponse convertToResponse(WorkContractEntity entity) {
         return WorkContractResponse.builder()
                 .id(entity.getId())
                 .price(entity.getPrice())

@@ -9,22 +9,22 @@ public interface AccountService {
      * @param applicantId
      *      El id del solicitante
      * @param limit
-     *      El limite de contratos a obtener
+     *      Si es true, limita a 4 resultados, si es false no hay límite
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Integer limit);
+    List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit);
 
     /**
      * Obtiene los contratos de un proveedor
      * @param supplierId
      *      El id del proveedor
      * @param limit
-     *      El limite de contratos a obtener
+     *      Si es true, limita a 4 resultados, si es false no hay límite
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Integer limit);
+    List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit);
 
     
     /**

@@ -24,7 +24,7 @@ public class AccountControllerImplTest {
     void getContractsByApplicantIdReturnsGenericResponseWithOkStatus() {
         // Arrange
         var applicantId = TestUtils.APPLICANT_ID;
-        var limit = 10;
+        var limit = true;
         var responseMock = List.of(TestUtils.buildWorkContractResponse());
         when(accountService.getContractsByApplicantId(applicantId, limit)).thenReturn(responseMock);
 
@@ -44,7 +44,7 @@ public class AccountControllerImplTest {
     void getContractsBySupplierIdReturnsGenericResponseWithOkStatus() {
         // Arrange
         var supplierId = TestUtils.SUPPLIER_ID;
-        var limit = 10;
+        var limit = true;
         var responseMock = List.of(TestUtils.buildWorkContractResponse());
         when(accountService.getContractsBySupplierId(supplierId, limit)).thenReturn(responseMock);
 

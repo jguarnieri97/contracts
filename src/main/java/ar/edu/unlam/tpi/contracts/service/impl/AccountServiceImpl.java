@@ -64,6 +64,10 @@ public class AccountServiceImpl implements AccountService{
     }
 
     private WorkContractResponse convertToResponse(WorkContractEntity entity) {
+        List<String> base64Images = entity.getFiles().stream()
+        .map(img -> java.util.Base64.getEncoder().encodeToString(img.getData()))
+        .toList();
+
         return WorkContractResponse.builder()
                 .id(entity.getId())
                 .price(entity.getPrice())
@@ -73,6 +77,7 @@ public class AccountServiceImpl implements AccountService{
                 .detail(entity.getDetail())
                 .supplierId(entity.getSupplierId())
                 .applicantId(entity.getApplicantId())
+                .files(base64Images)
                 .workers(entity.getWorkers())
                 .build();
     }

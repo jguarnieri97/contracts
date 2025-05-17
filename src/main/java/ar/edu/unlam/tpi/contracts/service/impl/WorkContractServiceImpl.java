@@ -57,13 +57,19 @@ public class WorkContractServiceImpl implements WorkContractService {
     
             contract.setState(newState);
     
-            if (newState == WorkState.FINALIZED && request.getFiles() != null && !request.getFiles().isEmpty()) {
-                List<ImageEntity> images = request.getFiles().stream()
-                        .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
-                        .toList();
-    
-                contract.getFiles().addAll(images);
-                contract.setDetail(request.getDetail());
+            if (newState == WorkState.FINALIZED) {
+                if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+                    List<ImageEntity> images = request.getFiles().stream()
+                            .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
+                            .toList();
+        
+                    contract.getFiles().addAll(images);
+                }
+                if (request.getDetail() != null) {
+                    contract.setDetail(request.getDetail());
+                }
+            } else if (request.getFiles() != null && !request.getFiles().isEmpty()) {
+                throw new IllegalArgumentException("Las imágenes solo pueden ser cargadas cuando el estado es FINALIZED");
             }
     
             repository.save(contract);

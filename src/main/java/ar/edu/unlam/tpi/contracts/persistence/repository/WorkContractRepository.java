@@ -25,8 +25,5 @@ public interface WorkContractRepository extends JpaRepository<WorkContractEntity
     @Query("SELECT w FROM WorkContractEntity w WHERE :workerId MEMBER OF w.workers AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
     List<WorkContractEntity> findByWorkersContaining(@Param("workerId")Long workerId, @Param("states")List<WorkState> states, @Param("today")LocalDate today);
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.id = :id")
-    Optional<WorkContractEntity> findById(@Param("id")Long id);
-
 
 }

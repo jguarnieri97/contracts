@@ -1,0 +1,26 @@
+package ar.edu.unlam.tpi.contracts.controller.impl;
+
+import ar.edu.unlam.tpi.contracts.controller.DeliveryNoteController;
+import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.GenericResponse;
+import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
+import ar.edu.unlam.tpi.contracts.util.Constants;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class DeliveryNoteControllerImpl implements DeliveryNoteController {
+
+    private final DeliveryNoteService deliveryNoteService;
+
+    @Override
+    public GenericResponse<Void> createDeliveryNote(DeliveryNoteRequest deliveryNote) {
+        deliveryNoteService.createDeliveryNote(deliveryNote);
+        return new GenericResponse<>(
+                Constants.STATUS_CREATED,
+                Constants.CREATED_MESSAGE,
+                null
+        );
+    }
+}

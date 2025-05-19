@@ -1,7 +1,10 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
+import ar.edu.unlam.tpi.contracts.dto.BlockchainVerifyRequest;
 import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteResponse;
+import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.persistence.WorkContractDAO;
@@ -17,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
@@ -42,6 +46,44 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         repository.saveWorkContract(contract);
 
         executorService.execute(new DeliveryNoteExecutorTask(repository, blockchainClient, contract));
+    }
+
+    @Override
+    public DeliveryNoteResponse getDeliveryNote(Long contractId) {
+        log.info("Obteniendo remito - contractId: {}", contractId);
+        var contract = repository.findWorkContractById(contractId);
+        var deliveryNote = contract.getDeliveryNote();
+
+        if (Objects.isNull(deliveryNote)) {
+            log.error("No existe un remito asociado a el contrato con ID: {}", contractId);
+            throw new DeliveryNoteNotFoundException("No existe un remito asociado a el contrato con ID: " + contractId);
+        }
+
+        var request = buildBlockchainVerifyRequest(deliveryNote.getTxHash(), deliveryNote.getData());
+
+        log.info("Realizando verificación del certificado");
+        blockchainClient.verifyCertificate(request);
+        log.info("Certificado verificado con éxito!");
+
+        return buildDeliveryNoteResponse(deliveryNote);
+    }
+
+    private BlockchainVerifyRequest buildBlockchainVerifyRequest(String txHash, byte[] file) {
+        return BlockchainVerifyRequest.builder()
+                .txHash(txHash)
+                .data(file)
+                .build();
+    }
+
+    private DeliveryNoteResponse buildDeliveryNoteResponse(DeliveryNote deliveryNote) {
+        return DeliveryNoteResponse.builder()
+                .id(deliveryNote.getId())
+                .data(deliveryNote.getData())
+                .txHash(deliveryNote.getTxHash())
+                .dataHash(deliveryNote.getDataHash())
+                .blockNumber(deliveryNote.getBlockNumber())
+                .createdAt(deliveryNote.getCreatedAt().toString())
+                .build();
     }
 
     private byte[] createFile(DeliveryNoteRequest request) {

@@ -1,10 +1,7 @@
 package ar.edu.unlam.tpi.contracts.client.impl;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainRequest;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainResponse;
-import ar.edu.unlam.tpi.contracts.dto.ErrorResponse;
-import ar.edu.unlam.tpi.contracts.dto.GenericResponse;
+import ar.edu.unlam.tpi.contracts.dto.*;
 import ar.edu.unlam.tpi.contracts.exception.BlockchainClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +28,7 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
     @Override
     public BlockchainResponse certificateFile(BlockchainRequest request) {
         var response = webClient.post()
-                .uri(host + "budget")
+                .uri(host + "delivery-note")
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .body(Mono.just(request), BlockchainRequest.class)
                 .retrieve()
@@ -41,12 +38,31 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
                 .onStatus(HttpStatusCode::is5xxServerError,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
                                 .flatMap(BlockchainServiceClientImpl::handle5xxError))
-                .bodyToMono(new ParameterizedTypeReference<GenericResponse<BlockchainResponse>>() {})
+                .bodyToMono(new ParameterizedTypeReference<GenericResponse<BlockchainResponse>>() {
+                })
                 .onErrorComplete(BlockchainServiceClientImpl::onClientError)
                 .block();
 
         assert response != null;
         return response.getData();
+    }
+
+    @Override
+    public void verifyCertificate(BlockchainVerifyRequest request) {
+        webClient.post()
+                .uri(host + "delivery-note/verify")
+                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .body(Mono.just(request), BlockchainVerifyRequest.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
+                                .flatMap(BlockchainServiceClientImpl::handle4xxError))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
+                                .flatMap(BlockchainServiceClientImpl::handle5xxError))
+                .bodyToMono(Void.class)
+                .onErrorComplete(BlockchainServiceClientImpl::onClientError)
+                .block();
     }
 
     private static boolean onClientError(Throwable e) {

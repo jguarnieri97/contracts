@@ -61,4 +61,14 @@ public class WorkContractExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(DeliveryNoteNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleDeliveryNoteNotFoundException(DeliveryNoteNotFoundException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .detail(ex.getDetail())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 } 

@@ -15,18 +15,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkContractRepository extends JpaRepository<WorkContractEntity, Long> {
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.applicantId = :applicantId AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
-    List<WorkContractEntity> findByApplicantIdAndToday(@Param("applicantId") Long applicantId, @Param("today") LocalDate today);
+    @Query("SELECT w FROM WorkContractEntity w WHERE w.applicantId = :applicantId ORDER BY w.dateFrom DESC")
+    List<WorkContractEntity> findByApplicantId(@Param("applicantId") Long applicantId);
 
-    
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
-    List<WorkContractEntity> findBySupplierIdAndStateIn(@Param("supplierId")Long supplierId, @Param("states")List<WorkState> states, @Param("today")LocalDate today);
+    @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId AND w.state IN :states ORDER BY w.dateFrom DESC")
+    List<WorkContractEntity> findBySupplierIdAndStates(@Param("supplierId") Long supplierId,
+            @Param("states") List<WorkState> states);
 
     @Query("SELECT w FROM WorkContractEntity w WHERE :workerId MEMBER OF w.workers AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
-    List<WorkContractEntity> findByWorkersContaining(@Param("workerId")Long workerId, @Param("states")List<WorkState> states, @Param("today")LocalDate today);
-
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.id = :id")
-    Optional<WorkContractEntity> findById(@Param("id")Long id);
-
+    List<WorkContractEntity> findByWorkersContaining(@Param("workerId") Long workerId,
+            @Param("states") List<WorkState> states, @Param("today") LocalDate today);
 
 }

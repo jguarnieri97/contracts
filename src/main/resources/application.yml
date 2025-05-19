@@ -13,3 +13,5 @@ spring.jpa.show-sql: true
 # Habilita consola web
 spring.h2.console.enabled: true
 spring.h2.console.path: /h2-console
+
+blockchain.service.host: ${BLOCKCHAIN_API_URI:http://localhost:8087/blockchain/v1/}

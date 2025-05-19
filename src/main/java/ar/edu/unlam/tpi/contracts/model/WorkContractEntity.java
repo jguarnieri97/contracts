@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,6 +53,10 @@ public class WorkContractEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contract_id")
     private List<ImageEntity> files = new ArrayList<>();
+
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private DeliveryNote deliveryNote;
 
 
     public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkState state, String detail, Long supplierId, Long applicantId, List<Long> workers) {

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     private final WorkContractRepository repository;
     private static final int DEFAULT_LIMIT = 4;
@@ -22,14 +22,15 @@ public class AccountServiceImpl implements AccountService{
     public AccountServiceImpl(WorkContractRepository repository) {
         this.repository = repository;
     }
-    
+
     @Override
     public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
-        LocalDate today = LocalDate.now();
-        List<WorkContractEntity> contracts = repository.findByApplicantIdAndToday(applicantId, today);
+        List<WorkContractEntity> contracts = repository.findByApplicantId(applicantId);
+
         if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para hoy para el applicantId: " + applicantId);
+            throw new ContractNotFoundException("No se encontraron contratos para el applicantId: " + applicantId);
         }
+
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
                 .map(this::convertToResponse)
@@ -38,12 +39,14 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
-        LocalDate today = LocalDate.now();
         List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
-        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStateIn(supplierId, validStates, today);
+        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStates(supplierId, validStates);
+
         if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos activos para hoy para el supplierId: " + supplierId);
+            throw new ContractNotFoundException(
+                    "No se encontraron contratos activos o finalizados para el supplierId: " + supplierId);
         }
+
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
                 .map(this::convertToResponse)
@@ -65,8 +68,8 @@ public class AccountServiceImpl implements AccountService{
 
     private WorkContractResponse convertToResponse(WorkContractEntity entity) {
         List<String> base64Images = entity.getFiles().stream()
-        .map(img -> java.util.Base64.getEncoder().encodeToString(img.getData()))
-        .toList();
+                .map(img -> java.util.Base64.getEncoder().encodeToString(img.getData()))
+                .toList();
 
         return WorkContractResponse.builder()
                 .id(entity.getId())

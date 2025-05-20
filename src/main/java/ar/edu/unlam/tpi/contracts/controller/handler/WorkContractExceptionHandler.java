@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class WorkContractExceptionHandler {
 
     @ExceptionHandler(ContractNotFoundException.class)
-    public ResponseEntity<GenericResponse<Void>> handleContractNotFoundException(ContractNotFoundException ex) {
-        GenericResponse<Void> response = new GenericResponse<>(
-            Constants.STATUS_INTERNAL,
-            ex.getMessage(),
-            null
-        );
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponse> handleContractNotFoundException(ContractNotFoundException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .detail(ex.getDetail())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BlockchainClientException.class)

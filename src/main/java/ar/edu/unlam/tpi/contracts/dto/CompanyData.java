@@ -8,6 +8,9 @@ import lombok.Data;
 public class CompanyData {
 
     private String companyName;
+    private String email;
+    private String phone;
+    private String address;
     private String cuit;
 
 }

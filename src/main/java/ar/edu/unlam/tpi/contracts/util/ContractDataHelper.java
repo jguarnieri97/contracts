@@ -33,21 +33,11 @@ public class ContractDataHelper {
                 new WorkContractEntity(220000.0, LocalDate.of(2025, 5, 1), LocalDate.of(2025, 7, 1),
                         WorkState.PENDING, "Cambio de luminarias", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1)),
 
-                new WorkContractEntity(95000.0, LocalDate.of(2025, 5, 15), LocalDate.of(2025, 7, 15),
-                        WorkState.PENDING, "Pintura interior de oficinas", SUPPLIER_1, APPLICANT_2, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
                 // INITIATED
-                new WorkContractEntity(150000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
-                        WorkState.INITIATED, "Instalación aire acondicionado", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
                 new WorkContractEntity(50000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Reparacion de puerta", SUPPLIER_3, APPLICANT_2, List.of(SUPPLIER_3_WORKER_1)),
-
-                new WorkContractEntity(30000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
-                        WorkState.INITIATED, "Limpieza de vidrios", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
-
-                new WorkContractEntity(40000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
-                        WorkState.INITIATED, "Instalación internet", SUPPLIER_1, APPLICANT_2, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
                 new WorkContractEntity(670000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Mantenimiento de aires acondicionados", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1, SUPPLIER_2_WORKER_2)),
@@ -66,13 +56,13 @@ public class ContractDataHelper {
                         WorkState.FINALIZED, "Servicio de jardinería", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
 
                 new WorkContractEntity(175000.0, LocalDate.of(2025, 3, 20), LocalDate.of(2025, 4, 15),
-                        WorkState.FINALIZED, "Colocación de carteles corporativos", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
+                        WorkState.FINALIZED, "Colocación de carteles corporativos", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
 
                 new WorkContractEntity(60000.0, LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5),
-                        WorkState.FINALIZED, "Limpieza post-obra", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
+                        WorkState.FINALIZED, "Limpieza post-obra", SUPPLIER_3, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
 
                 new WorkContractEntity(200000.0, LocalDate.of(2025, 5, 8), LocalDate.of(2025, 5, 10),
-                        WorkState.FINALIZED, "Servicio de limpieza", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2))
+                        WorkState.FINALIZED, "Servicio de limpieza", SUPPLIER_3, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2))
 
         );
     }

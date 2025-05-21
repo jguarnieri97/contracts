@@ -15,12 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkContractRepository extends JpaRepository<WorkContractEntity, Long> {
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.applicantId = :applicantId ORDER BY w.dateFrom DESC")
+    @Query("SELECT w FROM WorkContractEntity w WHERE w.applicantId = :applicantId ORDER BY w.dateFrom DESC, w.id DESC")
     List<WorkContractEntity> findByApplicantId(@Param("applicantId") Long applicantId);
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId AND w.state IN :states ORDER BY w.dateFrom DESC")
-    List<WorkContractEntity> findBySupplierIdAndStates(@Param("supplierId") Long supplierId,
-            @Param("states") List<WorkState> states);
+    @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId ORDER BY w.dateFrom DESC, w.id DESC")
+    List<WorkContractEntity> findBySupplierIdAndStates(@Param("supplierId") Long supplierId);
 
     @Query("SELECT w FROM WorkContractEntity w WHERE :workerId MEMBER OF w.workers AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
     List<WorkContractEntity> findByWorkersContaining(@Param("workerId") Long workerId,

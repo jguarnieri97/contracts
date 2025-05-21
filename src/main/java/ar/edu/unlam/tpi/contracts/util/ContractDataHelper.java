@@ -30,26 +30,26 @@ public class ContractDataHelper {
                 new WorkContractEntity(180000.0, LocalDate.now(), LocalDate.of(2025, 10, 20),
                         WorkState.PENDING, "Reparación de cañerías", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
 
-                new WorkContractEntity(220000.0, LocalDate.of(2025, 6, 1), LocalDate.of(2025, 7, 1),
+                new WorkContractEntity(220000.0, LocalDate.of(2025, 5, 1), LocalDate.of(2025, 7, 1),
                         WorkState.PENDING, "Cambio de luminarias", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1)),
 
-                new WorkContractEntity(95000.0, LocalDate.of(2025, 6, 15), LocalDate.of(2025, 7, 15),
+                new WorkContractEntity(95000.0, LocalDate.of(2025, 5, 15), LocalDate.of(2025, 7, 15),
                         WorkState.PENDING, "Pintura interior de oficinas", SUPPLIER_1, APPLICANT_2, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
                 // INITIATED
-                new WorkContractEntity(150000.0, LocalDate.now(), LocalDate.of(2025, 10, 15),
+                new WorkContractEntity(150000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Instalación aire acondicionado", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
-                new WorkContractEntity(50000.0, LocalDate.now(), LocalDate.of(2025, 10, 15),
+                new WorkContractEntity(50000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Reparacion de puerta", SUPPLIER_3, APPLICANT_2, List.of(SUPPLIER_3_WORKER_1)),
 
-                new WorkContractEntity(30000.0, LocalDate.now(), LocalDate.of(2025, 10, 15),
+                new WorkContractEntity(30000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Limpieza de vidrios", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
 
-                new WorkContractEntity(40000.0, LocalDate.now(), LocalDate.of(2025, 10, 15),
+                new WorkContractEntity(40000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Instalación internet", SUPPLIER_1, APPLICANT_2, List.of(SUPPLIER_1_WORKER_1, SUPPLIER_1_WORKER_2)),
 
-                new WorkContractEntity(670000.0, LocalDate.now(), LocalDate.of(2025, 10, 15),
+                new WorkContractEntity(670000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
                         WorkState.INITIATED, "Mantenimiento de aires acondicionados", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1, SUPPLIER_2_WORKER_2)),
 
                 new WorkContractEntity(125000.0, LocalDate.of(2025, 5, 10), LocalDate.of(2025, 6, 10),

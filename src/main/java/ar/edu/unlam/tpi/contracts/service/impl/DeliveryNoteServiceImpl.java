@@ -4,6 +4,7 @@ import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
 import ar.edu.unlam.tpi.contracts.dto.BlockchainVerifyRequest;
 import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteResponse;
+import ar.edu.unlam.tpi.contracts.dto.DescriptionObject;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
@@ -131,26 +132,56 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
     private void buildDocumentSupplierPart(DeliveryNoteRequest request, Document document) throws DocumentException {
         document.add(new Paragraph("N° " + request.getBodyData().getNoteNumber()));
+
+        //salto de línea
+        document.add(new Paragraph(" "));
+
         document.add(new Paragraph(request.getSupplierData().getCompanyName()));
+        document.add(new Paragraph("Email: " + request.getSupplierData().getEmail()));
+        document.add(new Paragraph("Teléfono: " + request.getSupplierData().getPhone()));
+        document.add(new Paragraph("Dirección: " + request.getSupplierData().getAddress()));
         document.add(new Paragraph("CUIT: " + request.getSupplierData().getCuit()));
+
+        //salto de línea
+        document.add(new Paragraph(" "));
     }
 
     private void buildDocumentClientPart(DeliveryNoteRequest request, Document document) throws DocumentException {
+        //salto de línea
+        document.add(new Paragraph(" "));
+
         document.add(new Paragraph("Cliente: " + request.getApplicantData().getCompanyName()));
+        document.add(new Paragraph("Email: " + request.getApplicantData().getEmail()));
+        document.add(new Paragraph("Teléfono: " + request.getApplicantData().getPhone()));
+        document.add(new Paragraph("Dirección: " + request.getApplicantData().getAddress()));
         document.add(new Paragraph("CUIT: " + request.getApplicantData().getCuit()));
+
+        //salto de línea
+        document.add(new Paragraph(" "));
     }
 
     private void buildDocumentTablePart(DeliveryNoteRequest request, Document document) throws DocumentException {
+        //salto de línea
+        document.add(new Paragraph(" "));
+        Double price = 0.0;
+
         var table = new PdfPTable(2);
         table.addCell("Descripción");
         table.addCell("Precio");
 
         var data = request.getBodyData().getDescriptionData();
 
-        data.forEach(row -> {
+        for (DescriptionObject row : data) {
             table.addCell(row.getDetail());
             table.addCell(row.getPrice().toString());
-        });
+            price += row.getPrice();
+        }
+
+        var totalFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
+        table.addCell(new Paragraph("Total:", totalFont));
+        table.addCell(price.toString());
+
+
         document.add(table);
     }
 }

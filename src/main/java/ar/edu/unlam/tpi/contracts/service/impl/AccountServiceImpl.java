@@ -39,8 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
-        List<WorkState> validStates = List.of(WorkState.FINALIZED, WorkState.INITIATED);
-        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStates(supplierId, validStates);
+        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStates(supplierId);
 
         if (contracts.isEmpty()) {
             throw new ContractNotFoundException(

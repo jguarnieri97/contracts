@@ -1,9 +1,7 @@
 package ar.edu.unlam.tpi.contracts.controller.handler;
 
-import ar.edu.unlam.tpi.contracts.dto.ErrorResponse;
-import ar.edu.unlam.tpi.contracts.dto.GenericResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.ErrorResponse;
 import ar.edu.unlam.tpi.contracts.exception.*;
-import ar.edu.unlam.tpi.contracts.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

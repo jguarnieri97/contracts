@@ -1,5 +1,8 @@
-package ar.edu.unlam.tpi.contracts.dto;
+package ar.edu.unlam.tpi.contracts.dto.request;
 
+import ar.edu.unlam.tpi.contracts.dto.BodyData;
+import ar.edu.unlam.tpi.contracts.dto.CompanyData;
+import ar.edu.unlam.tpi.contracts.dto.FootData;
 import lombok.Builder;
 import lombok.Data;
 

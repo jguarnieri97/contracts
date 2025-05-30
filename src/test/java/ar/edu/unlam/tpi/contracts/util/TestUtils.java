@@ -1,6 +1,10 @@
 package ar.edu.unlam.tpi.contracts.util;
 
 import ar.edu.unlam.tpi.contracts.dto.*;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkState;
 
 import java.time.LocalDate;

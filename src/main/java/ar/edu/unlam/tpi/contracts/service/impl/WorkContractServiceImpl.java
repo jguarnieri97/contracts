@@ -54,6 +54,7 @@ public class WorkContractServiceImpl implements WorkContractService {
                     .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
                     .toList();
             contract.getFiles().addAll(images);
+            contract.setState(WorkStateEnum.FINALIZED);
         }
 
         if (request.getDetail() != null) {

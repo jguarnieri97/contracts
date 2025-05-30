@@ -1,7 +1,7 @@
 package ar.edu.unlam.tpi.contracts.service;
 
-import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
-import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteResponse;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 
 public interface DeliveryNoteService {
 

@@ -1,4 +1,4 @@
-package ar.edu.unlam.tpi.contracts.dto;
+package ar.edu.unlam.tpi.contracts.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

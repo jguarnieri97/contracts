@@ -2,7 +2,10 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 
 
 import ar.edu.unlam.tpi.contracts.controller.WorkContractController;
-import ar.edu.unlam.tpi.contracts.dto.*;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
 import lombok.RequiredArgsConstructor;

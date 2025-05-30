@@ -1,7 +1,7 @@
 package ar.edu.unlam.tpi.contracts.exception;
 
 
-import ar.edu.unlam.tpi.contracts.dto.ErrorResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.ErrorResponse;
 
 import static ar.edu.unlam.tpi.contracts.util.Constants.INTERNAL_ERROR;
 import static ar.edu.unlam.tpi.contracts.util.Constants.STATUS_INTERNAL;

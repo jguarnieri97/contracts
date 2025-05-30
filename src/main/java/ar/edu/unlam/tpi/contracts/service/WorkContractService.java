@@ -1,9 +1,8 @@
 package ar.edu.unlam.tpi.contracts.service;
 
-
-import ar.edu.unlam.tpi.contracts.dto.WorkContractRequest;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 
 public interface WorkContractService {
 

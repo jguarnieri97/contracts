@@ -6,7 +6,7 @@ import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.ImageEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 
@@ -31,7 +31,7 @@ public class WorkContractServiceImpl implements WorkContractService {
                 request.getPrice(),
                 request.getDateFrom(),
                 request.getDateTo(),
-                WorkState.PENDING,
+                WorkStateEnum.PENDING,
                 request.getDetail(),
                 request.getSupplierId(),
                 request.getApplicantId(),

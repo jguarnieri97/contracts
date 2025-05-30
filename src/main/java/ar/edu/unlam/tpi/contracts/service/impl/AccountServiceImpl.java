@@ -1,9 +1,8 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
-import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 
@@ -50,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
         LocalDate today = LocalDate.now();
-        List<WorkState> validStates = List.of(WorkState.PENDING);
+        List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
         List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, validStates, today);
         validator.validateContractsExist(contracts, "workerId", workerId);
 

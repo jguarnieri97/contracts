@@ -5,7 +5,7 @@ import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -40,7 +40,7 @@ public class TestUtils {
                 .price(150000.0)
                 .dateFrom(LocalDate.parse(DATE_FROM))
                 .dateTo(LocalDate.parse(DATE_TO))
-                .state(WorkState.PENDING.name())
+                .state(WorkStateEnum.PENDING.name())
                 .detail("Trabajo de prueba")
                 .supplierId(SUPPLIER_ID)
                 .applicantId(APPLICANT_ID)

@@ -9,6 +9,7 @@ import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
+import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
 
 import java.util.List;
 
@@ -24,10 +25,13 @@ public class WorkContractServiceImpl implements WorkContractService {
     private final WorkContractRepository repository;
     private final WorkContractConverter converter;
     private final WorkContractValidator validator;
+    private final CodeNumberGeneratorService codeNumberGenerator;
 
     @Override
     public WorkContractResponse createContract(WorkContractRequest request) {
+
         WorkContractEntity contract = new WorkContractEntity(
+                codeNumberGenerator.generateCodeNumber(),
                 request.getPrice(),
                 request.getDateFrom(),
                 request.getDateTo(),

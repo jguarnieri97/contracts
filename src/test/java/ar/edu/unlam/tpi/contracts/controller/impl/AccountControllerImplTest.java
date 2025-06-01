@@ -3,7 +3,7 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 import ar.edu.unlam.tpi.contracts.controller.AccountController;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import ar.edu.unlam.tpi.contracts.util.TestUtils;
+import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,9 +23,9 @@ public class AccountControllerImplTest {
     @Test
     void getContractsByApplicantIdReturnsGenericResponseWithOkStatus() {
         // Arrange
-        var applicantId = TestUtils.APPLICANT_ID;
+        var applicantId = 2L;
         var limit = true;
-        var responseMock = List.of(TestUtils.buildWorkContractResponse());
+        var responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
         when(accountService.getContractsByApplicantId(applicantId, limit)).thenReturn(responseMock);
 
         // Act
@@ -43,9 +43,9 @@ public class AccountControllerImplTest {
     @Test
     void getContractsBySupplierIdReturnsGenericResponseWithOkStatus() {
         // Arrange
-        var supplierId = TestUtils.SUPPLIER_ID;
+        var supplierId = 1L;
         var limit = true;
-        var responseMock = List.of(TestUtils.buildWorkContractResponse());
+        var responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
         when(accountService.getContractsBySupplierId(supplierId, limit)).thenReturn(responseMock);
 
         // Act
@@ -64,7 +64,7 @@ public class AccountControllerImplTest {
     void getContractsByWorkerIdReturnsGenericResponseWithOkStatus() {
         // Arrange
         var workerId = 3L;
-        var responseMock = List.of(TestUtils.buildWorkContractResponse());
+        var responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
         when(accountService.getContractsByWorkerId(workerId)).thenReturn(responseMock);
 
         // Act

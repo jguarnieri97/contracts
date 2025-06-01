@@ -11,6 +11,7 @@ import java.util.List;
 public class WorkContractResponse {
 
     private Long id;
+    private String codeNumber;
     private Double price;
     private LocalDate dateFrom;
     private LocalDate dateTo;

@@ -54,9 +54,11 @@ public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String r
     LocalDate end;
 
     switch (range.toLowerCase()) {
+        //desde el dia de hoy hasta los proximos 7 dias
         case "week" -> {
-            start = today.with(DayOfWeek.MONDAY);
-            end = today.with(DayOfWeek.SUNDAY);
+            start = today;
+            end = today.plusDays(7);
+
         }
         case "month" -> {
             start = today.withDayOfMonth(1);

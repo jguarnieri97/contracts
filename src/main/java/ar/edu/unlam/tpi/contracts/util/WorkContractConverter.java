@@ -17,6 +17,7 @@ public class WorkContractConverter {
 
         return WorkContractResponse.builder()
                 .id(entity.getId())
+                .codeNumber(entity.getCodeNumber())
                 .price(entity.getPrice())
                 .dateFrom(entity.getDateFrom())
                 .dateTo(entity.getDateTo())

@@ -9,7 +9,7 @@ import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
-import ar.edu.unlam.tpi.contracts.service.file.FileCreator;
+import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
 import ar.edu.unlam.tpi.contracts.service.task.DeliveryNoteExecutorTask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     private final WorkContractDAO repository;
     private final BlockchainServiceClient blockchainClient;
     private final ExecutorService executorService;
-    private final FileCreator fileCreator;
+    private final FileCreatorService fileCreatorService;
 
     @Override
     public void createDeliveryNote(DeliveryNoteRequest request) {
@@ -34,7 +34,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
         WorkContractEntity contract = repository.findWorkContractById(request.getContractId());
 
-        byte[] file = fileCreator.createFile(request);
+        byte[] file = fileCreatorService.createFile(request);
         DeliveryNote deliveryNote = new DeliveryNote(contract, file);
 
         contract.setDeliveryNote(deliveryNote);

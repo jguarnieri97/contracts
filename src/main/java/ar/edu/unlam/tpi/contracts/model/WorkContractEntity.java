@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "work_contracts") 
 @NoArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode
 public class WorkContractEntity {
     
@@ -22,6 +23,9 @@ public class WorkContractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contract_id")
     private Long id;
+
+    @Column(name = "code_number", unique = true, nullable = false)
+    private String codeNumber;
 
     @Column
     private Double price;
@@ -59,7 +63,8 @@ public class WorkContractEntity {
     private DeliveryNote deliveryNote;
 
 
-    public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkStateEnum state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
+    public WorkContractEntity(String codeNumber, Double price, LocalDate dateFrom, LocalDate dateTo, WorkStateEnum state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
+        this.codeNumber = codeNumber;
         this.price = price;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -69,17 +74,5 @@ public class WorkContractEntity {
         this.applicantId = applicantId;
         this.workers = workers;
     }
-
-    public void setState(WorkStateEnum newState) {
-        if (newState == this.state) {
-            throw new IllegalArgumentException("El estado no puede ser el mismo");
-        }
-        this.state = newState;
-    }
-
-    public void setDetail(String newDetail) {
-        this.detail = newDetail;
-    }
-    
 
 }

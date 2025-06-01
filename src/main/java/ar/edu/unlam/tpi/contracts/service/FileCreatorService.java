@@ -1,4 +1,4 @@
-package ar.edu.unlam.tpi.contracts.service.file;
+package ar.edu.unlam.tpi.contracts.service;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 
 @Slf4j
 @Component
-public class FileCreator {
+public class FileCreatorService {
 
     public byte[] createFile(DeliveryNoteRequest request) {
         try {

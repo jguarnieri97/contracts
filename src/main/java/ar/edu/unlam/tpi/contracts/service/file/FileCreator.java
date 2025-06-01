@@ -44,7 +44,7 @@ public class FileCreator {
     }
 
     private void buildSupplierSection(DeliveryNoteRequest request, Document document) throws DocumentException {
-        document.add(new Paragraph("N° " + request.getBodyData().getNoteNumber()));
+     //   document.add(new Paragraph("N° " + request.getBodyData().getNoteNumber()));
         document.add(new Paragraph(" "));
         document.add(new Paragraph(request.getSupplierData().getCompanyName()));
         document.add(new Paragraph("Email: " + request.getSupplierData().getEmail()));
@@ -69,17 +69,17 @@ public class FileCreator {
         var table = new PdfPTable(2);
         table.addCell("Descripción");
         table.addCell("Precio");
-
+        /* 
         double total = request.getBodyData().getDescriptionData().stream()
                 .mapToDouble(row -> {
                     table.addCell(row.getDetail());
                     table.addCell(row.getPrice().toString());
                     return row.getPrice();
                 }).sum();
-
+        */
         var totalFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
         table.addCell(new Paragraph("Total:", totalFont));
-        table.addCell(String.valueOf(total));
+     //   table.addCell(String.valueOf(total));
 
         document.add(table);
     }

@@ -2,6 +2,8 @@ package ar.edu.unlam.tpi.contracts.service;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
+import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -14,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 @Component
 public class FileCreatorService {
 
-    public byte[] createFile(DeliveryNoteRequest request) {
+    public byte[] createFile(DeliveryNoteRequest request, WorkContractEntity contract) {
         try {
             log.info("::: Comienza el proceso de creación de archivo :::");
             var document = new Document();
@@ -24,9 +26,9 @@ public class FileCreatorService {
             document.open();
 
             buildHeader(document);
-            buildSupplierSection(request, document);
+            buildSupplierSection(request,contract, document);
             buildClientSection(request, document);
-            buildTableSection(request, document);
+            buildTableSection(request,contract, document);
 
             document.close();
             log.info("::: FIN del proceso de creación de archivo :::");
@@ -43,8 +45,8 @@ public class FileCreatorService {
         document.add(new Paragraph("Remito", titleFont));
     }
 
-    private void buildSupplierSection(DeliveryNoteRequest request, Document document) throws DocumentException {
-     //   document.add(new Paragraph("N° " + request.getBodyData().getNoteNumber()));
+    private void buildSupplierSection(DeliveryNoteRequest request,WorkContractEntity contract, Document document) throws DocumentException {
+        document.add(new Paragraph("N° " +contract.getCodeNumber()));
         document.add(new Paragraph(" "));
         document.add(new Paragraph(request.getSupplierData().getCompanyName()));
         document.add(new Paragraph("Email: " + request.getSupplierData().getEmail()));
@@ -64,22 +66,19 @@ public class FileCreatorService {
         document.add(new Paragraph(" "));
     }
 
-    private void buildTableSection(DeliveryNoteRequest request, Document document) throws DocumentException {
+    private void buildTableSection(DeliveryNoteRequest request,WorkContractEntity contract, Document document) throws DocumentException {
         document.add(new Paragraph(" "));
         var table = new PdfPTable(2);
         table.addCell("Descripción");
         table.addCell("Precio");
-        /* 
-        double total = request.getBodyData().getDescriptionData().stream()
-                .mapToDouble(row -> {
-                    table.addCell(row.getDetail());
-                    table.addCell(row.getPrice().toString());
-                    return row.getPrice();
-                }).sum();
-        */
+        table.addCell(contract.getDetail());
+        table.addCell(contract.getPrice().toString());
+
+        double total = contract.getPrice();
+        
         var totalFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
         table.addCell(new Paragraph("Total:", totalFont));
-     //   table.addCell(String.valueOf(total));
+        table.addCell(String.valueOf(total));
 
         document.add(table);
     }

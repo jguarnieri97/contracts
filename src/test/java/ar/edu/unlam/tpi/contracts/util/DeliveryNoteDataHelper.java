@@ -1,11 +1,8 @@
 package ar.edu.unlam.tpi.contracts.util;
 
-import ar.edu.unlam.tpi.contracts.dto.BodyData;
 import ar.edu.unlam.tpi.contracts.dto.CompanyData;
-import ar.edu.unlam.tpi.contracts.dto.FootData;
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 
-import java.util.List;
 
 public class DeliveryNoteDataHelper {
 
@@ -20,11 +17,6 @@ public class DeliveryNoteDataHelper {
                         .companyName("Supplier Company")
                         .cuit("20-12345678-9")
                         .build())
-                .bodyData(BodyData.builder()
-                        .noteNumber("123456")
-                        .descriptionData(List.of())
-                        .build())
-                .footData(FootData.builder().build())
                 .build();
     }
 

@@ -64,12 +64,6 @@ public class TestUtils {
                         .companyName(SUPPLIER_COMPANY)
                         .cuit(CUIT)
                         .build())
-                        /* 
-                .bodyData(BodyData.builder()
-                        .noteNumber(NOTE_NUMBER)
-                        .descriptionData(List.of())
-                        .build())
-                .footData(FootData.builder().build()) */
                 .build();
     }
     

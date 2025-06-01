@@ -34,7 +34,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
         WorkContractEntity contract = repository.findWorkContractById(request.getContractId());
 
-        byte[] file = fileCreatorService.createFile(request);
+        byte[] file = fileCreatorService.createFile(request,contract);
         DeliveryNote deliveryNote = new DeliveryNote(contract, file);
 
         contract.setDeliveryNote(deliveryNote);

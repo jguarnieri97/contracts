@@ -85,9 +85,8 @@ public class AccountServiceImplTest {
         // Given
         Long workerId = 1L;
         String range = "week";
-        LocalDate today = LocalDate.now();
-        LocalDate start = today.with(DayOfWeek.MONDAY);
-        LocalDate end = today.with(DayOfWeek.SUNDAY);
+        LocalDate start = LocalDate.now();
+        LocalDate end = LocalDate.now().plusDays(7);
     
         List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
         WorkContractEntity contractEntity = new WorkContractEntity();

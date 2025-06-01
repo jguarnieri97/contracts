@@ -1,5 +1,7 @@
 package ar.edu.unlam.tpi.contracts.util;
 
+import java.util.List;
+
 import ar.edu.unlam.tpi.contracts.dto.CompanyData;
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 
@@ -9,14 +11,14 @@ public class DeliveryNoteDataHelper {
     public static DeliveryNoteRequest createDeliveryNoteRequest() {
         return DeliveryNoteRequest.builder()
                 .contractId(1L)
-                .applicantData(CompanyData.builder()
+                .applicantsData(List.of(CompanyData.builder()
                         .companyName("Applicant Company")
                         .cuit("20-12345678-9")
-                        .build())
-                .supplierData(CompanyData.builder()
+                        .build()))
+                .suppliersData(List.of(CompanyData.builder()
                         .companyName("Supplier Company")
                         .cuit("20-12345678-9")
-                        .build())
+                        .build()))
                 .build();
     }
 

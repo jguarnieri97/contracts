@@ -1,86 +1,86 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
-import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
-import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ar.edu.unlam.tpi.contracts.util.ContractValidator;
+import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final WorkContractRepository repository;
+    private final WorkContractConverter converter;
+    private final ContractValidator validator;
     private static final int DEFAULT_LIMIT = 4;
-
-    public AccountServiceImpl(WorkContractRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
         List<WorkContractEntity> contracts = repository.findByApplicantId(applicantId);
-
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para el applicantId: " + applicantId);
-        }
+        validator.validateContractsExist(contracts, "applicantId", applicantId);
 
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
-                .map(this::convertToResponse)
+                .map(converter::convertToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
         List<WorkContractEntity> contracts = repository.findBySupplierIdAndStates(supplierId);
-
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException(
-                    "No se encontraron contratos activos o finalizados para el supplierId: " + supplierId);
-        }
+        validator.validateContractsExist(contracts, "supplierId", supplierId);
 
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
-                .map(this::convertToResponse)
+                .map(converter::convertToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
-        LocalDate today = LocalDate.now();
-        List<WorkState> validStates = List.of(WorkState.PENDING);
-        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, validStates, today);
-        if (contracts.isEmpty()) {
-            throw new ContractNotFoundException("No se encontraron contratos para hoy para el workerId: " + workerId);
+public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range) {
+    LocalDate today = LocalDate.now();
+    LocalDate start;
+    LocalDate end;
+
+    switch (range.toLowerCase()) {
+        //desde el dia de hoy hasta los proximos 7 dias
+        case "week" -> {
+            start = today;
+            end = today.plusDays(7);
+
         }
-        return contracts.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
+        case "month" -> {
+            start = today.withDayOfMonth(1);
+            end = today.withDayOfMonth(today.lengthOfMonth());
+        }
+        default -> { //day
+            start = today;
+            end = today;
+        }
     }
 
-    private WorkContractResponse convertToResponse(WorkContractEntity entity) {
-        List<String> base64Images = entity.getFiles().stream()
-                .map(img -> java.util.Base64.getEncoder().encodeToString(img.getData()))
-                .toList();
+    List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
+    List<WorkContractEntity> contracts = repository.findByWorkersContainingAndDateRange(
+            workerId, validStates, start, end
+    );
 
-        return WorkContractResponse.builder()
-                .id(entity.getId())
-                .price(entity.getPrice())
-                .dateFrom(entity.getDateFrom())
-                .dateTo(entity.getDateTo())
-                .state(entity.getState().name())
-                .detail(entity.getDetail())
-                .supplierId(entity.getSupplierId())
-                .applicantId(entity.getApplicantId())
-                .files(base64Images)
-                .workers(entity.getWorkers())
-                .build();
-    }
+    validator.validateContractsExist(contracts, "workerId", workerId);
+
+    return contracts.stream()
+            .map(converter::convertToResponse)
+            .collect(Collectors.toList());
+}
+
+
 }

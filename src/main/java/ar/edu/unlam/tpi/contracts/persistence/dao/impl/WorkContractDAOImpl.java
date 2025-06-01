@@ -1,9 +1,9 @@
-package ar.edu.unlam.tpi.contracts.persistence.impl;
+package ar.edu.unlam.tpi.contracts.persistence.dao.impl;
 
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.exception.WorkContractRepositoryException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.persistence.WorkContractDAO;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

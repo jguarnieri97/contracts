@@ -1,7 +1,12 @@
 package ar.edu.unlam.tpi.contracts.client.impl;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
-import ar.edu.unlam.tpi.contracts.dto.*;
+import ar.edu.unlam.tpi.contracts.client.error.ErrorHandler;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.BlockchainResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.ErrorResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.exception.BlockchainClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +26,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class BlockchainServiceClientImpl implements BlockchainServiceClient {
 
     private final WebClient webClient;
+    private final ErrorHandler errorHandler;
 
     @Value("${blockchain.service.host}")
     private String host;
@@ -34,16 +40,17 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
-                                .flatMap(BlockchainServiceClientImpl::handle4xxError))
+                                .flatMap(errorHandler::handle4xxError))
                 .onStatus(HttpStatusCode::is5xxServerError,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
-                                .flatMap(BlockchainServiceClientImpl::handle5xxError))
-                .bodyToMono(new ParameterizedTypeReference<GenericResponse<BlockchainResponse>>() {
-                })
-                .onErrorComplete(BlockchainServiceClientImpl::onClientError)
+                                .flatMap(errorHandler::handle5xxError))
+                .bodyToMono(new ParameterizedTypeReference<GenericResponse<BlockchainResponse>>() {})
+                .doOnError(errorHandler::onClientError)
                 .block();
 
-        assert response != null;
+        if (response == null || response.getData() == null) {
+            throw new BlockchainClientException("La respuesta del servidor es nula o inválida");
+        }
         return response.getData();
     }
 
@@ -56,27 +63,13 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
-                                .flatMap(BlockchainServiceClientImpl::handle4xxError))
+                                .flatMap(errorHandler::handle4xxError))
                 .onStatus(HttpStatusCode::is5xxServerError,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class)
-                                .flatMap(BlockchainServiceClientImpl::handle5xxError))
+                                .flatMap(errorHandler::handle5xxError))
                 .bodyToMono(Void.class)
-                .onErrorComplete(BlockchainServiceClientImpl::onClientError)
+                .doOnError(errorHandler::onClientError)
                 .block();
     }
 
-    private static boolean onClientError(Throwable e) {
-        log.error("Error al ejecutar el request: {}", e.getMessage());
-        throw new BlockchainClientException(e.getMessage());
-    }
-
-    private static Mono<Throwable> handle4xxError(ErrorResponse error) {
-        log.error("Error del cliente externo Budgets API: {}", error);
-        return Mono.error(new BlockchainClientException(error));
-    }
-
-    private static Mono<Throwable> handle5xxError(ErrorResponse error) {
-        log.error("Error del servidor externo Budgets API: {}", error);
-        return Mono.error(new BlockchainClientException(error));
-    }
 }

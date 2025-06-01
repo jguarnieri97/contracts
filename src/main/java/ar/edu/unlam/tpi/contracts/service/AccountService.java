@@ -1,6 +1,6 @@
 package ar.edu.unlam.tpi.contracts.service;
 import java.util.List;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 
 public interface AccountService {
 
@@ -34,6 +34,6 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsByWorkerId(Long workerId);
+    List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range);
 
 }

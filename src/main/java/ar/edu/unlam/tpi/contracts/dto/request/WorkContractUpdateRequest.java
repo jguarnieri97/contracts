@@ -1,4 +1,4 @@
-package ar.edu.unlam.tpi.contracts.dto;
+package ar.edu.unlam.tpi.contracts.dto.request;
 
 import java.util.List;
 

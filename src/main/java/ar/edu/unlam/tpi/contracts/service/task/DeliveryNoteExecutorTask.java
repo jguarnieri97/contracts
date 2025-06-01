@@ -1,9 +1,9 @@
 package ar.edu.unlam.tpi.contracts.service.task;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainRequest;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.persistence.WorkContractDAO;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.util.Converter;
 import lombok.extern.slf4j.Slf4j;
 

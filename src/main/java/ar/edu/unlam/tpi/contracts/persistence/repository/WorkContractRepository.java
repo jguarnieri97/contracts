@@ -1,11 +1,10 @@
 package ar.edu.unlam.tpi.contracts.persistence.repository;
 
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +20,17 @@ public interface WorkContractRepository extends JpaRepository<WorkContractEntity
     @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId ORDER BY w.dateFrom DESC, w.id DESC")
     List<WorkContractEntity> findBySupplierIdAndStates(@Param("supplierId") Long supplierId);
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE :workerId MEMBER OF w.workers AND w.state IN :states AND w.dateFrom = :today ORDER BY w.dateFrom DESC")
-    List<WorkContractEntity> findByWorkersContaining(@Param("workerId") Long workerId,
-            @Param("states") List<WorkState> states, @Param("today") LocalDate today);
-
+    @Query("""
+    SELECT w FROM WorkContractEntity w
+    WHERE :workerId MEMBER OF w.workers
+    AND w.state IN :states
+    AND w.dateFrom BETWEEN :start AND :end
+    ORDER BY w.dateFrom DESC
+""")
+List<WorkContractEntity> findByWorkersContainingAndDateRange(
+    @Param("workerId") Long workerId,
+    @Param("states") List<WorkStateEnum> states,
+    @Param("start") LocalDate start,
+    @Param("end") LocalDate end
+);
 }

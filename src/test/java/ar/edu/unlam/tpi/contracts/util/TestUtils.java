@@ -1,7 +1,11 @@
 package ar.edu.unlam.tpi.contracts.util;
 
 import ar.edu.unlam.tpi.contracts.dto.*;
-import ar.edu.unlam.tpi.contracts.model.WorkState;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,7 +40,7 @@ public class TestUtils {
                 .price(150000.0)
                 .dateFrom(LocalDate.parse(DATE_FROM))
                 .dateTo(LocalDate.parse(DATE_TO))
-                .state(WorkState.PENDING.name())
+                .state(WorkStateEnum.PENDING.name())
                 .detail("Trabajo de prueba")
                 .supplierId(SUPPLIER_ID)
                 .applicantId(APPLICANT_ID)
@@ -52,20 +56,16 @@ public class TestUtils {
     public static DeliveryNoteRequest buildDeliveryNoteRequest() {
         return DeliveryNoteRequest.builder()
                 .contractId(CONTRACT_ID)
-                .applicantData(CompanyData.builder()
+                .applicantsData(List.of(CompanyData.builder()
                         .companyName(APPLICANT_COMPANY)
                         .cuit(CUIT)
-                        .build())
-                .supplierData(CompanyData.builder()
+                        .build()))
+                .suppliersData(List.of(CompanyData.builder()
                         .companyName(SUPPLIER_COMPANY)
                         .cuit(CUIT)
-                        .build())
-                .bodyData(BodyData.builder()
-                        .noteNumber(NOTE_NUMBER)
-                        .descriptionData(List.of())
-                        .build())
-                .footData(FootData.builder().build())
+                        .build()))
                 .build();
     }
     
 }
+

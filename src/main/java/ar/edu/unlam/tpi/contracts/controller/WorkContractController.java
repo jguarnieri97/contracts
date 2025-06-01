@@ -1,9 +1,9 @@
 package ar.edu.unlam.tpi.contracts.controller;
 
-import ar.edu.unlam.tpi.contracts.dto.GenericResponse;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractRequest;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractUpdateRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

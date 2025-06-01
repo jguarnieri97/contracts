@@ -1,16 +1,16 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainVerifyRequest;
-import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
-import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.persistence.WorkContractDAO;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
+import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
 import ar.edu.unlam.tpi.contracts.service.task.DeliveryNoteExecutorTask;
-import ar.edu.unlam.tpi.contracts.util.TestUtils;
+import ar.edu.unlam.tpi.contracts.util.DeliveryNoteDataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +26,15 @@ class DeliveryNoteServiceImplTest {
     private WorkContractDAO repository;
     private BlockchainServiceClient blockchainClient;
     private ExecutorService executorService;
+    private FileCreatorService fileCreatorService;
 
     @BeforeEach
     void setUp() {
         repository = mock(WorkContractDAO.class);
         blockchainClient = mock(BlockchainServiceClient.class);
         executorService = mock(ExecutorService.class);
-        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService);
+        fileCreatorService = mock(FileCreatorService.class);
+        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService, fileCreatorService);
     }
 
     @Test
@@ -48,10 +50,10 @@ class DeliveryNoteServiceImplTest {
 
     @Test
     void createsDeliveryNoteAndExecutesAsyncTask() {
-        DeliveryNoteRequest request = TestUtils.buildDeliveryNoteRequest();
+        DeliveryNoteRequest request = DeliveryNoteDataHelper.createDeliveryNoteRequest();
         WorkContractEntity contract = mock(WorkContractEntity.class);
 
-        when(repository.findWorkContractById(TestUtils.CONTRACT_ID)).thenReturn(contract);
+        when(repository.findWorkContractById(1L)).thenReturn(contract);
 
         service.createDeliveryNote(request);
 

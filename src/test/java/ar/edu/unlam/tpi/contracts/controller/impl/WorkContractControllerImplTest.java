@@ -3,7 +3,7 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 import ar.edu.unlam.tpi.contracts.controller.WorkContractController;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import ar.edu.unlam.tpi.contracts.util.TestUtils;
+import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +24,8 @@ class WorkContractControllerImplTest {
     @Test
     void createContractReturnsGenericResponseWithCreatedStatus() {
         // Arrange
-        var request = TestUtils.buildWorkContractRequest();
-        var responseMock = TestUtils.buildWorkContractResponse();
+        var request = WorkContratDataHelper.createWorkContractRequest();
+        var responseMock = WorkContratDataHelper.createWorkContractResponse();
         when(workContractService.createContract(request)).thenReturn(responseMock);
 
         // Act
@@ -43,8 +43,8 @@ class WorkContractControllerImplTest {
     @Test
     void getContractByIdReturnsGenericResponseWithOkStatus() {
         // Arrange
-        var contractId = TestUtils.CONTRACT_ID;
-        var responseMock = TestUtils.buildWorkContractResponse();
+        var contractId = 1L;
+        var responseMock = WorkContratDataHelper.createWorkContractResponse();
         when(workContractService.getContractById(contractId)).thenReturn(responseMock);
 
         // Act
@@ -62,8 +62,8 @@ class WorkContractControllerImplTest {
     @Test
     void updateContractStateReturnsGenericResponseWithOkStatus() {
         // Arrange
-        var contractId = TestUtils.CONTRACT_ID;
-        var request = TestUtils.buildWorkContractUpdateRequest();
+        var contractId = 1L;
+        var request = WorkContratDataHelper.createWorkContractUpdateRequest();
         doNothing().when(workContractService).updateContractState(contractId, request);
 
         // Act

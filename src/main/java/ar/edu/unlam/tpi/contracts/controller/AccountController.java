@@ -27,5 +27,6 @@ public interface AccountController {
     @GetMapping("/accounts/worker/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
     GenericResponse<List<WorkContractResponse>> getContractsByWorkerId(
-            @PathVariable @NotNull Long id);
+            @PathVariable @NotNull Long id,
+            @RequestParam(defaultValue = "day") String range);
 }

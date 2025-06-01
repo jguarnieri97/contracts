@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -80,25 +81,31 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    void givenWorkerId_whenGetContractsByWorkerId_thenReturnContracts() {
+    void givenWorkerIdAndRangeWeek_whenGetContractsByWorkerId_thenReturnContracts() {
         // Given
         Long workerId = 1L;
+        String range = "week";
         LocalDate today = LocalDate.now();
+        LocalDate start = today.with(DayOfWeek.MONDAY);
+        LocalDate end = today.with(DayOfWeek.SUNDAY);
+    
         List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse contractResponse = WorkContractResponse.builder().build();
-
-        when(repository.findByWorkersContaining(workerId, validStates, today)).thenReturn(List.of(contractEntity));
+    
+        when(repository.findByWorkersContainingAndDateRange(workerId, validStates, start, end))
+                .thenReturn(List.of(contractEntity));
         when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
-
+    
         // When
-        List<WorkContractResponse> result = service.getContractsByWorkerId(workerId);
-
+        List<WorkContractResponse> result = service.getContractsByWorkerId(workerId, range);
+    
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
-        verify(repository, times(1)).findByWorkersContaining(workerId, validStates, today);
-        verify(validator, times(1)).validateContractsExist(anyList(), eq("workerId"), eq(workerId));
-        verify(converter, times(1)).convertToResponse(contractEntity);
+        verify(repository).findByWorkersContainingAndDateRange(workerId, validStates, start, end);
+        verify(validator).validateContractsExist(anyList(), eq("workerId"), eq(workerId));
+        verify(converter).convertToResponse(contractEntity);
     }
+    
 }

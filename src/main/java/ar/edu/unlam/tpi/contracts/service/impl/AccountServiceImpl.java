@@ -6,6 +6,7 @@ import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,15 +48,37 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<WorkContractResponse> getContractsByWorkerId(Long workerId) {
-        LocalDate today = LocalDate.now();
-        List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
-        List<WorkContractEntity> contracts = repository.findByWorkersContaining(workerId, validStates, today);
-        validator.validateContractsExist(contracts, "workerId", workerId);
+public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range) {
+    LocalDate today = LocalDate.now();
+    LocalDate start;
+    LocalDate end;
 
-        return contracts.stream()
-                .map(converter::convertToResponse)
-                .collect(Collectors.toList());
+    switch (range.toLowerCase()) {
+        case "week" -> {
+            start = today.with(DayOfWeek.MONDAY);
+            end = today.with(DayOfWeek.SUNDAY);
+        }
+        case "month" -> {
+            start = today.withDayOfMonth(1);
+            end = today.withDayOfMonth(today.lengthOfMonth());
+        }
+        default -> { //day
+            start = today;
+            end = today;
+        }
     }
+
+    List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
+    List<WorkContractEntity> contracts = repository.findByWorkersContainingAndDateRange(
+            workerId, validStates, start, end
+    );
+
+    validator.validateContractsExist(contracts, "workerId", workerId);
+
+    return contracts.stream()
+            .map(converter::convertToResponse)
+            .collect(Collectors.toList());
+}
+
 
 }

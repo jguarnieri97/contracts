@@ -34,6 +34,6 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsByWorkerId(Long workerId);
+    List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range);
 
 }

@@ -37,7 +37,7 @@ public class WorkContractEntity {
     private String detail;
 
     @Enumerated(EnumType.STRING)
-    private WorkState state;
+    private WorkStateEnum state;
 
     @Column(name = "supplier_id", nullable = false)
     private Long supplierId;
@@ -59,7 +59,7 @@ public class WorkContractEntity {
     private DeliveryNote deliveryNote;
 
 
-    public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkState state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
+    public WorkContractEntity(Double price, LocalDate dateFrom, LocalDate dateTo, WorkStateEnum state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
         this.price = price;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -70,7 +70,7 @@ public class WorkContractEntity {
         this.workers = workers;
     }
 
-    public void setState(WorkState newState) {
+    public void setState(WorkStateEnum newState) {
         if (newState == this.state) {
             throw new IllegalArgumentException("El estado no puede ser el mismo");
         }

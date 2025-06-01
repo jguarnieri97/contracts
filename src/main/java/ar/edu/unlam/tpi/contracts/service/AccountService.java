@@ -1,6 +1,6 @@
 package ar.edu.unlam.tpi.contracts.service;
 import java.util.List;
-import ar.edu.unlam.tpi.contracts.dto.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 
 public interface AccountService {
 

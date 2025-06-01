@@ -1,8 +1,8 @@
 package ar.edu.unlam.tpi.contracts.client;
 
-import ar.edu.unlam.tpi.contracts.dto.BlockchainRequest;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainResponse;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainVerifyRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
+import ar.edu.unlam.tpi.contracts.dto.response.BlockchainResponse;
 
 public interface BlockchainServiceClient {
 

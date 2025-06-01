@@ -1,14 +1,14 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
-import ar.edu.unlam.tpi.contracts.dto.BlockchainVerifyRequest;
-import ar.edu.unlam.tpi.contracts.dto.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
-import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.persistence.WorkContractDAO;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
+import ar.edu.unlam.tpi.contracts.service.file.FileCreator;
 import ar.edu.unlam.tpi.contracts.service.task.DeliveryNoteExecutorTask;
 import ar.edu.unlam.tpi.contracts.util.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +26,15 @@ class DeliveryNoteServiceImplTest {
     private WorkContractDAO repository;
     private BlockchainServiceClient blockchainClient;
     private ExecutorService executorService;
+    private FileCreator fileCreator;
 
     @BeforeEach
     void setUp() {
         repository = mock(WorkContractDAO.class);
         blockchainClient = mock(BlockchainServiceClient.class);
         executorService = mock(ExecutorService.class);
-        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService);
+        fileCreator = mock(FileCreator.class);
+        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService, fileCreator);
     }
 
     @Test

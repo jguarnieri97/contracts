@@ -19,6 +19,6 @@ blockchain.service.host: ${BLOCKCHAIN_API_URI:http://localhost:8087/blockchain/v
 logging:
   level:
     root: INFO
-    ar.edu.unlam.tpi.accounts: DEBUG
+    ar.edu.unlam.tpi.contracts: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"

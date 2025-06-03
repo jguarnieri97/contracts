@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WorkContractValidator {
 
-    public void validateStateTransition(WorkContractEntity contract, WorkContractUpdateRequest request) {
+    public void validateStateFinalized(WorkContractEntity contract, WorkContractUpdateRequest request) {
         WorkStateEnum newState = WorkStateEnum.valueOf(request.getState().toUpperCase());
 
         if (newState == contract.getState()) {

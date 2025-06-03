@@ -3,10 +3,9 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
-import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,14 +19,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    private final WorkContractRepository repository;
+    private final WorkContractDAO workContractRepository;
     private final WorkContractConverter converter;
     private final ContractValidator validator;
     private static final int DEFAULT_LIMIT = 4;
 
     @Override
     public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
-        List<WorkContractEntity> contracts = repository.findByApplicantId(applicantId);
+        List<WorkContractEntity> contracts = workContractRepository.findByApplicantId(applicantId);
         validator.validateContractsExist(contracts, "applicantId", applicantId);
 
         return contracts.stream()
@@ -38,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
-        List<WorkContractEntity> contracts = repository.findBySupplierIdAndStates(supplierId);
+        List<WorkContractEntity> contracts = workContractRepository.findBySupplierId(supplierId);
         validator.validateContractsExist(contracts, "supplierId", supplierId);
 
         return contracts.stream()
@@ -48,10 +47,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range) {
-    LocalDate today = LocalDate.now();
-    LocalDate start;
-    LocalDate end;
+    public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range) {
+        LocalDate today = LocalDate.now();
+        LocalDate start;
+        LocalDate end;
 
     switch (range.toLowerCase()) {
         //desde el dia de hoy hasta los proximos 7 dias
@@ -71,7 +70,7 @@ public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String r
     }
 
     List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
-    List<WorkContractEntity> contracts = repository.findByWorkersContainingAndDateRange(
+    List<WorkContractEntity> contracts = workContractRepository.findByWorkersContainingStatesAndDateRange(
             workerId, validStates, start, end
     );
 
@@ -80,7 +79,7 @@ public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String r
     return contracts.stream()
             .map(converter::convertToResponse)
             .collect(Collectors.toList());
-}
+    }
 
 
 }

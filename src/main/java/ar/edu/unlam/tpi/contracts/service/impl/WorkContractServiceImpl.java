@@ -3,11 +3,10 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
-import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.ImageEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
-import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
 
@@ -22,25 +21,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkContractServiceImpl implements WorkContractService {
 
-    private final WorkContractRepository repository;
+    private final WorkContractDAO repository;
     private final WorkContractConverter converter;
     private final WorkContractValidator validator;
     private final CodeNumberGeneratorService codeNumberGenerator;
 
     @Override
     public WorkContractResponse createContract(WorkContractRequest request) {
-
-        WorkContractEntity contract = new WorkContractEntity(
-                codeNumberGenerator.generateCodeNumber(),
-                request.getPrice(),
-                request.getDateFrom(),
-                request.getDateTo(),
-                WorkStateEnum.PENDING,
-                request.getDetail(),
-                request.getSupplierId(),
-                request.getApplicantId(),
-                request.getWorkers()
-        );
+        WorkContractEntity contract = WorkContractEntity.builder()
+                .codeNumber(codeNumberGenerator.generateCodeNumber())
+                .price(request.getPrice())
+                .dateFrom(request.getDateFrom())
+                .dateTo(request.getDateTo())
+                .state(WorkStateEnum.PENDING)
+                .detail(request.getDetail())
+                .supplierId(request.getSupplierId())
+                .applicantId(request.getApplicantId())
+                .workers(request.getWorkers())
+                .build();
 
         WorkContractEntity saved = repository.save(contract);
         return converter.convertToResponse(saved);
@@ -48,30 +46,24 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
-        WorkContractEntity contract = repository.findById(id)
-                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
-
-        validator.validateStateTransition(contract, request);
-
-        if (request.getFiles() != null && !request.getFiles().isEmpty()) {
-            List<ImageEntity> images = request.getFiles().stream()
-                    .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
-                    .toList();
-            contract.getFiles().addAll(images);
-            contract.setState(WorkStateEnum.FINALIZED);
+        WorkContractEntity contract = repository.findById(id);
+        if (WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
+            validator.validateStateFinalized(contract, request);
         }
-
-        if (request.getDetail() != null) {
-            contract.setDetail(request.getDetail());
-        }
-
+        contract.setState(WorkStateEnum.valueOf(request.getState()));
+        contract.setDetail(request.getDetail() == null ? null : request.getDetail());
+        contract.setFiles(
+                request.getFiles() == null ? null :
+                        request.getFiles().stream()
+                                .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
+                                .toList()
+        );
         repository.save(contract);
     }
 
     @Override
     public WorkContractResponse getContractById(Long id) {
-        WorkContractEntity contract = repository.findById(id)
-                .orElseThrow(() -> new ContractNotFoundException("No se encontró un contrato con el ID: " + id));
+        WorkContractEntity contract = repository.findById(id);
         return converter.convertToResponse(contract);
     }
 

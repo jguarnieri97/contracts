@@ -14,23 +14,47 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkContractRepository extends JpaRepository<WorkContractEntity, Long> {
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.applicantId = :applicantId ORDER BY w.dateFrom DESC, w.id DESC")
+    /**
+     * Busca una lista de contratos por el ID del solicitante.
+     *
+     * @param applicantId ID del solicitante a buscar.
+     * @return la lista de contratos asociados al solicitante, ordenados por fecha de inicio y ID descendente.
+     */
+    @Query("SELECT w FROM WorkContractEntity w " +
+            "WHERE w.applicantId = :applicantId " +
+            "ORDER BY w.dateFrom DESC, w.id DESC")
     List<WorkContractEntity> findByApplicantId(@Param("applicantId") Long applicantId);
 
-    @Query("SELECT w FROM WorkContractEntity w WHERE w.supplierId = :supplierId ORDER BY w.dateFrom DESC, w.id DESC")
-    List<WorkContractEntity> findBySupplierIdAndStates(@Param("supplierId") Long supplierId);
+    /**
+     * Busca una lista de contratos por el ID del proveedor.
+     *
+     * @param supplierId ID del proveedor a buscar.
+     * @return la lista de contratos asociados al proveedor, ordenados por fecha de inicio y ID descendente.
+     */
+    @Query("SELECT w FROM WorkContractEntity w " +
+            "WHERE w.supplierId = :supplierId " +
+            "ORDER BY w.dateFrom DESC, w.id DESC")
+    List<WorkContractEntity> findBySupplierId(@Param("supplierId") Long supplierId);
 
-    @Query("""
-    SELECT w FROM WorkContractEntity w
-    WHERE :workerId MEMBER OF w.workers
-    AND w.state IN :states
-    AND w.dateFrom BETWEEN :start AND :end
-    ORDER BY w.dateFrom DESC
-""")
-List<WorkContractEntity> findByWorkersContainingAndDateRange(
-    @Param("workerId") Long workerId,
-    @Param("states") List<WorkStateEnum> states,
-    @Param("start") LocalDate start,
-    @Param("end") LocalDate end
-);
+    /**
+     * Buscar una lista de la entidad WorkContractRepository por un rango de fecha
+     * del campo dateFrom y estatus.
+     *
+     * @param workerId ID del trabajador a buscar.
+     * @param states lista de estados del contrato a filtrar.
+     * @param start fecha de inicio del rango.
+     * @param end fecha de fin del rango.
+     * @return la lista filtrada.
+     */
+    @Query("SELECT w FROM WorkContractEntity w " +
+            "WHERE :workerId MEMBER OF w.workers " +
+            "AND w.state IN :states " +
+            "AND w.dateFrom BETWEEN :start AND :end " +
+            "ORDER BY w.dateFrom DESC")
+    List<WorkContractEntity> findByWorkersContainingStatesAndDateRange(
+            @Param("workerId") Long workerId,
+            @Param("states") List<WorkStateEnum> states,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end
+    );
 }

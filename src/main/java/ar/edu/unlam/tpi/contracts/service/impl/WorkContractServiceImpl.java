@@ -10,15 +10,18 @@ import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
 
-import java.util.List;
-
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WorkContractServiceImpl implements WorkContractService {
 
     private final WorkContractDAO repository;
@@ -46,18 +49,15 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
-        WorkContractEntity contract = repository.findById(id);
-        if (WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
-            validator.validateStateFinalized(contract, request);
+        if (!WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
+            validator.validateStateFinalized(request);
         }
+        WorkContractEntity contract = repository.findById(id);
         contract.setState(WorkStateEnum.valueOf(request.getState()));
-        contract.setDetail(request.getDetail() == null ? null : request.getDetail());
-        contract.setFiles(
-                request.getFiles() == null ? null :
-                        request.getFiles().stream()
-                                .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
-                                .toList()
-        );
+        contract.setDetail(request.getDetail() == null ? contract.getDetail() : request.getDetail());
+        if (request.getFiles() != null) {
+            addImagesToContract(contract, request.getFiles());
+        }
         repository.save(contract);
     }
 
@@ -65,6 +65,16 @@ public class WorkContractServiceImpl implements WorkContractService {
     public WorkContractResponse getContractById(Long id) {
         WorkContractEntity contract = repository.findById(id);
         return converter.convertToResponse(contract);
+    }
+
+    private void addImagesToContract(WorkContractEntity contract, List<String> filesBase64) {
+        List<ImageEntity> images = filesBase64.stream()
+                .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
+                .toList();
+        if (contract.getFiles() == null) {
+            contract.setFiles(new ArrayList<>());
+        }
+        contract.getFiles().addAll(images);
     }
 
 }

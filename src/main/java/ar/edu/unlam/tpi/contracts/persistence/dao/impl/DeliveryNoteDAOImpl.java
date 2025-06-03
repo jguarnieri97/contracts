@@ -41,5 +41,16 @@ public class DeliveryNoteDAOImpl implements DeliveryNoteDAO{
         return deliveryNote.get();
     }
 
+    @Override
+    public void saveDeliveryNote(DeliveryNote deliveryNote) {
+        try {
+            log.info("Guardando nota de entrega con ID: {}", deliveryNote.getId());
+            deliveryNoteRepository.save(deliveryNote);
+            log.info("Nota de entrega guardada exitosamente con ID: {}", deliveryNote.getId());
+        } catch (Exception e) {
+            log.error("Error interno al guardar la nota de entrega: {}", e.getMessage());
+            throw new DeliveryNoteRepositoryException("Error interno al guardar la nota de entrega: " + e.getMessage());
+        }
+    }
 
 }

@@ -44,7 +44,6 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         contract.setDeliveryNote(deliveryNote);
         repository.saveWorkContract(contract);
 
-        executorService.execute(new DeliveryNoteExecutorTask(repository, blockchainClient, contract));
     }
 
     @Override
@@ -81,10 +80,11 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     public void signatureDeliveryNote(Long id, DeliverySignatureRequest request) {
         log.info("Firmando remito con ID: {}", id);
         DeliveryNote deliveryNote = deliveryNoteDAO.findDeliveryNoteById(id);
-
-        deliveryNote.setSignature(request.getSignature());
-        repository.saveWorkContract(contract);
-
+        byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
+        
+        deliveryNote.setData(dataUpdated);
+        executorService.execute(new DeliveryNoteExecutorTask(repository, blockchainClient, deliveryNote.getWorkContract()));
+        deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");
     }
 }

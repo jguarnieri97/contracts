@@ -6,6 +6,7 @@ import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.persistence.dao.DeliveryNoteDAO;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
@@ -27,6 +28,7 @@ class DeliveryNoteServiceImplTest {
     private BlockchainServiceClient blockchainClient;
     private ExecutorService executorService;
     private FileCreatorService fileCreatorService;
+    private DeliveryNoteDAO deliveryNoteDAO;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +36,8 @@ class DeliveryNoteServiceImplTest {
         blockchainClient = mock(BlockchainServiceClient.class);
         executorService = mock(ExecutorService.class);
         fileCreatorService = mock(FileCreatorService.class);
-        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService, fileCreatorService);
+        deliveryNoteDAO = mock(DeliveryNoteDAO.class);
+        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService, fileCreatorService,deliveryNoteDAO);
     }
 
     @Test

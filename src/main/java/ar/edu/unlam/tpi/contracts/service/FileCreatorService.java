@@ -2,15 +2,25 @@ package ar.edu.unlam.tpi.contracts.service;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
+import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.Image;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.util.Base64;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -37,6 +47,71 @@ public class FileCreatorService {
         } catch (DocumentException e) {
             log.error("Error al crear el archivo: {}", e.getMessage());
             throw new DeliveryNoteServiceInternalException(e.getMessage());
+        }
+    }
+
+    public byte[] signFile(DeliveryNote deliveryNote, String signatureBase64) {
+        try {
+            PdfReader reader = retrievePdfReader(deliveryNote.getData());
+            Map<String,Object> stamperData = retrievePdfStamper(deliveryNote.getData(), reader);
+            PdfStamper stamper = (PdfStamper) stamperData.get("stamper");
+            ByteArrayOutputStream outputStream = (ByteArrayOutputStream) stamperData.get("outputStream");
+            buildImageSignatureSection(signatureBase64, reader, stamper);
+            stamper.close();
+            reader.close();
+            return outputStream.toByteArray();            
+        } catch (Exception e) {
+            log.error("Error al firmar el archivo: {}", e.getMessage());
+            throw new DeliveryNoteServiceInternalException("Error al firmar el archivo: " + e.getMessage());
+        }
+    }
+
+    private void buildImageSignatureSection(String signatureBase64, PdfReader reader, PdfStamper stamper) throws Exception {
+        Image signatureImage = buildImage(signatureBase64);
+        Map<String, Float> coords = buildCoordsToBuildSignature(reader, signatureImage);
+        
+        PdfContentByte content = stamper.getOverContent(reader.getNumberOfPages());
+        content.addImage(signatureImage, signatureImage.getScaledWidth(), 0, 0, signatureImage.getScaledHeight(), 
+            coords.get("x"), coords.get("y"));
+    }
+
+    private Map<String, Float> buildCoordsToBuildSignature(PdfReader reader, Image signatureImage) throws Exception {
+        Rectangle pageSize = reader.getPageSize(reader.getNumberOfPages());
+        Float pageWidth = pageSize.getWidth();
+        Float x = pageWidth - signatureImage.getScaledWidth() - 50;
+        Float y = 50f;
+        
+        return Map.of("x", x, "y", y);
+    }
+
+    private Image buildImage(String signatureBase64) throws Exception {
+        byte[] signatureBytes = Base64.getDecoder().decode(signatureBase64);
+        Image signatureImage = Image.getInstance(signatureBytes);
+        signatureImage.scaleToFit(100, 100); // Ajustar el tamaño de la imagen si es necesario
+        return signatureImage;
+    }
+    
+    private PdfReader retrievePdfReader(byte[] data) {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(data);
+            PdfReader reader = new PdfReader(bais);
+            log.info("Devolviendo el PDF a partir de un array de bytes");
+            return reader;
+        } catch (Exception e) {
+            log.error("Error al recuperar el PDF desde los bytes: {}", e.getMessage());
+            throw new DeliveryNoteServiceInternalException("Error al recuperar el PDF desde los bytes: " + e.getMessage());
+        }
+    }
+
+    private Map<String, Object> retrievePdfStamper(byte[] data, PdfReader reader) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfStamper stamper = new PdfStamper(reader, baos);
+            log.info("Devolviendo el stamper para el PDF");
+            return Map.of("stamper", stamper, "outputStream", baos);            
+        } catch (Exception e) {
+            log.error("Error al crear el stamper del PDF: {}", e.getMessage());
+            throw new DeliveryNoteServiceInternalException("Error al crear el stamper del PDF: " + e.getMessage());
         }
     }
 

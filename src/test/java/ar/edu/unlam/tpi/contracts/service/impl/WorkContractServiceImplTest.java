@@ -97,7 +97,7 @@ public class WorkContractServiceImplTest {
         service.updateContractState(contractId, updateRequest);
 
         // Then
-        verify(validator, times(1)).validateStateFinalized(existingContract, updateRequest);
+        verify(validator, times(1)).validateStateFinalized(updateRequest);
         verify(repository, times(1)).save(existingContract);
         assertEquals(WorkStateEnum.PENDING, existingContract.getState());
     }

@@ -34,7 +34,7 @@ public class DeliveryNoteExecutorTask implements Runnable {
         contract.getDeliveryNote().setDataHash(response.getDataHash());
         contract.getDeliveryNote().setBlockNumber(response.getBlockNumber());
 
-        repository.saveWorkContract(contract);
+        repository.save(contract);
         log.info("::: Contrato: {} - FIN del proceso de certificación por Blockchain :::", contractId);
     }
 

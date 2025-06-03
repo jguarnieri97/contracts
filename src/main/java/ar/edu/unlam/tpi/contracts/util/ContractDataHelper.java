@@ -24,46 +24,152 @@ public class ContractDataHelper {
 
         return List.of(
                 // PENDING
-                new WorkContractEntity("1p",120000.0, LocalDate.now(), LocalDate.of(2025, 9, 15),
-                        WorkStateEnum.PENDING, "Mantenimiento general", SUPPLIER_3, APPLICANT_1, List.of(SUPPLIER_3_WORKER_1, SUPPLIER_3_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("1p")
+                        .price(120000.0)
+                        .dateFrom(LocalDate.now())
+                        .dateTo(LocalDate.of(2025, 9, 15))
+                        .state(WorkStateEnum.PENDING)
+                        .detail("Mantenimiento general")
+                        .supplierId(SUPPLIER_3)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_3_WORKER_1, SUPPLIER_3_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("2p",180000.0, LocalDate.now(), LocalDate.of(2025, 10, 20),
-                        WorkStateEnum.PENDING, "Reparación de cañerías", SUPPLIER_1, APPLICANT_2, List.of(SUPPLIER_1_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("2p")
+                        .price(180000.0)
+                        .dateFrom(LocalDate.now())
+                        .dateTo(LocalDate.of(2025, 10, 20))
+                        .state(WorkStateEnum.PENDING)
+                        .detail("Reparación de cañerías")
+                        .supplierId(SUPPLIER_1)
+                        .applicantId(APPLICANT_2)
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("3p",220000.0, LocalDate.of(2025, 5, 1), LocalDate.of(2025, 7, 1),
-                        WorkStateEnum.PENDING, "Cambio de luminarias", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1)),
-
+                WorkContractEntity.builder()
+                        .codeNumber("3p")
+                        .price(220000.0)
+                        .dateFrom(LocalDate.of(2025, 5, 1))
+                        .dateTo(LocalDate.of(2025, 7, 1))
+                        .state(WorkStateEnum.PENDING)
+                        .detail("Cambio de luminarias")
+                        .supplierId(SUPPLIER_2)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_2_WORKER_1))
+                        .build(),
 
                 // INITIATED
 
-                new WorkContractEntity("4p",50000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
-                        WorkStateEnum.INITIATED, "Reparacion de puerta", SUPPLIER_3, APPLICANT_2, List.of(SUPPLIER_3_WORKER_1)),
+                WorkContractEntity.builder()
+                        .codeNumber("4p")
+                        .price(50000.0)
+                        .dateFrom(LocalDate.now())
+                        .dateTo(LocalDate.of(2025, 5, 15))
+                        .state(WorkStateEnum.INITIATED)
+                        .detail("Reparacion de puerta")
+                        .supplierId(SUPPLIER_3)
+                        .applicantId(APPLICANT_2)
+                        .workers(List.of(SUPPLIER_3_WORKER_1))
+                        .build(),
 
-                new WorkContractEntity("5p",670000.0, LocalDate.now(), LocalDate.of(2025, 5, 15),
-                        WorkStateEnum.INITIATED, "Mantenimiento de aires acondicionados", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_1, SUPPLIER_2_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("5p")
+                        .price(670000.0)
+                        .dateFrom(LocalDate.now())
+                        .dateTo(LocalDate.of(2025, 5, 15))
+                        .state(WorkStateEnum.INITIATED)
+                        .detail("Mantenimiento de aires acondicionados")
+                        .supplierId(SUPPLIER_2)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_2_WORKER_1, SUPPLIER_2_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("6p",125000.0, LocalDate.of(2025, 5, 10), LocalDate.of(2025, 6, 10),
-                        WorkStateEnum.INITIATED, "Instalación de cámaras de seguridad", SUPPLIER_3, APPLICANT_2, List.of(SUPPLIER_3_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("6p")
+                        .price(125000.0)
+                        .dateFrom(LocalDate.of(2025, 5, 10))
+                        .dateTo(LocalDate.of(2025, 6, 10))
+                        .state(WorkStateEnum.INITIATED)
+                        .detail("Instalación de cámaras de seguridad")
+                        .supplierId(SUPPLIER_3)
+                        .applicantId(APPLICANT_2)
+                        .workers(List.of(SUPPLIER_3_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("7p",305000.0, LocalDate.of(2025, 5, 5), LocalDate.of(2025, 7, 5),
-                        WorkStateEnum.INITIATED, "Mantenimiento de aires acondicionados", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_1)),
+                WorkContractEntity.builder()
+                        .codeNumber("7p")
+                        .price(305000.0)
+                        .dateFrom(LocalDate.of(2025, 5, 5))
+                        .dateTo(LocalDate.of(2025, 7, 5))
+                        .state(WorkStateEnum.INITIATED)
+                        .detail("Mantenimiento de aires acondicionados")
+                        .supplierId(SUPPLIER_1)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_1_WORKER_1))
+                        .build(),
 
-                new WorkContractEntity("8p",120000.0, LocalDate.of(2025, 5, 3), LocalDate.of(2025, 6, 3),
-                        WorkStateEnum.INITIATED, "Colocación de pisos vinílicos", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_2_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("8p")
+                        .price(120000.0)
+                        .dateFrom(LocalDate.of(2025, 5, 3))
+                        .dateTo(LocalDate.of(2025, 6, 3))
+                        .state(WorkStateEnum.INITIATED)
+                        .detail("Colocación de pisos vinílicos")
+                        .supplierId(SUPPLIER_2)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_2_WORKER_2))
+                        .build(),
 
                 // FINALIZED
-                new WorkContractEntity("9p",85000.0, LocalDate.of(2025, 4, 10), LocalDate.of(2025, 4, 20),
-                        WorkStateEnum.FINALIZED, "Reparación de ascensor", SUPPLIER_1, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("9p")
+                        .price(85000.0)
+                        .dateFrom(LocalDate.of(2025, 4, 10))
+                        .dateTo(LocalDate.of(2025, 4, 20))
+                        .state(WorkStateEnum.FINALIZED)
+                        .detail("Reparación de ascensor")
+                        .supplierId(SUPPLIER_1)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("10p",175000.0, LocalDate.of(2025, 3, 20), LocalDate.of(2025, 4, 15),
-                        WorkStateEnum.FINALIZED, "Colocación de carteles corporativos", SUPPLIER_2, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("10p")
+                        .price(175000.0)
+                        .dateFrom(LocalDate.of(2025, 3, 20))
+                        .dateTo(LocalDate.of(2025, 4, 15))
+                        .state(WorkStateEnum.FINALIZED)
+                        .detail("Colocación de carteles corporativos")
+                        .supplierId(SUPPLIER_2)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("11p",60000.0, LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5),
-                        WorkStateEnum.FINALIZED, "Limpieza post-obra", SUPPLIER_3, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2)),
+                WorkContractEntity.builder()
+                        .codeNumber("11p")
+                        .price(60000.0)
+                        .dateFrom(LocalDate.of(2025, 4, 1))
+                        .dateTo(LocalDate.of(2025, 4, 5))
+                        .state(WorkStateEnum.FINALIZED)
+                        .detail("Limpieza post-obra")
+                        .supplierId(SUPPLIER_3)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
+                        .build(),
 
-                new WorkContractEntity("12p",200000.0, LocalDate.of(2025, 5, 8), LocalDate.of(2025, 5, 10),
-                        WorkStateEnum.FINALIZED, "Servicio de limpieza", SUPPLIER_3, APPLICANT_1, List.of(SUPPLIER_1_WORKER_2))
-
+                WorkContractEntity.builder()
+                        .codeNumber("12p")
+                        .price(200000.0)
+                        .dateFrom(LocalDate.of(2025, 5, 8))
+                        .dateTo(LocalDate.of(2025, 5, 10))
+                        .state(WorkStateEnum.FINALIZED)
+                        .detail("Servicio de limpieza")
+                        .supplierId(SUPPLIER_3)
+                        .applicantId(APPLICANT_1)
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
+                        .build()
         );
     }
 }

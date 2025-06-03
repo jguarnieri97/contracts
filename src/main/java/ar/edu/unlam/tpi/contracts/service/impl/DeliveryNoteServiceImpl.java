@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
-    private final WorkContractDAO repository;
+    private final WorkContractDAO workContractRepository;
     private final BlockchainServiceClient blockchainClient;
     private final ExecutorService executorService;
     private final FileCreatorService fileCreatorService;
@@ -36,20 +36,23 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     public void createDeliveryNote(DeliveryNoteRequest request) {
         log.info("Creando delivery-note, request recibido: {}", request);
 
-        WorkContractEntity contract = repository.findWorkContractById(request.getContractId());
+        WorkContractEntity contract = workContractRepository.findById(request.getContractId());
 
         byte[] file = fileCreatorService.createFile(request,contract);
         DeliveryNote deliveryNote = new DeliveryNote(contract, file);
 
         contract.setDeliveryNote(deliveryNote);
-        repository.saveWorkContract(contract);
-
+        workContractRepository.save(contract);
+        
+        // Ejecutar la tarea asíncrona para certificar el documento
+        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, contract));
+        log.info("Tarea asíncrona de certificación iniciada para el contrato: {}", contract.getId());
     }
 
     @Override
     public DeliveryNoteResponse getDeliveryNote(Long contractId) {
         log.info("Obteniendo remito - contractId: {}", contractId);
-        WorkContractEntity contract = repository.findWorkContractById(contractId);
+        WorkContractEntity contract = workContractRepository.findById(contractId);
         DeliveryNote deliveryNote = contract.getDeliveryNote();
 
         if (Objects.isNull(deliveryNote)) {
@@ -83,7 +86,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
         
         deliveryNote.setData(dataUpdated);
-        executorService.execute(new DeliveryNoteExecutorTask(repository, blockchainClient, deliveryNote.getWorkContract()));
+        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, deliveryNote.getWorkContract()));
         deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");
     }

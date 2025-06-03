@@ -4,13 +4,13 @@ import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteServiceInternalException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.util.FileImageUtil;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.Image;
 
@@ -67,7 +67,7 @@ public class FileCreatorService {
     }
 
     private void buildImageSignatureSection(String signatureBase64, PdfReader reader, PdfStamper stamper) throws Exception {
-        Image signatureImage = buildImage(signatureBase64);
+        Image signatureImage = FileImageUtil.buildImage(signatureBase64,100,100);
         Map<String, Float> coords = buildCoordsToBuildSignature(reader, signatureImage);
         
         PdfContentByte content = stamper.getOverContent(reader.getNumberOfPages());
@@ -84,13 +84,7 @@ public class FileCreatorService {
         return Map.of("x", x, "y", y);
     }
 
-    private Image buildImage(String signatureBase64) throws Exception {
-        byte[] signatureBytes = Base64.getDecoder().decode(signatureBase64);
-        Image signatureImage = Image.getInstance(signatureBytes);
-        signatureImage.scaleToFit(100, 100); // Ajustar el tamaño de la imagen si es necesario
-        return signatureImage;
-    }
-    
+
     private PdfReader retrievePdfReader(byte[] data) {
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(data);

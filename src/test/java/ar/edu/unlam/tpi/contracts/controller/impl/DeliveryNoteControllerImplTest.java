@@ -1,25 +1,26 @@
 package ar.edu.unlam.tpi.contracts.controller.impl;
 
-import ar.edu.unlam.tpi.contracts.controller.DeliveryNoteController;
 import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
-class DeliveryNoteControllerImplTest {
+@ExtendWith(MockitoExtension.class)
+public class DeliveryNoteControllerImplTest {
 
-    private DeliveryNoteController controller;
+    @Mock
     private DeliveryNoteService deliveryNoteService;
 
-    @BeforeEach
-    void setUp() {
-        deliveryNoteService = mock(DeliveryNoteService.class);
-        controller = new DeliveryNoteControllerImpl(deliveryNoteService);
-    }
+    @InjectMocks
+    private DeliveryNoteControllerImpl controller;
+
 
     @org.junit.jupiter.api.Test
     void returnsCreatedResponseWhenRequestIsNull() {

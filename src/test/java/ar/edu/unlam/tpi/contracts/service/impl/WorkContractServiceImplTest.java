@@ -6,9 +6,8 @@ import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
-import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
-import ar.edu.unlam.tpi.contracts.util.ContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class WorkContractServiceImplTest {
 
     @Mock
-    private WorkContractRepository repository;
+    private WorkContractDAO repository;
 
     @Mock
     private WorkContractConverter converter;
@@ -49,17 +48,17 @@ public class WorkContractServiceImplTest {
         WorkContractRequest request = WorkContratDataHelper.createWorkContractRequest();
         WorkContractResponse expectedResponse = WorkContratDataHelper.createWorkContractResponse();
 
-        WorkContractEntity contractEntity = new WorkContractEntity(
-                "CODE123",
-                request.getPrice(),
-                request.getDateFrom(),
-                request.getDateTo(),
-                WorkStateEnum.PENDING,
-                request.getDetail(),
-                request.getSupplierId(),
-                request.getApplicantId(),
-                request.getWorkers()
-        );
+        WorkContractEntity contractEntity = WorkContractEntity.builder()
+                .codeNumber("CODE123")
+                .price(request.getPrice())
+                .dateFrom(request.getDateFrom())
+                .dateTo(request.getDateTo())
+                .state(WorkStateEnum.PENDING)
+                .detail(request.getDetail())
+                .supplierId(request.getSupplierId())
+                .applicantId(request.getApplicantId())
+                .workers(request.getWorkers())
+                .build();
 
         when(codeNumberGenerator.generateCodeNumber()).thenReturn("CODE123");
         when(repository.save(any(WorkContractEntity.class))).thenReturn(contractEntity);
@@ -80,25 +79,25 @@ public class WorkContractServiceImplTest {
         // Given
         Long contractId = 1L;
         WorkContractUpdateRequest updateRequest = WorkContratDataHelper.createWorkContractUpdateRequest();
-        WorkContractEntity existingContract = new WorkContractEntity(
-                "CODE123",
-                150000.0,
-                LocalDate.of(2025, 5, 13),
-                LocalDate.of(2025, 5, 15),
-                WorkStateEnum.PENDING,
-                "Trabajo de prueba",
-                1L,
-                2L,
-                List.of(3L, 4L, 5L)
-        );
+        WorkContractEntity existingContract = WorkContractEntity.builder()
+                .codeNumber("CODE123")
+                .price(150000.0)
+                .dateFrom(LocalDate.of(2025, 5, 13))
+                .dateTo(LocalDate.of(2025, 5, 15))
+                .state(WorkStateEnum.PENDING)
+                .detail("Trabajo de prueba")
+                .supplierId(1L)
+                .applicantId(2L)
+                .workers(List.of(3L, 4L, 5L))
+                .build();
 
-        when(repository.findById(contractId)).thenReturn(java.util.Optional.of(existingContract));
+        when(repository.findById(contractId)).thenReturn(existingContract);
 
         // When
         service.updateContractState(contractId, updateRequest);
 
         // Then
-        verify(validator, times(1)).validateStateTransition(existingContract, updateRequest);
+        verify(validator, times(1)).validateStateFinalized(updateRequest);
         verify(repository, times(1)).save(existingContract);
         assertEquals(WorkStateEnum.PENDING, existingContract.getState());
     }
@@ -110,7 +109,7 @@ public class WorkContractServiceImplTest {
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse expectedResponse = WorkContractResponse.builder().build();
 
-        when(repository.findById(contractId)).thenReturn(java.util.Optional.of(contractEntity));
+        when(repository.findById(contractId)).thenReturn(contractEntity);
         when(converter.convertToResponse(contractEntity)).thenReturn(expectedResponse);
 
         // When
@@ -127,7 +126,7 @@ public class WorkContractServiceImplTest {
         // Given
         Long contractId = 1L;
 
-        when(repository.findById(contractId)).thenReturn(java.util.Optional.empty());
+        when(repository.findById(contractId)).thenReturn(null);
 
         // When / Then
         assertThrows(ContractNotFoundException.class, () -> service.getContractById(contractId));

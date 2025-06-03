@@ -11,9 +11,11 @@ import java.util.List;
 public class WorkContractConverter {
 
     public WorkContractResponse convertToResponse(WorkContractEntity entity) {
-        List<String> base64Images = entity.getFiles().stream()
+        List<String> base64Images = entity.getFiles() != null
+                ? entity.getFiles().stream()
                 .map(img -> Base64.getEncoder().encodeToString(img.getData()))
-                .toList();
+                .toList()
+                : List.of();
 
         return WorkContractResponse.builder()
                 .id(entity.getId())

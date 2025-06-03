@@ -41,7 +41,7 @@ class DeliveryNoteServiceImplTest {
     void throwsExceptionWhenDeliveryNoteDoesNotExist() {
         Long contractId = 123L;
         var contract = mock(WorkContractEntity.class);
-        when(repository.findWorkContractById(contractId)).thenReturn(contract);
+        when(repository.findById(contractId)).thenReturn(contract);
         when(contract.getDeliveryNote()).thenReturn(null);
 
         assertThrows(DeliveryNoteNotFoundException.class,
@@ -53,11 +53,11 @@ class DeliveryNoteServiceImplTest {
         DeliveryNoteRequest request = DeliveryNoteDataHelper.createDeliveryNoteRequest();
         WorkContractEntity contract = mock(WorkContractEntity.class);
 
-        when(repository.findWorkContractById(1L)).thenReturn(contract);
+        when(repository.findById(1L)).thenReturn(contract);
 
         service.createDeliveryNote(request);
 
-        verify(repository).saveWorkContract(contract);
+        verify(repository).save(contract);
         verify(executorService).execute(any(DeliveryNoteExecutorTask.class));
     }
 
@@ -67,7 +67,7 @@ class DeliveryNoteServiceImplTest {
         WorkContractEntity contract = mock(WorkContractEntity.class);
         DeliveryNote deliveryNote = mock(DeliveryNote.class);
 
-        when(repository.findWorkContractById(contractId)).thenReturn(contract);
+        when(repository.findById(contractId)).thenReturn(contract);
         when(contract.getDeliveryNote()).thenReturn(deliveryNote);
         when(deliveryNote.getTxHash()).thenReturn("txHash");
         when(deliveryNote.getData()).thenReturn(new byte[]{1,2,3});

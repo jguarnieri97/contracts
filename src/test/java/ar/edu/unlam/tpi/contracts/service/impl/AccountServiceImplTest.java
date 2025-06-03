@@ -3,7 +3,7 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
-import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.util.ContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class AccountServiceImplTest {
 
     @Mock
-    private WorkContractRepository repository;
+    private WorkContractDAO repository;
 
     @Mock
     private WorkContractConverter converter;
@@ -44,7 +43,7 @@ public class AccountServiceImplTest {
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse contractResponse = WorkContractResponse.builder().build();
 
-        when(repository.findByApplicantId(applicantId)).thenReturn(List.of(contractEntity));
+        when(repository.findById(applicantId)).thenReturn((contractEntity));
         when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
 
         // When
@@ -66,7 +65,7 @@ public class AccountServiceImplTest {
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse contractResponse = WorkContractResponse.builder().build();
 
-        when(repository.findBySupplierIdAndStates(supplierId)).thenReturn(List.of(contractEntity));
+        when(repository.findBySupplierId(supplierId)).thenReturn(List.of(contractEntity));
         when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
 
         // When
@@ -75,7 +74,7 @@ public class AccountServiceImplTest {
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
-        verify(repository, times(1)).findBySupplierIdAndStates(supplierId);
+        verify(repository, times(1)).findBySupplierId(supplierId);
         verify(validator, times(1)).validateContractsExist(anyList(), eq("supplierId"), eq(supplierId));
         verify(converter, times(1)).convertToResponse(contractEntity);
     }
@@ -92,7 +91,7 @@ public class AccountServiceImplTest {
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse contractResponse = WorkContractResponse.builder().build();
     
-        when(repository.findByWorkersContainingAndDateRange(workerId, validStates, start, end))
+        when(repository.findByWorkersContainingStatesAndDateRange(workerId, validStates, start, end))
                 .thenReturn(List.of(contractEntity));
         when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
     
@@ -102,7 +101,7 @@ public class AccountServiceImplTest {
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
-        verify(repository).findByWorkersContainingAndDateRange(workerId, validStates, start, end);
+        verify(repository).findByWorkersContainingStatesAndDateRange(workerId, validStates, start, end);
         verify(validator).validateContractsExist(anyList(), eq("workerId"), eq(workerId));
         verify(converter).convertToResponse(contractEntity);
     }

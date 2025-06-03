@@ -1,6 +1,7 @@
 package ar.edu.unlam.tpi.contracts.beans;
 
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import ar.edu.unlam.tpi.contracts.util.ContractDataHelper;
 import lombok.RequiredArgsConstructor;

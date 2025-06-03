@@ -1,15 +1,17 @@
 package ar.edu.unlam.tpi.contracts.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Entity
 @Table(name = "images")
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @EqualsAndHashCode
+@Getter
+@Setter
+@Builder
 public class ImageEntity {
 
     @Id

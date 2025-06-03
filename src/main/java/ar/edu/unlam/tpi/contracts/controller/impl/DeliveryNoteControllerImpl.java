@@ -27,7 +27,7 @@ public class DeliveryNoteControllerImpl implements DeliveryNoteController {
 
     @Override
     public GenericResponse<DeliveryNoteResponse> getDeliveryNote(Long id) {
-        var deliveryNote = deliveryNoteService.getDeliveryNote(id);
+        DeliveryNoteResponse deliveryNote = deliveryNoteService.getDeliveryNote(id);
         return new GenericResponse<>(
                 Constants.STATUS_OK,
                 Constants.SUCCESS_MESSAGE,

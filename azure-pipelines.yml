@@ -4,14 +4,11 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  javaVersion: '17'
-
 steps:
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '17'
-    jdkArchitecture: 'x64'
+    jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
 - task: Maven@3
@@ -22,7 +19,6 @@ steps:
     mavenOptions: '-Xmx1024m'
     mavenVersionOption: 'Default'
 
-# Zip el JAR generado para que sea compatible con Azure Web App Linux
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/target'

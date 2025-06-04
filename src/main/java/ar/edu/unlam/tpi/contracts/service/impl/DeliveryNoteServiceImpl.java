@@ -3,10 +3,12 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 import ar.edu.unlam.tpi.contracts.client.BlockchainServiceClient;
 import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliverySignatureRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.persistence.dao.DeliveryNoteDAO;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
@@ -27,6 +29,8 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     private final BlockchainServiceClient blockchainClient;
     private final ExecutorService executorService;
     private final FileCreatorService fileCreatorService;
+    private final DeliveryNoteDAO deliveryNoteDAO;
+
 
     @Override
     public void createDeliveryNote(DeliveryNoteRequest request) {
@@ -39,22 +43,24 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
         contract.setDeliveryNote(deliveryNote);
         workContractRepository.save(contract);
-
+        
+        // Ejecutar la tarea asíncrona para certificar el documento
         executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, contract));
+        log.info("Tarea asíncrona de certificación iniciada para el contrato: {}", contract.getId());
     }
 
     @Override
     public DeliveryNoteResponse getDeliveryNote(Long contractId) {
         log.info("Obteniendo remito - contractId: {}", contractId);
         WorkContractEntity contract = workContractRepository.findById(contractId);
-        var deliveryNote = contract.getDeliveryNote();
+        DeliveryNote deliveryNote = contract.getDeliveryNote();
 
         if (Objects.isNull(deliveryNote)) {
             log.error("No existe un remito asociado al contrato con ID: {}", contractId);
             throw new DeliveryNoteNotFoundException("No existe un remito asociado al contrato con ID: " + contractId);
         }
 
-        var request = BlockchainVerifyRequest.builder()
+        BlockchainVerifyRequest request = BlockchainVerifyRequest.builder()
                 .txHash(deliveryNote.getTxHash())
                 .data(deliveryNote.getData())
                 .build();
@@ -73,4 +79,15 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
                 .build();
     }
 
+    @Override
+    public void signatureDeliveryNote(Long id, DeliverySignatureRequest request) {
+        log.info("Firmando remito con ID: {}", id);
+        DeliveryNote deliveryNote = deliveryNoteDAO.findDeliveryNoteById(id);
+        byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
+        
+        deliveryNote.setData(dataUpdated);
+        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, deliveryNote.getWorkContract()));
+        deliveryNoteDAO.saveDeliveryNote(deliveryNote);
+        log.info("Remito firmado exitosamente");
+    }
 }

@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 
 import ar.edu.unlam.tpi.contracts.controller.DeliveryNoteController;
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliverySignatureRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
@@ -32,6 +33,16 @@ public class DeliveryNoteControllerImpl implements DeliveryNoteController {
                 Constants.STATUS_OK,
                 Constants.SUCCESS_MESSAGE,
                 deliveryNote
+        );
+    }
+
+    @Override
+    public GenericResponse<Void> signatureDeliveryNote(Long id, DeliverySignatureRequest request) {
+        deliveryNoteService.signatureDeliveryNote(id, request);
+        return new GenericResponse<>(
+                Constants.STATUS_OK,
+                Constants.SUCCESS_MESSAGE,
+                null
         );
     }
 }

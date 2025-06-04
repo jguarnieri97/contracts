@@ -6,6 +6,7 @@ import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
 import ar.edu.unlam.tpi.contracts.exception.DeliveryNoteNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.persistence.dao.DeliveryNoteDAO;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
@@ -13,6 +14,11 @@ import ar.edu.unlam.tpi.contracts.service.task.DeliveryNoteExecutorTask;
 import ar.edu.unlam.tpi.contracts.util.DeliveryNoteDataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
 
@@ -20,53 +26,60 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class DeliveryNoteServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+public class DeliveryNoteServiceImplTest {
 
-    private DeliveryNoteService service;
+    
+    @Mock
     private WorkContractDAO repository;
+    
+    @Mock
     private BlockchainServiceClient blockchainClient;
+    
+    @Mock
     private ExecutorService executorService;
+    
+    @Mock
     private FileCreatorService fileCreatorService;
+    
+    
+    @Mock
+    private DeliveryNoteDAO deliveryNoteDAO;
 
-    @BeforeEach
-    void setUp() {
-        repository = mock(WorkContractDAO.class);
-        blockchainClient = mock(BlockchainServiceClient.class);
-        executorService = mock(ExecutorService.class);
-        fileCreatorService = mock(FileCreatorService.class);
-        service = new DeliveryNoteServiceImpl(repository, blockchainClient, executorService, fileCreatorService);
-    }
-
+    
+    @InjectMocks
+    private DeliveryNoteServiceImpl service;
+    
     @Test
-    void throwsExceptionWhenDeliveryNoteDoesNotExist() {
+    void givenContractWithoutDeliveryNote_whenGetDeliveryNote_thenThrowsException() {
         Long contractId = 123L;
         var contract = mock(WorkContractEntity.class);
         when(repository.findById(contractId)).thenReturn(contract);
         when(contract.getDeliveryNote()).thenReturn(null);
-
+    
         assertThrows(DeliveryNoteNotFoundException.class,
                 () -> service.getDeliveryNote(contractId));
     }
-
+    
     @Test
-    void createsDeliveryNoteAndExecutesAsyncTask() {
+    void givenValidRequest_whenCreateDeliveryNote_thenSavesContractAndExecutesAsyncTask() {
         DeliveryNoteRequest request = DeliveryNoteDataHelper.createDeliveryNoteRequest();
         WorkContractEntity contract = mock(WorkContractEntity.class);
-
+    
         when(repository.findById(1L)).thenReturn(contract);
-
+    
         service.createDeliveryNote(request);
-
+    
         verify(repository).save(contract);
         verify(executorService).execute(any(DeliveryNoteExecutorTask.class));
     }
-
+    
     @Test
-    void returnsDeliveryNoteResponseWhenDeliveryNoteExists() {
+    void givenContractWithDeliveryNote_whenGetDeliveryNote_thenReturnsDeliveryNoteResponse() {
         Long contractId = 1L;
         WorkContractEntity contract = mock(WorkContractEntity.class);
         DeliveryNote deliveryNote = mock(DeliveryNote.class);
-
+    
         when(repository.findById(contractId)).thenReturn(contract);
         when(contract.getDeliveryNote()).thenReturn(deliveryNote);
         when(deliveryNote.getTxHash()).thenReturn("txHash");
@@ -75,13 +88,13 @@ class DeliveryNoteServiceImplTest {
         when(deliveryNote.getDataHash()).thenReturn("hash");
         when(deliveryNote.getBlockNumber()).thenReturn("8000");
         when(deliveryNote.getCreatedAt()).thenReturn(java.time.LocalDateTime.now());
-
+    
         var response = service.getDeliveryNote(contractId);
-
+    
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(10L);
         verify(blockchainClient).verifyCertificate(any(BlockchainVerifyRequest.class));
     }
-
+    
 
 }

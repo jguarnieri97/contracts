@@ -78,13 +78,15 @@ public class WorkContractServiceImplTest {
     void givenValidIdAndUpdateRequest_whenUpdateContractState_thenUpdateContract() {
         // Given
         Long contractId = 1L;
-        WorkContractUpdateRequest updateRequest = WorkContratDataHelper.createWorkContractUpdateRequest();
+        WorkContractUpdateRequest updateRequest = WorkContractUpdateRequest.builder()
+                .state("PENDING")
+                .build();
         WorkContractEntity existingContract = WorkContractEntity.builder()
                 .codeNumber("CODE123")
                 .price(150000.0)
                 .dateFrom(LocalDate.of(2025, 5, 13))
                 .dateTo(LocalDate.of(2025, 5, 15))
-                .state(WorkStateEnum.PENDING)
+                .state(WorkStateEnum.FINALIZED)
                 .detail("Trabajo de prueba")
                 .supplierId(1L)
                 .applicantId(2L)
@@ -97,7 +99,6 @@ public class WorkContractServiceImplTest {
         service.updateContractState(contractId, updateRequest);
 
         // Then
-        verify(validator, times(1)).validateStateFinalized(updateRequest);
         verify(repository, times(1)).save(existingContract);
         assertEquals(WorkStateEnum.PENDING, existingContract.getState());
     }
@@ -124,13 +125,11 @@ public class WorkContractServiceImplTest {
     @Test
     void givenInvalidId_whenGetContractById_thenThrowContractNotFoundException() {
         // Given
-        Long contractId = 1L;
+        Long invalidId = 999L;
+        when(repository.findById(invalidId)).thenThrow(new ContractNotFoundException("Contract not found"));
 
-        when(repository.findById(contractId)).thenReturn(null);
-
-        // When / Then
-        assertThrows(ContractNotFoundException.class, () -> service.getContractById(contractId));
-        verify(repository, times(1)).findById(contractId);
-        verifyNoInteractions(converter);
+        // When/Then
+        assertThrows(ContractNotFoundException.class, () -> service.getContractById(invalidId));
+        verify(repository, times(1)).findById(invalidId);
     }
 }

@@ -43,7 +43,7 @@ public class AccountServiceImplTest {
         WorkContractEntity contractEntity = new WorkContractEntity();
         WorkContractResponse contractResponse = WorkContractResponse.builder().build();
 
-        when(repository.findById(applicantId)).thenReturn((contractEntity));
+        when(repository.findByApplicantId(applicantId)).thenReturn(List.of(contractEntity));
         when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
 
         // When

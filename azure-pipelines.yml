@@ -1,8 +1,46 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  javaVersion: '17'
+
+steps:
+- task: UseJavaVersion@1
+  inputs:
+    versionSpec: '$(javaVersion)'
+    jdkArchitecture: 'x64'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package -DskipTests'
+    javaHomeOption: 'Path'
+    mavenOptions: '-Xmx1024m'
+    mavenVersionOption: 'Default'
+
+# Zip el JAR generado para que sea compatible con Azure Web App Linux
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/target'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: AzureRmWebAppDeployment@5
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure for Students(a5df71b4-0685-45c4-bca0-872ed1001ee1)'
     appType: 'webAppLinux'
     WebAppName: 'nexwork-contracts'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/app.zip'
     DeploymentTypeLinux: 'oneDeploy'

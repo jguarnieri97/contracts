@@ -1,10 +1,7 @@
 package ar.edu.unlam.tpi.contracts.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,9 +11,11 @@ import java.util.List;
 @Entity
 @Table(name = "work_contracts") 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class WorkContractEntity {
     
     @Id
@@ -35,7 +34,6 @@ public class WorkContractEntity {
     
     @Column
     private LocalDate dateTo;
-    
 
     @Column
     private String detail;
@@ -61,18 +59,5 @@ public class WorkContractEntity {
     @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private DeliveryNote deliveryNote;
-
-
-    public WorkContractEntity(String codeNumber, Double price, LocalDate dateFrom, LocalDate dateTo, WorkStateEnum state, String detail, Long supplierId, Long applicantId, List<Long> workers) {
-        this.codeNumber = codeNumber;
-        this.price = price;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-        this.state = state;
-        this.detail = detail;
-        this.supplierId = supplierId;
-        this.applicantId = applicantId;
-        this.workers = workers;
-    }
 
 }

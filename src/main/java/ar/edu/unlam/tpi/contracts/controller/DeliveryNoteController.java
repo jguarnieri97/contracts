@@ -1,6 +1,7 @@
 package ar.edu.unlam.tpi.contracts.controller;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliveryNoteRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.DeliverySignatureRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import org.springframework.http.HttpStatus;
@@ -16,5 +17,10 @@ public interface DeliveryNoteController {
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<DeliveryNoteResponse> getDeliveryNote(@PathVariable("id") Long id);
+
+    @PutMapping("{id}")
+    GenericResponse<Void> signatureDeliveryNote(
+            @PathVariable("id") Long id,
+            @RequestBody DeliverySignatureRequest request);
 
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "DELIVERY_NOTE")
 @Getter
+@Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 public class DeliveryNote {

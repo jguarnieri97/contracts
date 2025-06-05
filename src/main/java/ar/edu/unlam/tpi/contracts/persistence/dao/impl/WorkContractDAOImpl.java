@@ -3,13 +3,16 @@ package ar.edu.unlam.tpi.contracts.persistence.dao.impl;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.exception.WorkContractRepositoryException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
+import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.InternalException;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -19,35 +22,71 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     private final WorkContractRepository workContractRepository;
 
     @Override
-    public WorkContractEntity findWorkContractById(Long id) {
-        log.info("Buscando contrato por ID: {}", id);
-        Optional<WorkContractEntity> contract;
-
+    public List<WorkContractEntity> findAll() {
         try {
-            contract = workContractRepository.findById(id);
+            return workContractRepository.findAll();
+        } catch (Exception e) {
+            throw new InternalException(e.getMessage());
+        }
+    }
+
+    @Override
+    public WorkContractEntity findById(Long id) {
+        try {
+            log.info("Buscando contrato por ID: {}", id);
+            return workContractRepository.findById(id)
+                    .orElseThrow(() -> new ContractNotFoundException("WorkContract not found"));
         } catch (Exception e) {
             log.error("Error interno al buscar contrato: {}", e.getMessage());
             throw new WorkContractRepositoryException(e.getMessage());
         }
-
-        if (contract.isEmpty()) {
-            log.error("No se encontro contrato por el ID: {}", id);
-            throw new ContractNotFoundException("No se encontró el contrato con ID: " + id);
-        }
-
-        log.info("Se encontró un contrato con ID: {}", id);
-        return contract.get();
     }
 
     @Override
-    public void saveWorkContract(WorkContractEntity workContract) {
+    public WorkContractEntity save(WorkContractEntity entity) {
         try {
-            log.info("Guardando contrato con ID: {}", workContract.getId());
-            workContractRepository.save(workContract);
-            log.info("Se guardó contrato exitosamente con el ID: {}", workContract.getId());
+            log.info("Guardando contrato con ID: {}", entity.getId());
+            return workContractRepository.save(entity);
         } catch (Exception e) {
             log.error("Error interno al guardar contrato: {}", e.getMessage());
             throw new WorkContractRepositoryException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        try {
+            workContractRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new InternalException(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public List<WorkContractEntity> findByApplicantId(Long applicantId) {
+        try {
+            return workContractRepository.findByApplicantId(applicantId);
+        } catch (Exception e) {
+            throw new InternalException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<WorkContractEntity> findBySupplierId(Long supplierId) {
+        try {
+            return workContractRepository.findBySupplierId(supplierId);
+        } catch (Exception e) {
+            throw new InternalException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<WorkContractEntity> findByWorkersContainingStatesAndDateRange(Long workerId, List<WorkStateEnum> states, LocalDate start, LocalDate end) {
+        try {
+            return workContractRepository.findByWorkersContainingStatesAndDateRange(workerId, states, start, end);
+        } catch (Exception e) {
+            throw new InternalException(e.getMessage());
         }
     }
 }

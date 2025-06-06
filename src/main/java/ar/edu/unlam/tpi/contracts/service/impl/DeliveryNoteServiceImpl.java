@@ -66,8 +66,12 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
                 .build();
 
         log.info("Realizando verificación del certificado");
-        blockchainClient.verifyCertificate(request);
-        log.info("Certificado verificado con éxito!");
+        try {
+            blockchainClient.verifyCertificate(request);
+            log.info("Certificado verificado con éxito!");
+        } catch (Exception e) {
+            log.error("Error al verificar el certificado: {}", e.getMessage());
+        }
 
         return DeliveryNoteResponse.builder()
                 .id(deliveryNote.getId())

@@ -20,7 +20,6 @@ public class WorkContractEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contract_id")
     private Long id;
 
     @Column(name = "code_number", unique = true, nullable = false)
@@ -38,7 +37,7 @@ public class WorkContractEntity {
     @Column(name = "contract_detail")
     private String detail;
 
-    @Column(name = "contract_sate")
+    @Column(name = "contract_state")
     private WorkStateEnum state;
 
     @Column(name = "supplier_id", nullable = false)
@@ -48,14 +47,14 @@ public class WorkContractEntity {
     private Long applicantId;
 
     @ElementCollection
-    @CollectionTable(name = "contract_workers", joinColumns = @JoinColumn(name = "contract_id"))
+    @CollectionTable(name = "contract_workers", schema = "CONTRACTS", joinColumns = @JoinColumn(name = "contract_id"))
     @Column(name = "worker_id")
     private List<Long> workers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workContract", orphanRemoval = true)
     private List<ImageEntity> files = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)
     private DeliveryNote deliveryNote;
 
 }

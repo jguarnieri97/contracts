@@ -16,11 +16,10 @@ public class DeliveryNote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "contract_id", nullable = false)
-    @OneToOne(mappedBy = "deliveryNote")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "contract_id", referencedColumnName = "id")
     private WorkContractEntity workContract;
 
-    @Lob
     @Setter
     @Column(name = "note_data")
     private byte[] data;

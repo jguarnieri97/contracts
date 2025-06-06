@@ -11,11 +11,11 @@ public class DeliveryNoteDataHelper {
     public static DeliveryNoteRequest createDeliveryNoteRequest() {
         return DeliveryNoteRequest.builder()
                 .contractId(1L)
-                .applicantsData(List.of(CompanyData.builder()
+                .applicantData(List.of(CompanyData.builder()
                         .companyName("Applicant Company")
                         .cuit("20-12345678-9")
                         .build()))
-                .suppliersData(List.of(CompanyData.builder()
+                .supplierData(List.of(CompanyData.builder()
                         .companyName("Supplier Company")
                         .cuit("20-12345678-9")
                         .build()))

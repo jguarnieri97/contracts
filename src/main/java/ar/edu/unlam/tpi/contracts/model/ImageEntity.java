@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "images")
+@Table(name = "CONTRACT_IMAGE", schema = "CONTRACTS")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -19,8 +19,12 @@ public class ImageEntity {
     private Long id;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "img_data", nullable = false)
     private byte[] data;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id")
+    private WorkContractEntity workContract;
 
     public ImageEntity(byte[] data) {
         this.data = data;

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "work_contracts") 
+@Table(name = "WORK_CONTRACT", schema = "CONTRACTS")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,19 +26,19 @@ public class WorkContractEntity {
     @Column(name = "code_number", unique = true, nullable = false)
     private String codeNumber;
 
-    @Column
+    @Column(name = "price")
     private Double price;
 
-    @Column
+    @Column(name = "date_from")
     private LocalDate dateFrom;
-    
-    @Column
+
+    @Column(name = "date_to")
     private LocalDate dateTo;
 
-    @Column
+    @Column(name = "contract_detail")
     private String detail;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "contract_sate")
     private WorkStateEnum state;
 
     @Column(name = "supplier_id", nullable = false)
@@ -49,14 +49,12 @@ public class WorkContractEntity {
 
     @ElementCollection
     @CollectionTable(name = "contract_workers", joinColumns = @JoinColumn(name = "contract_id"))
-    @Column(name = "workers")
+    @Column(name = "worker_id")
     private List<Long> workers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "contract_id")
     private List<ImageEntity> files = new ArrayList<>();
 
-    @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private DeliveryNote deliveryNote;
 

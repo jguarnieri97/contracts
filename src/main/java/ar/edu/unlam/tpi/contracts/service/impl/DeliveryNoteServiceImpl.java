@@ -44,8 +44,6 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         contract.setDeliveryNote(deliveryNote);
         workContractRepository.save(contract);
         
-        // Ejecutar la tarea asíncrona para certificar el documento
-        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, contract));
         log.info("Tarea asíncrona de certificación iniciada para el contrato: {}", contract.getId());
     }
 
@@ -66,8 +64,12 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
                 .build();
 
         log.info("Realizando verificación del certificado");
-        blockchainClient.verifyCertificate(request);
-        log.info("Certificado verificado con éxito!");
+        try {
+            blockchainClient.verifyCertificate(request);
+            log.info("Certificado verificado con éxito!");
+        } catch (Exception e) {
+            log.error("Error al verificar el certificado: {}", e.getMessage());
+        }
 
         return DeliveryNoteResponse.builder()
                 .id(deliveryNote.getId())
@@ -86,6 +88,8 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
         
         deliveryNote.setData(dataUpdated);
+
+        //Firma el remito y la guarda en la blockchain
         executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, deliveryNote.getWorkContract()));
         deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");

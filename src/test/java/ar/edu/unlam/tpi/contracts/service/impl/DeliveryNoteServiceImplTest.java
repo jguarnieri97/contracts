@@ -71,7 +71,6 @@ public class DeliveryNoteServiceImplTest {
         service.createDeliveryNote(request);
     
         verify(repository).save(contract);
-        verify(executorService).execute(any(DeliveryNoteExecutorTask.class));
     }
     
     @Test

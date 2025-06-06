@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "work_contracts") 
+@Table(name = "WORK_CONTRACT", schema = "CONTRACTS")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,25 +20,24 @@ public class WorkContractEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contract_id")
     private Long id;
 
     @Column(name = "code_number", unique = true, nullable = false)
     private String codeNumber;
 
-    @Column
+    @Column(name = "price")
     private Double price;
 
-    @Column
+    @Column(name = "date_from")
     private LocalDate dateFrom;
-    
-    @Column
+
+    @Column(name = "date_to")
     private LocalDate dateTo;
 
-    @Column
+    @Column(name = "contract_detail")
     private String detail;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "contract_state")
     private WorkStateEnum state;
 
     @Column(name = "supplier_id", nullable = false)
@@ -48,16 +47,14 @@ public class WorkContractEntity {
     private Long applicantId;
 
     @ElementCollection
-    @CollectionTable(name = "contract_workers", joinColumns = @JoinColumn(name = "contract_id"))
-    @Column(name = "workers")
+    @CollectionTable(name = "contract_workers", schema = "CONTRACTS", joinColumns = @JoinColumn(name = "contract_id"))
+    @Column(name = "worker_id")
     private List<Long> workers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "contract_id")
+    @OneToMany(mappedBy = "workContract", orphanRemoval = true)
     private List<ImageEntity> files = new ArrayList<>();
 
-    @Setter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)
     private DeliveryNote deliveryNote;
 
 }

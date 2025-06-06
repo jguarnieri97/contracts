@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
-import java.util.Base64;
 import java.util.Map;
 
 @Slf4j
@@ -117,21 +116,21 @@ public class FileCreatorService {
     private void buildSupplierSection(DeliveryNoteRequest request,WorkContractEntity contract, Document document) throws DocumentException {
         document.add(new Paragraph("N° " + contract.getCodeNumber()));
         document.add(new Paragraph(" "));
-        document.add(new Paragraph(request.getSuppliersData().get(0).getCompanyName()));
-        document.add(new Paragraph("Email: " + request.getSuppliersData().get(0).getEmail()));
-        document.add(new Paragraph("Teléfono: " + request.getSuppliersData().get(0).getPhone()));
-        document.add(new Paragraph("Dirección: " + request.getSuppliersData().get(0).getAddress()));
-        document.add(new Paragraph("CUIT: " + request.getSuppliersData().get(0).getCuit()));
+        document.add(new Paragraph(request.getSupplierData().getCompanyName()));
+        document.add(new Paragraph("Email: " + request.getSupplierData().getEmail()));
+        document.add(new Paragraph("Teléfono: " + request.getSupplierData().getPhone()));
+        document.add(new Paragraph("Dirección: " + request.getSupplierData().getAddress()));
+        document.add(new Paragraph("CUIT: " + request.getSupplierData().getCuit()));
         document.add(new Paragraph(" "));
     }
 
     private void buildClientSection(DeliveryNoteRequest request, Document document) throws DocumentException {
         document.add(new Paragraph(" "));
-        document.add(new Paragraph("Cliente: " + request.getApplicantsData().get(0).getCompanyName()));
-        document.add(new Paragraph("Email: " + request.getApplicantsData().get(0).getEmail()));
-        document.add(new Paragraph("Teléfono: " + request.getApplicantsData().get(0).getPhone()));
-        document.add(new Paragraph("Dirección: " + request.getApplicantsData().get(0).getAddress()));
-        document.add(new Paragraph("CUIT: " + request.getApplicantsData().get(0).getCuit()));
+        document.add(new Paragraph("Cliente: " + request.getApplicantData().getCompanyName()));
+        document.add(new Paragraph("Email: " + request.getApplicantData().getEmail()));
+        document.add(new Paragraph("Teléfono: " + request.getApplicantData().getPhone()));
+        document.add(new Paragraph("Dirección: " + request.getApplicantData().getAddress()));
+        document.add(new Paragraph("CUIT: " + request.getApplicantData().getCuit()));
         document.add(new Paragraph(" "));
     }
 

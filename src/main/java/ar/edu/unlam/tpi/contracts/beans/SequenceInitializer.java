@@ -1,6 +1,7 @@
-package ar.edu.unlam.tpi.contracts.configuration;
+package ar.edu.unlam.tpi.contracts.beans;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -8,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 @Component
+@ConditionalOnProperty(name = "app.start.mode", havingValue = "test", matchIfMissing = true)
 public class SequenceInitializer {
 
     private final DataSource dataSource;

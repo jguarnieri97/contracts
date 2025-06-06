@@ -11,14 +11,14 @@ public class DeliveryNoteDataHelper {
     public static DeliveryNoteRequest createDeliveryNoteRequest() {
         return DeliveryNoteRequest.builder()
                 .contractId(1L)
-                .applicantsData(List.of(CompanyData.builder()
+                .applicantData(CompanyData.builder()
                         .companyName("Applicant Company")
                         .cuit("20-12345678-9")
-                        .build()))
-                .suppliersData(List.of(CompanyData.builder()
+                        .build())
+                .supplierData(CompanyData.builder()
                         .companyName("Supplier Company")
                         .cuit("20-12345678-9")
-                        .build()))
+                        .build())
                 .build();
     }
 

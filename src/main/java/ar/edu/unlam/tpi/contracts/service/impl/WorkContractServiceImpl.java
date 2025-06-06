@@ -7,8 +7,8 @@ import ar.edu.unlam.tpi.contracts.model.ImageEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
+import ar.edu.unlam.tpi.contracts.service.CodeNumberGenerator;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
-import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
 
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
@@ -17,17 +17,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WorkContractServiceImpl implements WorkContractService {
 
     private final WorkContractDAO repository;
     private final WorkContractConverter converter;
     private final WorkContractValidator validator;
-    private final CodeNumberGeneratorService codeNumberGenerator;
+    private final CodeNumberGenerator codeNumberGenerator;
 
     @Override
     public WorkContractResponse createContract(WorkContractRequest request) {
@@ -69,7 +70,7 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     private void addImagesToContract(WorkContractEntity contract, List<String> filesBase64) {
         List<ImageEntity> images = filesBase64.stream()
-                .map(base64 -> new ImageEntity(java.util.Base64.getDecoder().decode(base64)))
+                .map(base64 -> new ImageEntity(Base64.getDecoder().decode(base64)))
                 .toList();
         if (contract.getFiles() == null) {
             contract.setFiles(new ArrayList<>());

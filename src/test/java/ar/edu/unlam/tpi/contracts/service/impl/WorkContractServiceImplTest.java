@@ -7,7 +7,6 @@ import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
-import ar.edu.unlam.tpi.contracts.service.CodeNumberGeneratorService;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
@@ -37,7 +36,7 @@ public class WorkContractServiceImplTest {
     private WorkContractValidator validator;
 
     @Mock
-    private CodeNumberGeneratorService codeNumberGenerator;
+    private CodeNumberGeneratorTestImpl codeNumberGenerator;
 
     @InjectMocks
     private WorkContractServiceImpl service;

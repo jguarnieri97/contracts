@@ -56,14 +56,14 @@ public class TestUtils {
     public static DeliveryNoteRequest buildDeliveryNoteRequest() {
         return DeliveryNoteRequest.builder()
                 .contractId(CONTRACT_ID)
-                .applicantData(List.of(CompanyData.builder()
+                .applicantData(CompanyData.builder()
                         .companyName(APPLICANT_COMPANY)
                         .cuit(CUIT)
-                        .build()))
-                .supplierData(List.of(CompanyData.builder()
+                        .build())
+                .supplierData(CompanyData.builder()
                         .companyName(SUPPLIER_COMPANY)
                         .cuit(CUIT)
-                        .build()))
+                        .build())
                 .build();
     }
     

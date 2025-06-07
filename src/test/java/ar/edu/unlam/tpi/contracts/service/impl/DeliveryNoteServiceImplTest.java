@@ -8,20 +8,14 @@ import ar.edu.unlam.tpi.contracts.model.DeliveryNote;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.persistence.dao.DeliveryNoteDAO;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
-import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
-import ar.edu.unlam.tpi.contracts.service.task.DeliveryNoteExecutorTask;
 import ar.edu.unlam.tpi.contracts.util.DeliveryNoteDataHelper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.concurrent.ExecutorService;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,7 +23,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class DeliveryNoteServiceImplTest {
 
-    
     @Mock
     private WorkContractDAO repository;
     

@@ -91,7 +91,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         deliveryNote.setData(dataUpdated);
 
         //Firma el remito y la guarda en la blockchain
-        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, deliveryNote.getWorkContract()));
+        executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, contract));
         deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");
     }

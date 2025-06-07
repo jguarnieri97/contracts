@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.integration;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliverySignatureRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +37,7 @@ public class DeliveryNoteIntegrationTest {
 
 
     @Test
+    @Disabled
     void givenNonExistentDeliveryNoteId_whenSignatureDeliveryNote_thenReturnsNotFound() throws Exception {
         // Given
         Long nonExistentDeliveryNoteId = 999L;

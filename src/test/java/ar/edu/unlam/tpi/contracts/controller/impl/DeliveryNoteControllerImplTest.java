@@ -4,6 +4,8 @@ import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,24 +24,31 @@ public class DeliveryNoteControllerImplTest {
     private DeliveryNoteControllerImpl controller;
 
 
-    @org.junit.jupiter.api.Test
-    void returnsCreatedResponseWhenRequestIsNull() {
+    @Test
+    void givenNullRequest_whenCreateDeliveryNote_thenReturnsCreatedResponse() {
+        // When
         GenericResponse<Void> response = controller.createDeliveryNote(null);
-
+    
+        // Then
         verify(deliveryNoteService).createDeliveryNote(null);
         assertThat(response.getCode()).isEqualTo(Constants.STATUS_CREATED);
         assertThat(response.getMessage()).isEqualTo(Constants.CREATED_MESSAGE);
         assertThat(response.getData()).isNull();
     }
+    
 
-    @org.junit.jupiter.api.Test
-    void returnsOkResponseWhenGetDeliveryNoteWithNullId() {
+    @Test
+    void givenNullId_whenGetDeliveryNote_thenReturnsOkResponseWithNullData() {
+        // Given
         when(deliveryNoteService.getDeliveryNote(null)).thenReturn(null);
-
+    
+        // When
         GenericResponse<DeliveryNoteResponse> response = controller.getDeliveryNote(null);
-
+    
+        // Then
         assertThat(response.getCode()).isEqualTo(Constants.STATUS_OK);
         assertThat(response.getMessage()).isEqualTo(Constants.SUCCESS_MESSAGE);
         assertThat(response.getData()).isNull();
     }
+    
 }

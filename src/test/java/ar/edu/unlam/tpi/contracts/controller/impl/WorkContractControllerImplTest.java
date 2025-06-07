@@ -20,6 +20,7 @@ public class WorkContractControllerImplTest {
     
     @InjectMocks
     private WorkContractControllerImpl controller;
+    
     @Test
     void givenValidRequest_whenCreateContract_thenReturnsGenericResponseWithCreatedStatus() {
         // Arrange

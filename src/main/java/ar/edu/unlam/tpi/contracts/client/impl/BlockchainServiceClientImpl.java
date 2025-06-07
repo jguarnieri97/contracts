@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -69,6 +71,7 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
                                 .flatMap(errorHandler::handle5xxError))
                 .bodyToMono(Void.class)
                 .doOnError(errorHandler::onClientError)
+                .timeout(Duration.ofSeconds(30))
                 .block();
     }
 

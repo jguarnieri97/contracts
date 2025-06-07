@@ -14,13 +14,13 @@ public interface DeliveryNoteController {
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<Void> createDeliveryNote(@RequestBody DeliveryNoteRequest deliveryNote);
 
-    @GetMapping("{id}")
+    @GetMapping("{contractId}")
     @ResponseStatus(HttpStatus.OK)
-    GenericResponse<DeliveryNoteResponse> getDeliveryNote(@PathVariable("id") Long id);
+    GenericResponse<DeliveryNoteResponse> getDeliveryNote(@PathVariable("contractId") Long contractId);
 
-    @PutMapping("{id}")
+    @PutMapping("{contractId}")
     GenericResponse<Void> signatureDeliveryNote(
-            @PathVariable("id") Long id,
+            @PathVariable("contractId") Long contractId,
             @RequestBody DeliverySignatureRequest request);
 
 }

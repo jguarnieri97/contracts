@@ -82,9 +82,10 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     }
 
     @Override
-    public void signatureDeliveryNote(Long id, DeliverySignatureRequest request) {
-        log.info("Firmando remito con ID: {}", id);
-        DeliveryNote deliveryNote = deliveryNoteDAO.findDeliveryNoteById(id);
+    public void signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
+        log.info("Firmando remito con ID del contrato: {}", contractId);
+        var contract = workContractRepository.findById(contractId);
+        DeliveryNote deliveryNote = contract.getDeliveryNote();
         byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
         
         deliveryNote.setData(dataUpdated);

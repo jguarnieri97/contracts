@@ -7,7 +7,7 @@ import ar.edu.unlam.tpi.contracts.dto.request.BlockchainVerifyRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.BlockchainResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.ErrorResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
-import ar.edu.unlam.tpi.contracts.exception.BlockchainClientException;
+import ar.edu.unlam.tpi.contracts.exception.ClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +51,7 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
                 .block();
 
         if (response == null || response.getData() == null) {
-            throw new BlockchainClientException("La respuesta del servidor es nula o inválida");
+            throw new ClientException("La respuesta del servidor es nula o inválida");
         }
         return response.getData();
     }

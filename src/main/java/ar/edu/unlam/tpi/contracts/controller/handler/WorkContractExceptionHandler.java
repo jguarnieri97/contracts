@@ -20,8 +20,8 @@ public class WorkContractExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BlockchainClientException.class)
-    public ResponseEntity<ErrorResponse> handleBlockchainClientException(BlockchainClientException ex) {
+    @ExceptionHandler(ClientException.class)
+    public ResponseEntity<ErrorResponse> handleBlockchainClientException(ClientException ex) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(ex.getCode())
                 .message(ex.getMessage())

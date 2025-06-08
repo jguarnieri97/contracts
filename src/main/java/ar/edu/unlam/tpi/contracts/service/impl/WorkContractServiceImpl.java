@@ -1,5 +1,7 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
+import ar.edu.unlam.tpi.contracts.client.ValidationClient;
+import ar.edu.unlam.tpi.contracts.dto.request.RegisterRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
@@ -8,6 +10,7 @@ import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.CodeNumberGenerator;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 
+import ar.edu.unlam.tpi.contracts.util.Converter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class WorkContractServiceImpl implements WorkContractService {
     private final WorkContractConverter converter;
     private final WorkContractValidator validator;
     private final CodeNumberGenerator codeNumberGenerator;
+    private final ValidationClient validationClient;
 
     @Override
     public WorkContractResponse createContract(WorkContractRequest request) {
@@ -57,7 +61,13 @@ public class WorkContractServiceImpl implements WorkContractService {
         if (request.getFiles() != null) {
             addImagesToContract(contract, request.getFiles());
         }
+
         repository.save(contract);
+
+        if (WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
+            RegisterRequest registerRequest = Converter.toRegisterRequest(contract, request.getFiles());
+            validationClient.registerWork(registerRequest);
+        }
     }
 
     @Override

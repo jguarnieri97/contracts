@@ -17,8 +17,6 @@ public class ContractDataInitializerHelper {
     private static final Long SUPPLIER_1_WORKER_2 = 2L;
     private static final Long SUPPLIER_2_WORKER_1 = 3L;
     private static final Long SUPPLIER_2_WORKER_2 = 4L;
-    private static final Long SUPPLIER_3_WORKER_1 = 5L;
-    private static final Long SUPPLIER_3_WORKER_2 = 6L;
 
     public static List<WorkContractEntity> getContracts() {
 
@@ -41,7 +39,7 @@ public class ContractDataInitializerHelper {
                         .detail("Mantenimiento general")
                         .supplierEntity(supplier1)
                         .applicantEntity(applicant1)
-                        .workers(List.of(SUPPLIER_3_WORKER_1, SUPPLIER_3_WORKER_2))
+                        .workers(List.of(SUPPLIER_1_WORKER_2, SUPPLIER_1_WORKER_2))
                         .build(),
 
                 WorkContractEntity.builder()
@@ -79,7 +77,7 @@ public class ContractDataInitializerHelper {
                         .detail("Reparacion de puerta")
                         .supplierEntity(supplier1)
                         .applicantEntity(applicant2)
-                        .workers(List.of(SUPPLIER_3_WORKER_1))
+                        .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build(),
 
                 WorkContractEntity.builder()
@@ -103,7 +101,7 @@ public class ContractDataInitializerHelper {
                         .detail("Instalación de cámaras de seguridad")
                         .supplierEntity(supplier1)
                         .applicantEntity(applicant1)
-                        .workers(List.of(SUPPLIER_3_WORKER_2))
+                        .workers(List.of(SUPPLIER_1_WORKER_1))
                         .build(),
 
                 WorkContractEntity.builder()

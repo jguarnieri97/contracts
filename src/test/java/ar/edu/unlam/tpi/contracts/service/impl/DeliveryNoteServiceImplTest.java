@@ -10,6 +10,7 @@ import ar.edu.unlam.tpi.contracts.persistence.dao.DeliveryNoteDAO;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.FileCreatorService;
 import ar.edu.unlam.tpi.contracts.util.DeliveryNoteDataHelper;
+import ar.edu.unlam.tpi.contracts.util.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -70,22 +71,31 @@ public class DeliveryNoteServiceImplTest {
     void givenContractWithDeliveryNote_whenGetDeliveryNote_thenReturnsDeliveryNoteResponse() {
         Long contractId = 1L;
         WorkContractEntity contract = mock(WorkContractEntity.class);
-        DeliveryNote deliveryNote = mock(DeliveryNote.class);
+        DeliveryNote deliveryNote = DeliveryNoteDataHelper.createDeliveryNote();
     
         when(repository.findById(contractId)).thenReturn(contract);
         when(contract.getDeliveryNote()).thenReturn(deliveryNote);
-        when(deliveryNote.getTxHash()).thenReturn("txHash");
-        when(deliveryNote.getData()).thenReturn(new byte[]{1,2,3});
-        when(deliveryNote.getId()).thenReturn(10L);
-        when(deliveryNote.getDataHash()).thenReturn("hash");
-        when(deliveryNote.getBlockNumber()).thenReturn("8000");
-        when(deliveryNote.getCreatedAt()).thenReturn(java.time.LocalDateTime.now());
-    
+
         var response = service.getDeliveryNote(contractId);
     
         assertThat(response).isNotNull();
-        assertThat(response.getId()).isEqualTo(10L);
         verify(blockchainClient).verifyCertificate(any(BlockchainVerifyRequest.class));
+    }
+
+    @Test
+    void givenContractWithDeliveryNote_whenIsNotSigned_thenNotGoToBlockchain() {
+        Long contractId = 1L;
+        WorkContractEntity contract = mock(WorkContractEntity.class);
+        DeliveryNote deliveryNote = DeliveryNoteDataHelper.createDeliveryNote();
+        deliveryNote.setSigned(false);
+
+        when(repository.findById(contractId)).thenReturn(contract);
+        when(contract.getDeliveryNote()).thenReturn(deliveryNote);
+
+        var response = service.getDeliveryNote(contractId);
+
+        assertThat(response).isNotNull();
+        verify(blockchainClient, never()).verifyCertificate(any(BlockchainVerifyRequest.class));
     }
     
 

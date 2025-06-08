@@ -1,8 +1,8 @@
 package ar.edu.unlam.tpi.contracts.beans;
 
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-    import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
-import ar.edu.unlam.tpi.contracts.util.ContractDataHelper;
+import ar.edu.unlam.tpi.contracts.persistence.repository.WorkContractRepository;
+import ar.edu.unlam.tpi.contracts.util.ContractDataInitializerHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +21,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<WorkContractEntity> contracts = ContractDataHelper.getContracts();
+        List<WorkContractEntity> contracts = ContractDataInitializerHelper.getContracts();
         workContractRepository.saveAll(contracts);
 
         log.info("🟢 Se cargaron {} contratos iniciales", contracts.size());

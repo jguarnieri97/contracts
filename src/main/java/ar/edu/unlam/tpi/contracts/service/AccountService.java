@@ -1,5 +1,7 @@
 package ar.edu.unlam.tpi.contracts.service;
 import java.util.List;
+
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 
 public interface AccountService {
@@ -13,7 +15,7 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit);
+    List<WorkContractInfoResponse> getContractsByApplicantId(Long applicantId, Boolean limit);
 
     /**
      * Obtiene los contratos de un proveedor
@@ -24,7 +26,7 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit);
+    List<WorkContractInfoResponse> getContractsBySupplierId(Long supplierId, Boolean limit);
 
     
     /**
@@ -34,6 +36,6 @@ public interface AccountService {
      * @return
      *      Una lista de contratos
      */
-    List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range);
+    List<WorkContractInfoResponse> getContractsByWorkerId(Long workerId, String range);
 
 }

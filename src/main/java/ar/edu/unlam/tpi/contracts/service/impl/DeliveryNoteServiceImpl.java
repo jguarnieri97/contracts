@@ -58,15 +58,19 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
             throw new DeliveryNoteNotFoundException("No existe un remito asociado al contrato con ID: " + contractId);
         }
 
-        BlockchainVerifyRequest request = BlockchainVerifyRequest.builder()
-                .txHash(deliveryNote.getTxHash())
-                .data(deliveryNote.getData())
-                .build();
 
-        log.info("Realizando verificación del certificado");
         try {
-            blockchainClient.verifyCertificate(request);
-            log.info("Certificado verificado con éxito!");
+            if (deliveryNote.isSigned()) {
+                BlockchainVerifyRequest request = BlockchainVerifyRequest.builder()
+                        .txHash(deliveryNote.getTxHash())
+                        .data(deliveryNote.getData())
+                        .build();
+
+                log.info("Realizando verificación del certificado");
+
+                blockchainClient.verifyCertificate(request);
+                log.info("Certificado verificado con éxito!");
+            }
         } catch (Exception e) {
             log.error("Error al verificar el certificado: {}", e.getMessage());
         }
@@ -92,6 +96,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
 
         //Firma el remito y la guarda en la blockchain
         executorService.execute(new DeliveryNoteExecutorTask(workContractRepository, blockchainClient, contract));
+        deliveryNote.setSigned(true);
         deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");
     }

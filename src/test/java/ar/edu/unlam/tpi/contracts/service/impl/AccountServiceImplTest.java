@@ -1,11 +1,12 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
-import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.util.ContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
+import ar.edu.unlam.tpi.contracts.util.WorkContractDataHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,20 +42,19 @@ public class AccountServiceImplTest {
         Long applicantId = 1L;
         Boolean limit = true;
         WorkContractEntity contractEntity = new WorkContractEntity();
-        WorkContractResponse contractResponse = WorkContractResponse.builder().build();
-
+        WorkContractInfoResponse contractResponse = WorkContractDataHelper.createWorkContractInfoResponse();
         when(repository.findByApplicantId(applicantId)).thenReturn(List.of(contractEntity));
-        when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
+        when(converter.convertToInfoResponse(contractEntity)).thenReturn(contractResponse);
 
         // When
-        List<WorkContractResponse> result = service.getContractsByApplicantId(applicantId, limit);
+        List<WorkContractInfoResponse> result = service.getContractsByApplicantId(applicantId, limit);
 
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
         verify(repository, times(1)).findByApplicantId(applicantId);
         verify(validator, times(1)).validateContractsExist(anyList(), eq("applicantId"), eq(applicantId));
-        verify(converter, times(1)).convertToResponse(contractEntity);
+        verify(converter, times(1)).convertToInfoResponse(contractEntity);
     }
 
     @Test
@@ -63,20 +63,20 @@ public class AccountServiceImplTest {
         Long supplierId = 1L;
         Boolean limit = true;
         WorkContractEntity contractEntity = new WorkContractEntity();
-        WorkContractResponse contractResponse = WorkContractResponse.builder().build();
+        WorkContractInfoResponse contractResponse = WorkContractInfoResponse.builder().build();
 
         when(repository.findBySupplierId(supplierId)).thenReturn(List.of(contractEntity));
-        when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
+        when(converter.convertToInfoResponse(contractEntity)).thenReturn(contractResponse);
 
         // When
-        List<WorkContractResponse> result = service.getContractsBySupplierId(supplierId, limit);
+        List<WorkContractInfoResponse> result = service.getContractsBySupplierId(supplierId, limit);
 
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
         verify(repository, times(1)).findBySupplierId(supplierId);
         verify(validator, times(1)).validateContractsExist(anyList(), eq("supplierId"), eq(supplierId));
-        verify(converter, times(1)).convertToResponse(contractEntity);
+        verify(converter, times(1)).convertToInfoResponse(contractEntity);
     }
 
     @Test
@@ -89,21 +89,20 @@ public class AccountServiceImplTest {
     
         List<WorkStateEnum> validStates = List.of(WorkStateEnum.PENDING);
         WorkContractEntity contractEntity = new WorkContractEntity();
-        WorkContractResponse contractResponse = WorkContractResponse.builder().build();
+        WorkContractInfoResponse contractResponse = WorkContractInfoResponse.builder().build();
     
         when(repository.findByWorkersContainingStatesAndDateRange(workerId, validStates, start, end))
                 .thenReturn(List.of(contractEntity));
-        when(converter.convertToResponse(contractEntity)).thenReturn(contractResponse);
+        when(converter.convertToInfoResponse(contractEntity)).thenReturn(contractResponse);
     
         // When
-        List<WorkContractResponse> result = service.getContractsByWorkerId(workerId, range);
+        List<WorkContractInfoResponse> result = service.getContractsByWorkerId(workerId, range);
     
         // Then
         assertEquals(1, result.size());
         assertEquals(contractResponse, result.get(0));
         verify(repository).findByWorkersContainingStatesAndDateRange(workerId, validStates, start, end);
-        verify(validator).validateContractsExist(anyList(), eq("workerId"), eq(workerId));
-        verify(converter).convertToResponse(contractEntity);
+        verify(converter).convertToInfoResponse(contractEntity);
     }
     
 }

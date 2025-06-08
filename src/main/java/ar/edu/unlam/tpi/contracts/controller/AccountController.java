@@ -1,6 +1,7 @@
 package ar.edu.unlam.tpi.contracts.controller;
 
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
@@ -14,19 +15,19 @@ public interface AccountController {
 
     @GetMapping("/accounts/applicant/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
-    GenericResponse<List<WorkContractResponse>> getContractsByApplicantId(
+    GenericResponse<List<WorkContractInfoResponse>> getContractsByApplicantId(
             @PathVariable("id") @NotNull Long applicantId,
             @RequestParam(required = false) Boolean limit);
 
     @GetMapping("/accounts/supplier/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
-    GenericResponse<List<WorkContractResponse>> getContractsBySupplierId(
+    GenericResponse<List<WorkContractInfoResponse>> getContractsBySupplierId(
             @PathVariable @NotNull Long id,
             @RequestParam(required = false) Boolean limit);
 
     @GetMapping("/accounts/worker/{id}")
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
-    GenericResponse<List<WorkContractResponse>> getContractsByWorkerId(
+    GenericResponse<List<WorkContractInfoResponse>> getContractsByWorkerId(
             @PathVariable @NotNull Long id,
             @RequestParam(defaultValue = "day") String range);
 }

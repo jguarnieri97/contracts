@@ -40,11 +40,13 @@ public class WorkContractEntity {
     @Column(name = "contract_state")
     private WorkStateEnum state;
 
-    @Column(name = "supplier_id", nullable = false)
-    private Long supplierId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private SupplierEntity supplierEntity;
 
-    @Column(name = "applicant_id", nullable = false)
-    private Long applicantId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "applicant_id", nullable = false)
+    private ApplicantEntity applicantEntity;
 
     @ElementCollection
     @CollectionTable(name = "contract_workers", schema = "CONTRACTS", joinColumns = @JoinColumn(name = "contract_id"))

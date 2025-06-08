@@ -3,9 +3,7 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
-import ar.edu.unlam.tpi.contracts.model.ImageEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
-import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
+import ar.edu.unlam.tpi.contracts.model.*;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.service.CodeNumberGenerator;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
@@ -39,8 +37,8 @@ public class WorkContractServiceImpl implements WorkContractService {
                 .dateTo(request.getDateTo())
                 .state(WorkStateEnum.PENDING)
                 .detail(request.getDetail())
-                .supplierId(request.getSupplierId())
-                .applicantId(request.getApplicantId())
+                .supplierEntity(SupplierEntity.builder().id(request.getSupplierId()).build())
+                .applicantEntity(ApplicantEntity.builder().id(request.getApplicantId()).build())
                 .workers(request.getWorkers())
                 .build();
 

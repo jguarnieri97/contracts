@@ -1,5 +1,6 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
@@ -25,29 +26,29 @@ public class AccountServiceImpl implements AccountService {
     private static final int DEFAULT_LIMIT = 4;
 
     @Override
-    public List<WorkContractResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
+    public List<WorkContractInfoResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
         List<WorkContractEntity> contracts = workContractRepository.findByApplicantId(applicantId);
         validator.validateContractsExist(contracts, "applicantId", applicantId);
 
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
-                .map(converter::convertToResponse)
+                .map(converter::convertToInfoResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<WorkContractResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
+    public List<WorkContractInfoResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
         List<WorkContractEntity> contracts = workContractRepository.findBySupplierId(supplierId);
         validator.validateContractsExist(contracts, "supplierId", supplierId);
 
         return contracts.stream()
                 .limit(Boolean.TRUE.equals(limit) ? DEFAULT_LIMIT : Long.MAX_VALUE)
-                .map(converter::convertToResponse)
+                .map(converter::convertToInfoResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<WorkContractResponse> getContractsByWorkerId(Long workerId, String range) {
+    public List<WorkContractInfoResponse> getContractsByWorkerId(Long workerId, String range) {
         LocalDate today = LocalDate.now();
         LocalDate start;
         LocalDate end;
@@ -74,10 +75,8 @@ public class AccountServiceImpl implements AccountService {
             workerId, validStates, start, end
     );
 
-    validator.validateContractsExist(contracts, "workerId", workerId);
-
     return contracts.stream()
-            .map(converter::convertToResponse)
+            .map(converter::convertToInfoResponse)
             .collect(Collectors.toList());
     }
 

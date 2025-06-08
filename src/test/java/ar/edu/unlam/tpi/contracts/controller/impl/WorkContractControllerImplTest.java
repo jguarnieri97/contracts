@@ -2,7 +2,7 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
+import ar.edu.unlam.tpi.contracts.util.WorkContractDataHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,8 +24,8 @@ public class WorkContractControllerImplTest {
     @Test
     void givenValidRequest_whenCreateContract_thenReturnsGenericResponseWithCreatedStatus() {
         // Arrange
-        var request = WorkContratDataHelper.createWorkContractRequest();
-        var responseMock = WorkContratDataHelper.createWorkContractResponse();
+        var request = WorkContractDataHelper.createWorkContractRequest();
+        var responseMock = WorkContractDataHelper.createWorkContractResponse();
         when(workContractService.createContract(request)).thenReturn(responseMock);
     
         // Act
@@ -44,7 +44,7 @@ public class WorkContractControllerImplTest {
     void givenContractId_whenGetContractById_thenReturnsGenericResponseWithOkStatus() {
         // Arrange
         var contractId = 1L;
-        var responseMock = WorkContratDataHelper.createWorkContractResponse();
+        var responseMock = WorkContractDataHelper.createWorkContractResponse();
         when(workContractService.getContractById(contractId)).thenReturn(responseMock);
     
         // Act
@@ -63,7 +63,7 @@ public class WorkContractControllerImplTest {
     void givenContractIdAndRequest_whenUpdateContractState_thenReturnsGenericResponseWithOkStatus() {
         // Arrange
         var contractId = 1L;
-        var request = WorkContratDataHelper.createWorkContractUpdateRequest();
+        var request = WorkContractDataHelper.createWorkContractUpdateRequest();
         doNothing().when(workContractService).updateContractState(contractId, request);
     
         // Act

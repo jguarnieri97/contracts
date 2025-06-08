@@ -8,8 +8,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "DELIVERY_NOTE", schema = "CONTRACTS")
 @Getter
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class DeliveryNote {
 
     @Id
@@ -38,6 +40,10 @@ public class DeliveryNote {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Setter
+    @Column(name = "is_signed")
+    private boolean isSigned;
 
     public DeliveryNote(WorkContractEntity workContract, byte[] data) {
         this.workContract = workContract;

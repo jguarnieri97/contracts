@@ -96,5 +96,6 @@ CREATE TABLE CONTRACTS.DELIVERY_NOTE
     block_number VARCHAR(15),
     created_at   DATE   NOT NULL,
     contract_id  BIGINT NOT NULL,
+    is_signed  BOOLEAN NOT NULL,
     FOREIGN KEY (contract_id) REFERENCES CONTRACTS.WORK_CONTRACT (id)
 );

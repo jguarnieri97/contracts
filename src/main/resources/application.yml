@@ -16,3 +16,6 @@ server:
 blockchain:
   service:
     host: ${BLOCKCHAIN_API_URI:http://localhost:8087/blockchain/v1/}
+
+validation:
+    host: ${VALIDATION_API_URI:http://localhost:8088/validation-api/v1/validation/}

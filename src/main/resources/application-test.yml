@@ -4,26 +4,23 @@ spring:
   application:
     name: contracts
   datasource:
-    url: jdbc:h2:mem:contractsdb;MODE=PostgreSQL;DEFAULT_SCHEMA=CONTRACTS
-    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS USERS\;CREATE SCHEMA IF NOT EXISTS CONTRACTS\;CREATE SCHEMA IF NOT EXISTS RECOM
     username: sa
     password:
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        default_schema: CONTRACTS
-  sql:
-    init:
-      schema-locations: classpath:schema.sql
-      mode: always
   h2:
     console:
       enabled: true
-    path: /h2-console
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+      data-locations: classpath:data.sql
 
 server:
   port: 8084

@@ -22,6 +22,13 @@ public class ContractDataInitializerHelper {
 
     public static List<WorkContractEntity> getContracts() {
 
+        // Primero applicants
+        ApplicantEntity applicant1 = ApplicantEntity.builder().id(1L).name("Solicitante 1").build();
+        ApplicantEntity applicant2 = ApplicantEntity.builder().id(2L).name("Solicitante 1").build();
+
+        // Suppliers
+        SupplierEntity supplier1 = SupplierEntity.builder().id(1L).name("Proveedor 1").build();
+        SupplierEntity supplier2 = SupplierEntity.builder().id(2L).name("Proveedor 2").build();
 
         return List.of(
                 // PENDING
@@ -32,8 +39,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 9, 15))
                         .state(WorkStateEnum.PENDING)
                         .detail("Mantenimiento general")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_3_WORKER_1, SUPPLIER_3_WORKER_2))
                         .build(),
 
@@ -44,8 +51,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 10, 20))
                         .state(WorkStateEnum.PENDING)
                         .detail("Reparación de cañerías")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_2).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant2)
                         .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build(),
 
@@ -56,8 +63,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 7, 1))
                         .state(WorkStateEnum.PENDING)
                         .detail("Cambio de luminarias")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_2).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier2)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_2_WORKER_1))
                         .build(),
 
@@ -70,8 +77,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 5, 15))
                         .state(WorkStateEnum.INITIATED)
                         .detail("Reparacion de puerta")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_2).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant2)
                         .workers(List.of(SUPPLIER_3_WORKER_1))
                         .build(),
 
@@ -82,8 +89,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 5, 15))
                         .state(WorkStateEnum.INITIATED)
                         .detail("Mantenimiento de aires acondicionados")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_2_WORKER_1, SUPPLIER_2_WORKER_2))
                         .build(),
 
@@ -94,8 +101,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 6, 10))
                         .state(WorkStateEnum.INITIATED)
                         .detail("Instalación de cámaras de seguridad")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_3_WORKER_2))
                         .build(),
 
@@ -106,8 +113,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 7, 5))
                         .state(WorkStateEnum.INITIATED)
                         .detail("Mantenimiento de aires acondicionados")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_1_WORKER_1))
                         .build(),
 
@@ -118,8 +125,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 6, 3))
                         .state(WorkStateEnum.INITIATED)
                         .detail("Colocación de pisos vinílicos")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_2_WORKER_2))
                         .build(),
 
@@ -131,8 +138,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 4, 20))
                         .state(WorkStateEnum.FINALIZED)
                         .detail("Reparación de ascensor")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build(),
 
@@ -143,8 +150,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 4, 15))
                         .state(WorkStateEnum.FINALIZED)
                         .detail("Colocación de carteles corporativos")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build(),
 
@@ -155,8 +162,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 4, 5))
                         .state(WorkStateEnum.FINALIZED)
                         .detail("Limpieza post-obra")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier1)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build(),
 
@@ -167,8 +174,8 @@ public class ContractDataInitializerHelper {
                         .dateTo(LocalDate.of(2025, 5, 10))
                         .state(WorkStateEnum.FINALIZED)
                         .detail("Servicio de limpieza")
-                        .supplierEntity(SupplierEntity.builder().id(SUPPLIER_1).build())
-                        .applicantEntity(ApplicantEntity.builder().id(APPLICANT_1).build())
+                        .supplierEntity(supplier2)
+                        .applicantEntity(applicant1)
                         .workers(List.of(SUPPLIER_1_WORKER_2))
                         .build()
         );

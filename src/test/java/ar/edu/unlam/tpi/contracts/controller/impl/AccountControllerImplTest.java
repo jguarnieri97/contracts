@@ -1,9 +1,9 @@
 package ar.edu.unlam.tpi.contracts.controller.impl;
 
-import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
+import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
+import ar.edu.unlam.tpi.contracts.util.WorkContractDataHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +27,7 @@ public class AccountControllerImplTest {
         // Arrange
         var applicantId = 2L;
         var limit = true;
-        var responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
+        var responseMock = List.of(WorkContractDataHelper.createWorkContractInfoResponse());
         when(accountService.getContractsByApplicantId(applicantId, limit)).thenReturn(responseMock);
     
         // Act
@@ -47,7 +47,7 @@ public class AccountControllerImplTest {
         // Arrange
         var supplierId = 1L;
         var limit = true;
-        var responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
+        var responseMock = List.of(WorkContractDataHelper.createWorkContractInfoResponse());
         when(accountService.getContractsBySupplierId(supplierId, limit)).thenReturn(responseMock);
     
         // Act
@@ -67,7 +67,7 @@ public class AccountControllerImplTest {
         // Arrange
         Long workerId = 3L;
         String range = "week";
-        List<WorkContractResponse> responseMock = List.of(WorkContratDataHelper.createWorkContractResponse());
+        List<WorkContractInfoResponse> responseMock = List.of(WorkContractDataHelper.createWorkContractInfoResponse());
     
         when(accountService.getContractsByWorkerId(workerId, range)).thenReturn(responseMock);
     

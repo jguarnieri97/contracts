@@ -4,12 +4,14 @@ import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
+import ar.edu.unlam.tpi.contracts.model.ApplicantEntity;
+import ar.edu.unlam.tpi.contracts.model.SupplierEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import ar.edu.unlam.tpi.contracts.util.WorkContractValidator;
-import ar.edu.unlam.tpi.contracts.util.WorkContratDataHelper;
+import ar.edu.unlam.tpi.contracts.util.WorkContractDataHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,8 +46,8 @@ public class WorkContractServiceImplTest {
     @Test
     void givenValidRequest_whenCreateContract_thenReturnSavedContract() {
         // Given
-        WorkContractRequest request = WorkContratDataHelper.createWorkContractRequest();
-        WorkContractResponse expectedResponse = WorkContratDataHelper.createWorkContractResponse();
+        WorkContractRequest request = WorkContractDataHelper.createWorkContractRequest();
+        WorkContractResponse expectedResponse = WorkContractDataHelper.createWorkContractResponse();
 
         WorkContractEntity contractEntity = WorkContractEntity.builder()
                 .codeNumber("CODE123")
@@ -54,8 +56,8 @@ public class WorkContractServiceImplTest {
                 .dateTo(request.getDateTo())
                 .state(WorkStateEnum.PENDING)
                 .detail(request.getDetail())
-                .supplierId(request.getSupplierId())
-                .applicantId(request.getApplicantId())
+                .supplierEntity(SupplierEntity.builder().id(request.getSupplierId()).build())
+                .applicantEntity(ApplicantEntity.builder().id(request.getApplicantId()).build())
                 .workers(request.getWorkers())
                 .build();
 
@@ -87,8 +89,8 @@ public class WorkContractServiceImplTest {
                 .dateTo(LocalDate.of(2025, 5, 15))
                 .state(WorkStateEnum.FINALIZED)
                 .detail("Trabajo de prueba")
-                .supplierId(1L)
-                .applicantId(2L)
+                .supplierEntity(SupplierEntity.builder().id(1L).build())
+                .applicantEntity(ApplicantEntity.builder().id(2L).build())
                 .workers(List.of(3L, 4L, 5L))
                 .build();
 

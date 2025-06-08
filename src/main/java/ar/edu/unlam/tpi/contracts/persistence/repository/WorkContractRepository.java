@@ -21,7 +21,7 @@ public interface WorkContractRepository extends JpaRepository<WorkContractEntity
      * @return la lista de contratos asociados al solicitante, ordenados por fecha de inicio y ID descendente.
      */
     @Query("SELECT w FROM WorkContractEntity w " +
-            "WHERE w.applicantId = :applicantId " +
+            "WHERE w.applicantEntity.id = :applicantId " +
             "ORDER BY w.dateFrom DESC, w.id DESC")
     List<WorkContractEntity> findByApplicantId(@Param("applicantId") Long applicantId);
 
@@ -32,7 +32,7 @@ public interface WorkContractRepository extends JpaRepository<WorkContractEntity
      * @return la lista de contratos asociados al proveedor, ordenados por fecha de inicio y ID descendente.
      */
     @Query("SELECT w FROM WorkContractEntity w " +
-            "WHERE w.supplierId = :supplierId " +
+            "WHERE w.supplierEntity.id = :supplierId " +
             "ORDER BY w.dateFrom DESC, w.id DESC")
     List<WorkContractEntity> findBySupplierId(@Param("supplierId") Long supplierId);
 

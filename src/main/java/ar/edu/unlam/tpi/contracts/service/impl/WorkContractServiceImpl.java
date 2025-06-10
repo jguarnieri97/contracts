@@ -78,7 +78,7 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     private void addImagesToContract(WorkContractEntity contract, List<String> filesBase64) {
         List<ImageEntity> images = filesBase64.stream()
-                .map(base64 -> new ImageEntity(Base64.getDecoder().decode(base64)))
+                .map(base64 -> new ImageEntity(Base64.getDecoder().decode(base64), contract))
                 .toList();
         if (contract.getFiles() == null) {
             contract.setFiles(new ArrayList<>());

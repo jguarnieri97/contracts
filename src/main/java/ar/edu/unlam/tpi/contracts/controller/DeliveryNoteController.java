@@ -19,7 +19,7 @@ public interface DeliveryNoteController {
     GenericResponse<DeliveryNoteResponse> getDeliveryNote(@PathVariable("contractId") Long contractId);
 
     @PutMapping("{contractId}")
-    GenericResponse<Void> signatureDeliveryNote(
+    GenericResponse<DeliveryNoteResponse> signatureDeliveryNote(
             @PathVariable("contractId") Long contractId,
             @RequestBody DeliverySignatureRequest request);
 

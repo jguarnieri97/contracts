@@ -29,5 +29,5 @@ public interface AccountController {
     @ResponseStatus(org.springframework.http.HttpStatus.OK)
     GenericResponse<List<WorkContractInfoResponse>> getContractsByWorkerId(
             @PathVariable @NotNull Long id,
-            @RequestParam(defaultValue = "day") String range);
+            @RequestParam(defaultValue = "week") String range);
 }

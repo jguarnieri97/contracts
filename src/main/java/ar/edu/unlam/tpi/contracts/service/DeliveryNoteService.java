@@ -10,5 +10,5 @@ public interface DeliveryNoteService {
 
     DeliveryNoteResponse getDeliveryNote(Long contractId);
 
-    void signatureDeliveryNote(Long id, DeliverySignatureRequest request);
+    DeliveryNoteResponse signatureDeliveryNote(Long id, DeliverySignatureRequest request);
 }

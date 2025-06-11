@@ -53,7 +53,7 @@ public class WorkContractEntity {
     @Column(name = "worker_id")
     private List<Long> workers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "workContract", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)
     private List<ImageEntity> files = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)

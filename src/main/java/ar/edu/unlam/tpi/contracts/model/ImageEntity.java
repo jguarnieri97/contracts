@@ -26,7 +26,8 @@ public class ImageEntity {
     @JoinColumn(name = "contract_id")
     private WorkContractEntity workContract;
 
-    public ImageEntity(byte[] data) {
+    public ImageEntity(byte[] data, WorkContractEntity contract) {
         this.data = data;
+        this.workContract = contract;
     }
 }

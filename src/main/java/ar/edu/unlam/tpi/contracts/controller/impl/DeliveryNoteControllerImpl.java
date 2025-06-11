@@ -37,12 +37,12 @@ public class DeliveryNoteControllerImpl implements DeliveryNoteController {
     }
 
     @Override
-    public GenericResponse<Void> signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
-        deliveryNoteService.signatureDeliveryNote(contractId, request);
+    public GenericResponse<DeliveryNoteResponse> signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
+        DeliveryNoteResponse response = deliveryNoteService.signatureDeliveryNote(contractId, request);
         return new GenericResponse<>(
                 Constants.STATUS_OK,
                 Constants.SUCCESS_MESSAGE,
-                null
+                response
         );
     }
 }

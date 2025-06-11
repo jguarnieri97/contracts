@@ -86,7 +86,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
     }
 
     @Override
-    public void signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
+    public DeliveryNoteResponse signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
         log.info("Firmando remito con ID del contrato: {}", contractId);
         var contract = workContractRepository.findById(contractId);
         DeliveryNote deliveryNote = contract.getDeliveryNote();
@@ -99,5 +99,11 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         deliveryNote.setSigned(true);
         deliveryNoteDAO.saveDeliveryNote(deliveryNote);
         log.info("Remito firmado exitosamente");
+
+        return DeliveryNoteResponse.builder()
+                .id(deliveryNote.getId())
+                .data(deliveryNote.getData())
+                .createdAt(deliveryNote.getCreatedAt().toString())
+                .build();
     }
 }

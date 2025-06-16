@@ -1,0 +1,21 @@
+app.start.mode: ${APP_START_MODE:dev}
+
+spring:
+  application:
+    name: Contracts
+  datasource:
+    url: ${DB_HOST:jdbc:sqlserver://localhost;database=nexwork-db;user=NxwAdmin;password=Nexwork123;trustServerCertificate=true}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+server:
+  port: 8084
+
+blockchain:
+  service:
+    host: ${BLOCKCHAIN_API_URI:http://localhost:8087/blockchain/v1/}
+
+validation:
+    host: ${VALIDATION_API_URI:http://localhost:8088/validation-api/v1/validation/}

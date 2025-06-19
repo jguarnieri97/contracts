@@ -90,7 +90,7 @@ public class DeliveryNoteServiceImpl implements DeliveryNoteService {
         log.info("Firmando remito con ID del contrato: {}", contractId);
         var contract = workContractRepository.findById(contractId);
         DeliveryNote deliveryNote = contract.getDeliveryNote();
-        byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature());
+        byte[] dataUpdated = fileCreatorService.signFile(deliveryNote, request.getSignature(), request.getClarification());
         
         deliveryNote.setData(dataUpdated);
 

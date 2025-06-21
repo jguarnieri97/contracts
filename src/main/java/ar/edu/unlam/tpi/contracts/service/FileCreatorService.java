@@ -49,13 +49,13 @@ public class FileCreatorService {
         }
     }
 
-    public byte[] signFile(DeliveryNote deliveryNote, String signatureBase64) {
+    public byte[] signFile(DeliveryNote deliveryNote, String signatureBase64, String clarification) {
         try {
             PdfReader reader = retrievePdfReader(deliveryNote.getData());
             Map<String,Object> stamperData = retrievePdfStamper(deliveryNote.getData(), reader);
             PdfStamper stamper = (PdfStamper) stamperData.get("stamper");
             ByteArrayOutputStream outputStream = (ByteArrayOutputStream) stamperData.get("outputStream");
-            buildImageSignatureSection(signatureBase64, reader, stamper);
+            buildImageSignatureSection(signatureBase64, reader, stamper, clarification);
             stamper.close();
             reader.close();
             return outputStream.toByteArray();            
@@ -65,7 +65,7 @@ public class FileCreatorService {
         }
     }
 
-    private void buildImageSignatureSection(String signatureBase64, PdfReader reader, PdfStamper stamper) throws Exception {
+    private void buildImageSignatureSection(String signatureBase64, PdfReader reader, PdfStamper stamper, String clarification) throws Exception {
         Image signatureImage = FileImageUtil.buildImage(signatureBase64,100,100);
         Map<String, Float> coords = buildCoordsToBuildSignature(reader, signatureImage);
         

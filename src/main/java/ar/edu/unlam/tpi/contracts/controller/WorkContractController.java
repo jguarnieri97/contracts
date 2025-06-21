@@ -1,10 +1,12 @@
 package ar.edu.unlam.tpi.contracts.controller;
 
+import ar.edu.unlam.tpi.contracts.dto.request.UpdateItemsRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +34,11 @@ public interface WorkContractController {
     GenericResponse<WorkContractResponse> getContractById(
         @PathVariable Long id);
 
+    @PutMapping("/work-contract/{id}/items")
+    @ResponseStatus(HttpStatus.OK)
+    GenericResponse<Void> updateItems(
+            @PathVariable Long id,
+            @Valid
+            @RequestBody UpdateItemsRequest request);
    
 }

@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.client.ValidationClient;
 import ar.edu.unlam.tpi.contracts.dto.request.RegisterRequest;
+import ar.edu.unlam.tpi.contracts.dto.request.UpdateItemsRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
@@ -75,6 +76,21 @@ public class WorkContractServiceImpl implements WorkContractService {
         WorkContractEntity contract = repository.findById(id);
         return converter.convertToResponse(contract);
     }
+
+    @Override
+    public void updateTasks(Long id, UpdateItemsRequest request) {
+        WorkContractEntity contract = repository.findById(id);
+
+        for (String descripcion : request.getTasks()) {
+            TaskEntity nuevaTask = new TaskEntity();
+            nuevaTask.setDescription(descripcion);
+            nuevaTask.setWorkContract(contract);
+            contract.getTasks().add(nuevaTask);
+        }
+
+        repository.save(contract);
+    }
+
 
     private void addImagesToContract(WorkContractEntity contract, List<String> filesBase64) {
         List<ImageEntity> images = filesBase64.stream()

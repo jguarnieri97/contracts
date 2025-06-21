@@ -2,6 +2,7 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 
 
 import ar.edu.unlam.tpi.contracts.controller.WorkContractController;
+import ar.edu.unlam.tpi.contracts.dto.request.UpdateItemsRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
@@ -44,6 +45,16 @@ public class WorkContractControllerImpl implements WorkContractController {
                 Constants.STATUS_OK,
                 Constants.SUCCESS_MESSAGE,
                 response
+        );
+    }
+
+    @Override
+    public GenericResponse<Void> updateItems(Long id, UpdateItemsRequest request) {
+        service.updateTasks(id, request);
+        return new GenericResponse<>(
+                Constants.STATUS_OK,
+                Constants.UPDATED_MESSAGE,
+                null
         );
     }
 }

@@ -59,4 +59,6 @@ public class WorkContractEntity {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)
     private DeliveryNote deliveryNote;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workContract", orphanRemoval = true)
+    private List<TaskEntity> tasks = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package ar.edu.unlam.tpi.contracts.service;
 
+import ar.edu.unlam.tpi.contracts.dto.request.UpdateItemsRequest;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
@@ -32,4 +33,14 @@ public interface WorkContractService {
      *      El contrato encontrado
      */
     WorkContractResponse getContractById(Long id);
+
+    /**
+     * Actualiza los items de un contrato
+     * @param id
+     *      El id del contrato
+     * @param request
+     *      El request del contrato
+     */
+    void updateTasks(Long id, UpdateItemsRequest request);
+
 }

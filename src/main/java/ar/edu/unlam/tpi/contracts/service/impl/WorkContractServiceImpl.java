@@ -81,11 +81,11 @@ public class WorkContractServiceImpl implements WorkContractService {
     public void updateTasks(Long id, UpdateItemsRequest request) {
         WorkContractEntity contract = repository.findById(id);
 
-        for (String descripcion : request.getTasks()) {
-            TaskEntity nuevaTask = new TaskEntity();
-            nuevaTask.setDescription(descripcion);
-            nuevaTask.setWorkContract(contract);
-            contract.getTasks().add(nuevaTask);
+        for (String description : request.getTasks()) {
+            TaskEntity newTask = new TaskEntity();
+            newTask.setDescription(description);
+            newTask.setWorkContract(contract);
+            contract.getTasks().add(newTask);
         }
 
         repository.save(contract);

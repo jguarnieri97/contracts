@@ -38,7 +38,7 @@ public class WorkContractConverter {
                 .applicantId(entity.getApplicantEntity().getId())
                 .files(base64Images)
                 .workers(entity.getWorkers())
-                .tasks(convertToTaskDto(entity.getTasks()))
+                .tasks(entity.getTasks() == null ? null : convertToTaskDto(entity.getTasks()))
                 .build();
     }
 

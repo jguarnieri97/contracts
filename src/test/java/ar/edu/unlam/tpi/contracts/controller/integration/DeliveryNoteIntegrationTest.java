@@ -1,8 +1,7 @@
-package ar.edu.unlam.tpi.contracts.integration;
+package ar.edu.unlam.tpi.contracts.controller.integration;
 
 import ar.edu.unlam.tpi.contracts.dto.request.DeliverySignatureRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,19 +12,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class DeliveryNoteIntegrationTest {
 
-    //@Autowired
+    @Autowired
     private MockMvc mockMvc;
 
-    //@Autowired
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    @Disabled
     void givenNonExistentContractId_whenGetDeliveryNote_thenReturnsNotFound() throws Exception {
         // Given
         Long nonExistentContractId = 999L;
@@ -33,12 +31,11 @@ public class DeliveryNoteIntegrationTest {
         // When/Then
         mockMvc.perform(get("/contracts/v1/delivery-note/{id}", nonExistentContractId)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isNotFound());
     }
 
 
     @Test
-    @Disabled
     void givenNonExistentDeliveryNoteId_whenSignatureDeliveryNote_thenReturnsNotFound() throws Exception {
         // Given
         Long nonExistentDeliveryNoteId = 999L;
@@ -46,8 +43,8 @@ public class DeliveryNoteIntegrationTest {
                 .signature("base64SignatureData")
                 .build();
 
-        // When/Then
-        mockMvc.perform(put("/contracts/v1/delivery-note/{id}", nonExistentDeliveryNoteId)
+        // When/Then 
+        mockMvc.perform(put("/contracts/v1/delivery-note/{contractId}", nonExistentDeliveryNoteId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound());

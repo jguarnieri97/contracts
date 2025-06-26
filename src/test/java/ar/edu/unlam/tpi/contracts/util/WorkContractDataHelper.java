@@ -16,8 +16,9 @@ import java.util.UUID;
 public class WorkContractDataHelper {
 
     public static WorkContractEntity createWorkContractEntity(){
+        String codeNumber = ("TEST-" + UUID.randomUUID().toString().substring(0, 4));
         return WorkContractEntity.builder()
-                .codeNumber("TEST-" + UUID.randomUUID().toString().substring(0, 8))
+                .codeNumber(codeNumber)
                 .price(1000.0)
                 .dateFrom(LocalDate.now())
                 .dateTo(LocalDate.now().plusDays(30))

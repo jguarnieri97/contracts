@@ -1,5 +1,6 @@
 package ar.edu.unlam.tpi.contracts.persistence.dao.impl;
 
+import ar.edu.unlam.tpi.contracts.exception.ContractNotFoundException;
 import ar.edu.unlam.tpi.contracts.exception.WorkContractRepositoryException;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
@@ -60,7 +61,7 @@ public class WorkContractDAOImplTest {
     @Test
     void givenNonExistingId_whenFindById_thenThrowsException() {
         when(workContractRepository.findById(2L)).thenReturn(Optional.empty());
-        assertThrows(WorkContractRepositoryException.class, () -> workContractDAO.findById(2L));
+        assertThrows(ContractNotFoundException.class, () -> workContractDAO.findById(2L));
     }
 
     @Test

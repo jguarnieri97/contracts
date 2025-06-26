@@ -36,7 +36,12 @@ public class WorkContractDAOImpl implements WorkContractDAO {
             log.info("Buscando contrato por ID: {}", id);
             return workContractRepository.findById(id)
                     .orElseThrow(() -> new ContractNotFoundException("WorkContract not found"));
-        } catch (Exception e) {
+        }
+        catch(ContractNotFoundException e){
+            log.error("Contrato no encontrado: {}", e.getDetail());
+            throw new ContractNotFoundException(e.getDetail());
+        }
+        catch (Exception e) {
             log.error("Error interno al buscar contrato: {}", e.getMessage());
             throw new WorkContractRepositoryException(e.getMessage());
         }

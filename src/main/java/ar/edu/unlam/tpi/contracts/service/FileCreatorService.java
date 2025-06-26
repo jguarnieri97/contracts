@@ -11,6 +11,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.Image;
 
@@ -70,8 +71,18 @@ public class FileCreatorService {
         Map<String, Float> coords = buildCoordsToBuildSignature(reader, signatureImage);
         
         PdfContentByte content = stamper.getOverContent(reader.getNumberOfPages());
-        content.addImage(signatureImage, signatureImage.getScaledWidth(), 0, 0, signatureImage.getScaledHeight(), 
-            coords.get("x"), coords.get("y"));
+        float x = coords.get("x");
+        float y = coords.get("y");
+
+        // Dibuja la imagen de la firma
+        content.addImage(signatureImage, signatureImage.getScaledWidth(), 0, 0, signatureImage.getScaledHeight(), x, y);
+
+        // Dibuja la aclaración por debajo de la firma
+        content.beginText();
+        content.setFontAndSize(BaseFont.createFont(), 10); // Fuente y tamaño
+        content.setTextMatrix(x, y - 15); // 15 puntos debajo de la firma
+        content.showText(clarification);
+        content.endText();
     }
 
     private Map<String, Float> buildCoordsToBuildSignature(PdfReader reader, Image signatureImage) throws Exception {

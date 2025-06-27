@@ -36,6 +36,12 @@ public class WorkContractConverter {
                 .detail(entity.getDetail())
                 .supplierId(entity.getSupplierEntity().getId())
                 .applicantId(entity.getApplicantEntity().getId())
+                .applicantName(entity.getApplicantEntity() != null && entity.getApplicantEntity().getName() != null
+                        ? entity.getApplicantEntity().getName()
+                        : null)
+                .supplierName(entity.getSupplierEntity() != null && entity.getSupplierEntity().getName() != null
+                        ? entity.getSupplierEntity().getName()
+                        : null)
                 .files(base64Images)
                 .workers(entity.getWorkers())
                 .tasks(entity.getTasks() == null ? null : convertToTaskDto(entity.getTasks()))

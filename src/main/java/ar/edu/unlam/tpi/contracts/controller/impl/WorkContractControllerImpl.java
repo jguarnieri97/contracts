@@ -9,21 +9,17 @@ import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.service.WorkContractService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 public class WorkContractControllerImpl implements WorkContractController {
 
     private final WorkContractService service;
 
     @Override
-    public GenericResponse<WorkContractResponse> createContract(@Valid WorkContractRequest request) {
+    public GenericResponse<WorkContractResponse> createContract(WorkContractRequest request) {
         WorkContractResponse response = service.createContract(request);
         return new GenericResponse<>(
                 Constants.STATUS_CREATED,
@@ -33,7 +29,7 @@ public class WorkContractControllerImpl implements WorkContractController {
     }
 
     @Override
-    public GenericResponse<Void> updateContractState(Long id, @Valid WorkContractUpdateRequest request) {
+    public GenericResponse<Void> updateContractState(Long id, WorkContractUpdateRequest request) {
         service.updateContractState(id, request);
         return new GenericResponse<>(
                 Constants.STATUS_OK,
@@ -53,7 +49,7 @@ public class WorkContractControllerImpl implements WorkContractController {
     }
 
     @Override
-    public GenericResponse<Void> updateItems(Long id, @Valid UpdateItemsRequest request) {
+    public GenericResponse<Void> updateItems(Long id, UpdateItemsRequest request) {
         service.updateTasks(id, request);
         return new GenericResponse<>(
                 Constants.STATUS_OK,

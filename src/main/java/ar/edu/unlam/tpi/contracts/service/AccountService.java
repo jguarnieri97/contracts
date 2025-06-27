@@ -3,6 +3,9 @@ import java.util.List;
 
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
 
+/**
+ * Interfaz que define los servicios relacionados con las cuentas de los usuarios.
+ */
 public interface AccountService {
 
     /**

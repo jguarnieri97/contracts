@@ -7,11 +7,15 @@ import ar.edu.unlam.tpi.contracts.dto.response.DeliveryNoteResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.service.DeliveryNoteService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class DeliveryNoteControllerImpl implements DeliveryNoteController {
 
     private final DeliveryNoteService deliveryNoteService;
@@ -37,7 +41,7 @@ public class DeliveryNoteControllerImpl implements DeliveryNoteController {
     }
 
     @Override
-    public GenericResponse<DeliveryNoteResponse> signatureDeliveryNote(Long contractId, DeliverySignatureRequest request) {
+    public GenericResponse<DeliveryNoteResponse> signatureDeliveryNote(Long contractId, @Valid DeliverySignatureRequest request) {
         DeliveryNoteResponse response = deliveryNoteService.signatureDeliveryNote(contractId, request);
         return new GenericResponse<>(
                 Constants.STATUS_OK,

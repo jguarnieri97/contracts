@@ -12,25 +12,25 @@ import java.util.List;
 @Builder
 public class WorkContractRequest {
 
-    @NotNull
+    @NotNull(message = "El campo 'price' es obligatorio")
     private Double price;
 
-    @NotNull
+    @NotNull(message = "El campo 'dateFrom' es obligatorio")
     private LocalDate dateFrom;
 
-    @NotNull
+    @NotNull(message = "El campo 'dateTo' es obligatorio")
     private LocalDate dateTo;
 
-    @NotNull
+    @NotNull(message = "El campo 'detail' es obligatorio")
     private String detail;
 
-    @NotNull
+    @NotNull(message = "El campo 'supplierId' es obligatorio")
     private Long supplierId;
 
-    @NotNull
+    @NotNull(message = "El campo 'applicantId' es obligatorio")
     private Long applicantId;
 
-    @NotNull
+    @NotNull(message = "El campo 'workers' es obligatorio")
     @Size(min = 1)
     private List<Long> workers;
 }

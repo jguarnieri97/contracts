@@ -1,7 +1,6 @@
 package ar.edu.unlam.tpi.contracts.service.impl;
 
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
-import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkStateEnum;
 import ar.edu.unlam.tpi.contracts.persistence.dao.WorkContractDAO;

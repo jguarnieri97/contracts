@@ -21,7 +21,6 @@ public class WorkContractRequest {
     @NotNull(message = "El campo 'dateTo' es obligatorio")
     private LocalDate dateTo;
 
-    @NotNull(message = "El campo 'detail' es obligatorio")
     private String detail;
 
     @NotNull(message = "El campo 'supplierId' es obligatorio")

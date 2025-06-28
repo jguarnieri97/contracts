@@ -25,7 +25,7 @@ public interface AccountController {
     @GetMapping("/accounts/applicant/{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<List<WorkContractInfoResponse>> getContractsByApplicantId(
-            @PathVariable("id") @NotNull Long applicantId,
+            @PathVariable("id") @NotNull(message = "El ID del solicitante no puede ser nulo") Long applicantId,
             @RequestParam(required = false) Boolean limit);
 
     /**
@@ -38,7 +38,7 @@ public interface AccountController {
     @GetMapping("/accounts/supplier/{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<List<WorkContractInfoResponse>> getContractsBySupplierId(
-            @PathVariable @NotNull Long id,
+            @PathVariable @NotNull(message = "El ID del proveedor no puede ser nulo") Long id,
             @RequestParam(required = false) Boolean limit);
 
     /**
@@ -51,6 +51,6 @@ public interface AccountController {
     @GetMapping("/accounts/worker/{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<List<WorkContractInfoResponse>> getContractsByWorkerId(
-            @PathVariable @NotNull Long id,
+            @PathVariable @NotNull(message = "El ID del trabajador no puede ser nulo") Long id,
             @RequestParam(defaultValue = "week") String range);
 }

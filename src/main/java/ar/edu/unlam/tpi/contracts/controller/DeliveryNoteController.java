@@ -36,7 +36,8 @@ public interface DeliveryNoteController {
      */
     @GetMapping("{contractId}")
     @ResponseStatus(HttpStatus.OK)
-    GenericResponse<DeliveryNoteResponse> getDeliveryNote(@PathVariable("contractId") @NotNull Long contractId);
+    GenericResponse<DeliveryNoteResponse> getDeliveryNote(
+        @PathVariable("contractId") @NotNull(message = "El ID del contrato no puede ser nulo") Long contractId);
 
     /**
      * Firma una nota de entrega existente
@@ -47,7 +48,7 @@ public interface DeliveryNoteController {
      */
     @PutMapping("{contractId}")
     GenericResponse<DeliveryNoteResponse> signatureDeliveryNote(
-            @PathVariable("contractId") @NotNull Long contractId,
+            @PathVariable("contractId") @NotNull(message = "El ID del contrato no puede ser nulo") Long contractId,
             @Valid @RequestBody DeliverySignatureRequest request);
 
 }

@@ -41,7 +41,7 @@ public interface WorkContractController {
     @PutMapping("/work-contract/{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<Void> updateContractState(
-        @PathVariable @NotNull Long id, 
+        @PathVariable @NotNull(message = "El ID del contrato no puede ser nulo") Long id, 
         @Valid 
         @RequestBody WorkContractUpdateRequest request);
 
@@ -54,7 +54,7 @@ public interface WorkContractController {
     @GetMapping("/work-contract/{id}")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<WorkContractResponse> getContractById(
-        @PathVariable @NotNull Long id);
+        @PathVariable @NotNull(message = "El ID del contrato no puede ser nulo") Long id);
 
     /**
      * Actualiza los items de un contrato de trabajo
@@ -66,7 +66,7 @@ public interface WorkContractController {
     @PutMapping("/work-contract/{id}/items")
     @ResponseStatus(HttpStatus.OK)
     GenericResponse<Void> updateItems(
-            @PathVariable @NotNull Long id,
+            @PathVariable @NotNull(message = "El ID del contrato no puede ser nulo") Long id,
             @Valid
             @RequestBody UpdateItemsRequest request);
    

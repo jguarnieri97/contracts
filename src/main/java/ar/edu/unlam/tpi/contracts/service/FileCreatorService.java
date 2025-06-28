@@ -22,6 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
+/**
+ * Servicio para la creación y firma de archivos PDF de remitos.
+ */
 @Slf4j
 @Component
 public class FileCreatorService {

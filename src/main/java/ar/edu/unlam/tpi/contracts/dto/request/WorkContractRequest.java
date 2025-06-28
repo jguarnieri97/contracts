@@ -31,6 +31,6 @@ public class WorkContractRequest {
     private Long applicantId;
 
     @NotNull(message = "El campo 'workers' es obligatorio")
-    @Size(min = 1)
+    @Size(min = 1, message = "El campo 'workers' debe contener al menos un trabajador")
     private List<Long> workers;
 }

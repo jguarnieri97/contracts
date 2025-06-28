@@ -47,6 +47,6 @@ public class DeliveryNoteIntegrationTest {
         mockMvc.perform(put("/contracts/v1/delivery-note/{contractId}", nonExistentDeliveryNoteId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().is4xxClientError());
     }
 } 

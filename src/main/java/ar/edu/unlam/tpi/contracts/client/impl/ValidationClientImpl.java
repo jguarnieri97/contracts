@@ -30,6 +30,7 @@ public class ValidationClientImpl implements ValidationClient {
 
     @Override
     public void registerWork(RegisterRequest request) {
+        log.info("Enviando solicitud de registro al servicio de validación: {}", request);
         webClient.post()
                 .uri(host + "register")
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)

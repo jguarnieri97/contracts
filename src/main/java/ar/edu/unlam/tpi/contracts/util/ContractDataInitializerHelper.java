@@ -9,10 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ContractDataInitializerHelper {
-    private static final Long APPLICANT_1 = 1L;
-    private static final Long APPLICANT_2 = 2L;
-    private static final Long SUPPLIER_1 = 1L;
-    private static final Long SUPPLIER_2 = 2L;
     private static final Long SUPPLIER_1_WORKER_1 = 1L;
     private static final Long SUPPLIER_1_WORKER_2 = 2L;
     private static final Long SUPPLIER_2_WORKER_1 = 3L;

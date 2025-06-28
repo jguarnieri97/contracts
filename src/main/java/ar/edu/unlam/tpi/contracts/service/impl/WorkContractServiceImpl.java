@@ -35,6 +35,7 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public WorkContractResponse createContract(WorkContractRequest request) {
+        log.info("Creando contrato de trabajo con solicitud: {}", request);
         WorkContractEntity contract = WorkContractEntity.builder()
                 .codeNumber(codeNumberGenerator.generateCodeNumber())
                 .price(request.getPrice())
@@ -53,6 +54,7 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public void updateContractState(Long id, WorkContractUpdateRequest request) {
+        log.info("Actualizando estado del contrato de trabajo ID: {} con solicitud: {}", id, request);
         if (!WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
             validator.validateStateFinalized(request);
         }
@@ -63,6 +65,7 @@ public class WorkContractServiceImpl implements WorkContractService {
             addImagesToContract(contract, request.getFiles());
         }
 
+        log.info("Guardando contrato de trabajo actualizado: {}", contract);
         repository.save(contract);
 
         if (WorkStateEnum.FINALIZED.name().equalsIgnoreCase(request.getState())) {
@@ -73,12 +76,14 @@ public class WorkContractServiceImpl implements WorkContractService {
 
     @Override
     public WorkContractResponse getContractById(Long id) {
+        log.info("Recuperando contrato de trabajo por ID: {}", id);
         WorkContractEntity contract = repository.findById(id);
         return converter.convertToResponse(contract);
     }
 
     @Override
     public void updateTasks(Long id, UpdateItemsRequest request) {
+        log.info("Actualizando tareas del contrato de trabajo ID: {} con solicitud: {}", id, request);
         WorkContractEntity contract = repository.findById(id);
 
         for (String description : request.getTasks()) {
@@ -88,11 +93,13 @@ public class WorkContractServiceImpl implements WorkContractService {
             contract.getTasks().add(newTask);
         }
 
+        log.info("Guardando contrato de trabajo actualizado con nuevas tareas: {}", contract);
         repository.save(contract);
     }
 
 
     private void addImagesToContract(WorkContractEntity contract, List<String> filesBase64) {
+        log.info("Agregando imágenes al contrato de trabajo ID: {} con archivos: {}", contract.getId(), filesBase64);
         List<ImageEntity> images = filesBase64.stream()
                 .map(base64 -> new ImageEntity(Base64.getDecoder().decode(base64), contract))
                 .toList();

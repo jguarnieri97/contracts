@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class UpdateItemsRequest {
 
-    @NotNull
+    @NotNull(message = "El campo 'tasks' es obligatorio")
     private List<String> tasks;
 
 }

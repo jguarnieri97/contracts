@@ -3,7 +3,6 @@ package ar.edu.unlam.tpi.contracts.controller.impl;
 import ar.edu.unlam.tpi.contracts.controller.AccountController;
 import ar.edu.unlam.tpi.contracts.dto.response.GenericResponse;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
-import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.service.AccountService;
 import ar.edu.unlam.tpi.contracts.util.Constants;
 import lombok.RequiredArgsConstructor;

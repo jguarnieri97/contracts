@@ -2,6 +2,9 @@ package ar.edu.unlam.tpi.contracts.persistence.dao;
 
 import java.util.List;
 
+/**
+ * Interfaz genérica para operaciones de persistencia.
+ */
 public interface GenericInterfaceDAO<T, ID> {
     /**
      * Recupera todas las entidades del tipo T.

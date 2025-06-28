@@ -2,8 +2,10 @@ package ar.edu.unlam.tpi.contracts.service;
 import java.util.List;
 
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractInfoResponse;
-import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 
+/**
+ * Interfaz que define los servicios relacionados con las cuentas de los usuarios.
+ */
 public interface AccountService {
 
     /**

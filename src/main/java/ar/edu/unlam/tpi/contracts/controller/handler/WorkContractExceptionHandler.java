@@ -2,6 +2,8 @@ package ar.edu.unlam.tpi.contracts.controller.handler;
 
 import ar.edu.unlam.tpi.contracts.dto.response.ErrorResponse;
 import ar.edu.unlam.tpi.contracts.exception.*;
+import ar.edu.unlam.tpi.contracts.util.Constants;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -68,5 +70,17 @@ public class WorkContractExceptionHandler {
                 .detail(ex.getDetail())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.builder()
+                        .code(Constants.STATUS_BAD_REQUEST)
+                        .message(Constants.BAD_REQUEST_ERROR)
+                        .detail(ex.getMessage())
+                        .build());
     }
 } 

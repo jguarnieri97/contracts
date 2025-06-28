@@ -24,8 +24,10 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     @Override
     public List<WorkContractEntity> findAll() {
         try {
+            log.info("Buscando todos los contratos de trabajo");
             return workContractRepository.findAll();
         } catch (Exception e) {
+            log.error("Error interno al buscar todos los contratos: {}", e.getMessage());
             throw new InternalException(e.getMessage());
         }
     }
@@ -36,7 +38,12 @@ public class WorkContractDAOImpl implements WorkContractDAO {
             log.info("Buscando contrato por ID: {}", id);
             return workContractRepository.findById(id)
                     .orElseThrow(() -> new ContractNotFoundException("WorkContract not found"));
-        } catch (Exception e) {
+        }
+        catch(ContractNotFoundException e){
+            log.error("Contrato no encontrado: {}", e.getDetail());
+            throw new ContractNotFoundException(e.getDetail());
+        }
+        catch (Exception e) {
             log.error("Error interno al buscar contrato: {}", e.getMessage());
             throw new WorkContractRepositoryException(e.getMessage());
         }
@@ -56,8 +63,10 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     @Override
     public void delete(Long id) {
         try {
+            log.info("Eliminando contrato con ID: {}", id);
             workContractRepository.deleteById(id);
         } catch (Exception e) {
+            log.error("Error interno al eliminar contrato: {}", e.getMessage());
             throw new InternalException(e.getMessage());
         }
     }
@@ -66,8 +75,10 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     @Override
     public List<WorkContractEntity> findByApplicantId(Long applicantId) {
         try {
+            log.info("Buscando contratos por ID de solicitante: {}", applicantId);
             return workContractRepository.findByApplicantId(applicantId);
         } catch (Exception e) {
+            log.error("Error al buscar contratos por solicitante ID: {}", applicantId);
             throw new InternalException(e.getMessage());
         }
     }
@@ -75,8 +86,10 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     @Override
     public List<WorkContractEntity> findBySupplierId(Long supplierId) {
         try {
+            log.info("Buscando contratos por ID de proveedor: {}", supplierId);
             return workContractRepository.findBySupplierId(supplierId);
         } catch (Exception e) {
+            log.error("Error al buscar contratos por proveedor ID: {}", supplierId);
             throw new InternalException(e.getMessage());
         }
     }
@@ -84,8 +97,10 @@ public class WorkContractDAOImpl implements WorkContractDAO {
     @Override
     public List<WorkContractEntity> findByWorkersContainingStatesAndDateRange(Long workerId, List<WorkStateEnum> states, LocalDate start, LocalDate end) {
         try {
+            log.info("Buscando contratos por ID de trabajador: {} con estados: {} y rango de fechas: {} a {}", workerId, states, start, end);   
             return workContractRepository.findByWorkersContainingStatesAndDateRange(workerId, states, start, end);
         } catch (Exception e) {
+            log.error("Error al buscar contratos por trabajador ID: {} con estados: {} y rango de fechas: {} a {}", workerId, states, start, end);
             throw new InternalException(e.getMessage());
         }
     }

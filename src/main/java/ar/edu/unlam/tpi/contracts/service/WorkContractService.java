@@ -5,6 +5,9 @@ import ar.edu.unlam.tpi.contracts.dto.request.WorkContractRequest;
 import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.dto.request.WorkContractUpdateRequest;
 
+/**
+ * Servicio para manejar los contratos de trabajo
+ */
 public interface WorkContractService {
 
     /**

@@ -6,10 +6,8 @@ import ar.edu.unlam.tpi.contracts.dto.response.WorkContractResponse;
 import ar.edu.unlam.tpi.contracts.model.TaskEntity;
 import ar.edu.unlam.tpi.contracts.model.WorkContractEntity;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +34,12 @@ public class WorkContractConverter {
                 .detail(entity.getDetail())
                 .supplierId(entity.getSupplierEntity().getId())
                 .applicantId(entity.getApplicantEntity().getId())
+                .applicantName(entity.getApplicantEntity() != null && entity.getApplicantEntity().getName() != null
+                        ? entity.getApplicantEntity().getName()
+                        : null)
+                .supplierName(entity.getSupplierEntity() != null && entity.getSupplierEntity().getName() != null
+                        ? entity.getSupplierEntity().getName()
+                        : null)
                 .files(base64Images)
                 .workers(entity.getWorkers())
                 .tasks(entity.getTasks() == null ? null : convertToTaskDto(entity.getTasks()))

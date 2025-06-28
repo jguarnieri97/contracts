@@ -16,6 +16,7 @@ public class Converter {
 
     public String convertToString(Object object) {
         try {
+            log.info("Convirtiendo el objeto a String: {}", object);
             var mapper = new ObjectMapper();
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {

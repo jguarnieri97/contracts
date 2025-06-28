@@ -35,6 +35,7 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
 
     @Override
     public BlockchainResponse certificateFile(BlockchainRequest request) {
+        log.info("Enviando solicitud de certificado al servicio blockchain: {}", request);
         var response = webClient.post()
                 .uri(host + "delivery-note")
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -58,6 +59,7 @@ public class BlockchainServiceClientImpl implements BlockchainServiceClient {
 
     @Override
     public void verifyCertificate(BlockchainVerifyRequest request) {
+        log.info("Enviando solicitud de verificación de certificado al servicio blockchain: {}", request);
         webClient.post()
                 .uri(host + "delivery-note/verify")
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)

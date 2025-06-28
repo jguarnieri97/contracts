@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 import ar.edu.unlam.tpi.contracts.util.ContractValidator;
 import ar.edu.unlam.tpi.contracts.util.WorkContractConverter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -26,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<WorkContractInfoResponse> getContractsByApplicantId(Long applicantId, Boolean limit) {
+        log.info("Obteniendo contratos para el solicitante ID: {}", applicantId);
         List<WorkContractEntity> contracts = workContractRepository.findByApplicantId(applicantId);
         validator.validateContractsExist(contracts, "applicantId", applicantId);
 
@@ -37,6 +40,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<WorkContractInfoResponse> getContractsBySupplierId(Long supplierId, Boolean limit) {
+        log.info("Obteniendo contratos para el proveedor ID: {}", supplierId);
         List<WorkContractEntity> contracts = workContractRepository.findBySupplierId(supplierId);
         validator.validateContractsExist(contracts, "supplierId", supplierId);
 
@@ -48,6 +52,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<WorkContractInfoResponse> getContractsByWorkerId(Long workerId, String range) {
+        log.info("Obteniendo contratos para el trabajador ID: {} con rango: {}", workerId, range);
         LocalDate today = LocalDate.now();
         LocalDate start;
         LocalDate end;

@@ -52,6 +52,7 @@ public class FileCreatorService {
 
     public byte[] signFile(DeliveryNote deliveryNote, String signatureBase64, String clarification) {
         try {
+            log.info("::: Comienza el proceso de firma del archivo :::");
             PdfReader reader = retrievePdfReader(deliveryNote.getData());
             Map<String,Object> stamperData = retrievePdfStamper(deliveryNote.getData(), reader);
             PdfStamper stamper = (PdfStamper) stamperData.get("stamper");
@@ -67,6 +68,7 @@ public class FileCreatorService {
     }
 
     private void buildImageSignatureSection(String signatureBase64, PdfReader reader, PdfStamper stamper, String clarification) throws Exception {
+        log.info("::: Comienza el proceso de firma con imagen :::");
         Image signatureImage = FileImageUtil.buildImage(signatureBase64,100,100);
         Map<String, Float> coords = buildCoordsToBuildSignature(reader, signatureImage);
         
